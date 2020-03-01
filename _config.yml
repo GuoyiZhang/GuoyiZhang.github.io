@@ -1,6 +1,6 @@
 # Site settings
-title: GuoyiZhang Blog
-SEOTitle: 张国毅的博客 | GuoyiZhang Blog
+title: Guoyi Blog
+SEOTitle: 张国毅的博客 | Guoyi Blog
 header-img: img/post-bg-desk.jpg
 email: zhang_guoyi@qq.com
 description: "Every failure is leading towards success."
@@ -78,7 +78,7 @@ ba_track_id: b50bf2b12b5338a1845e33832976fd68
 
 # Google Analytics
 ga_track_id: 'UA-90855596-1'            # Format: UA-xxxxxx-xx
-ga_domain: qiubaiying.top               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
+ga_domain: guoyi.pro               # 默认的是 auto, 这里我是自定义了的域名，你如果没有自己的域名，需要改成auto
 
 
 
