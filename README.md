@@ -152,7 +152,7 @@ featured-condition-size: 1     # A tag will be featured if the size of it is mor
 friends: [
     {
         title: "Guoyi Blog",
-        href: "https://qiubaiying.github.io/"
+        href: "https://guoyizhang.github.io/"
     },
     {
         title: "Apple",
