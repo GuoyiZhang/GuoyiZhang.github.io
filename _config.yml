@@ -5,7 +5,7 @@ header-img: img/post-bg-desk.jpg
 email: zhang_guoyi@qq.com
 description: "Every failure is leading towards success."
 keyword: "GuoyiZhang, Guoyi Blog, 张国毅的博客,Java, 后端开发,全栈开发, Android"
-url: "https://guoyizhang.github.io"          # your host, for absolute URL
+url: "http://blog.guoyi.pro"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/GuoyiZhang/GuoyiZhang.github.io.git" # you code repository
 
