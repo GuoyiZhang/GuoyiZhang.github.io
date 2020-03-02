@@ -18,12 +18,12 @@ sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's us
 
 # SNS settings
 RSS: false
-# weibo_username:     qiubaiying
-#zhihu_username:     qiubaiying
+# weibo_username:     GuoyiZhang
+#zhihu_username:     GuoyiZhang
 github_username:    GuoyiZhang
-#facebook_username:  baiying.qiu.7
+#facebook_username:  GuoyiZhang
 jianshu_username:   GuoyiZhang
-#twitter_username:   qiubaiying
+#twitter_username:   GuoyiZhang
 
 
 
@@ -57,16 +57,16 @@ kramdown:
 
 # 评论系统
 # Disqus（https://disqus.com/）
-# disqus_username: qiubaiying
+# disqus_username: GuoyiZhang
 
 # Gitalk
 gitalk:
-  enable: true    #是否开启Gitalk评论
+  enable: false    #是否开启Gitalk评论
   clientID: f2c84e7629bb1446c1a4                            #生成的clientID
   clientSecret: ca6d6139d1e1b8c43f8b2e19492ddcac8b322d0d    #生成的clientSecret
   repo: guoyizhang.github.io    #仓库名称
-  owner: qiubaiying    #github用户名
-  admin: qiubaiying
+  owner: GuoyiZhang    #github用户名
+  admin: GuoyiZhang
   distractionFreeMode: true #是否启用类似FB的阴影遮罩
 
 
