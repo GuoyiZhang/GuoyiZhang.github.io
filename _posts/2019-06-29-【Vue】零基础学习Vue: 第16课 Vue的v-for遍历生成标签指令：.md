@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第16课 Vue的v-for遍历生成标签指令：
 
 # 【Vue】零基础学习Vue: 第16课 Vue的v-for遍历生成标签指令：
 

@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第26课 Vue中标签元素节点的获取$refs方法：
 
 # 【Vue】零基础学习Vue: 第26课 Vue中标签元素节点的获取$refs方法：
 

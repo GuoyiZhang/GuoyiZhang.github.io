@@ -10,7 +10,8 @@ tags:
     - Linux
     - 开发工具
 ---
->blog.getTitle() 
+
+>linux启动XAMPP命令
 
 # linux启动XAMPP命令
 

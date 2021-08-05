@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第15课 Watch 如何监听对象
 
 # 【Vue】零基础学习Vue: 第15课 Watch 如何监听对象
 

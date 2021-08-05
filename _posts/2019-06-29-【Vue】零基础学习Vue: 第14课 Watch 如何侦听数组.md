@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第14课 Watch 如何侦听数组
 
 # 【Vue】零基础学习Vue: 第14课 Watch 如何侦听数组
 

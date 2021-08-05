@@ -9,7 +9,8 @@ catalog: true
 tags:
     - Nginx
 ---
->blog.getTitle() 
+
+>【Nginx】nginx 重定向
 
 # 【Nginx】nginx 重定向
 

@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第11课 Vue的各种keyup键盘点击事件：
 
 # 【Vue】零基础学习Vue: 第11课 Vue的各种keyup键盘点击事件：
 

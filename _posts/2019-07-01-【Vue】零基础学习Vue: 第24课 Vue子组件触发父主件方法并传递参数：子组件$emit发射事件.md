@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第24课 Vue子组件触发父主件方法并传递参数：子组件$emit发射事件
 
 # 【Vue】零基础学习Vue: 第24课 Vue子组件触发父主件方法并传递参数：子组件$emit发射事件
 

@@ -8,7 +8,8 @@ header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
 ---
->blog.getTitle() 
+
+>【虚拟机】Windows安装VMware，并使用ssh连接已安装的ubuntu
 
 # 【虚拟机】Windows安装VMware，并使用ssh连接已安装的ubuntu
 

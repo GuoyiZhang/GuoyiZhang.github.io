@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第4课 vue的模板语法v-once﹑v-html
 
 # 【Vue】零基础学习Vue: 第4课 vue的模板语法v-once﹑v-html
 

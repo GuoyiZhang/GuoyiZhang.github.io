@@ -9,7 +9,8 @@ catalog: true
 tags:
     - Linux
 ---
->blog.getTitle() 
+
+>【Linux】Linux创建root权限用户、禁用root登录
 
 # 【Linux】Linux创建root权限用户、禁用root登录
 

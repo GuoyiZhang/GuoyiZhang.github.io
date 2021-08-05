@@ -10,7 +10,8 @@ tags:
     - 数据库
     - mysql
 ---
->blog.getTitle() 
+
+>【数据库】如何通过命令行连接mysql？mysql密码重置？
 
 # 【数据库】如何通过命令行连接mysql？mysql密码重置？
 

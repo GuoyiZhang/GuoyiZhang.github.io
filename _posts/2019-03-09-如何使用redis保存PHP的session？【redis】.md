@@ -11,7 +11,8 @@ tags:
     - Linux
     - 架构学习
 ---
->blog.getTitle() 
+
+>如何使用redis保存PHP的session？【redis】
 
 # 如何使用redis保存PHP的session？【redis】
 

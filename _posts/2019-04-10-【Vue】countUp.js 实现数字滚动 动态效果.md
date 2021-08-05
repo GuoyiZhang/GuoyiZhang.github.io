@@ -10,7 +10,8 @@ tags:
     - 前端
     - VUE
 ---
->blog.getTitle() 
+
+>【Vue】countUp.js 实现数字滚动 动态效果
 
 # 【Vue】countUp.js 实现数字滚动 动态效果
 

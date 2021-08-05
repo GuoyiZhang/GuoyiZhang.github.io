@@ -10,7 +10,8 @@ tags:
     - Linux
     - Redis
 ---
->blog.getTitle() 
+
+>(error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on d
 
 # (error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on d
 

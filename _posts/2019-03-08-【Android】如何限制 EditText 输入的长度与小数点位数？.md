@@ -11,7 +11,8 @@ tags:
     - 交易所
     - 数字货币
 ---
->blog.getTitle() 
+
+>【Android】如何限制 EditText 输入的长度与小数点位数？
 
 # 【Android】如何限制 EditText 输入的长度与小数点位数？
 

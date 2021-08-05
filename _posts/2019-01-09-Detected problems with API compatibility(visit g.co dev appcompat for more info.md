@@ -9,7 +9,8 @@ catalog: true
 tags:
     - Android
 ---
->blog.getTitle() 
+
+>Detected problems with API compatibility(visit g.co/dev/appcompat for more info
 
 # Detected problems with API compatibility(visit g.co/dev/appcompat for more info
 

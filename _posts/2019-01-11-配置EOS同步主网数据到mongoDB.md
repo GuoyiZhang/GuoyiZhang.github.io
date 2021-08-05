@@ -11,7 +11,8 @@ tags:
     - 区块链
     - MongoDb
 ---
->blog.getTitle() 
+
+>配置EOS同步主网数据到mongoDB
 
 # 配置EOS同步主网数据到mongoDB
 

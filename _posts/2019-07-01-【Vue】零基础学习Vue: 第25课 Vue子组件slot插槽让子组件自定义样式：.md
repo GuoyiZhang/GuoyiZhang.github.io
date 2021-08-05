@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第25课 Vue子组件slot插槽让子组件自定义样式：
 
 # 【Vue】零基础学习Vue: 第25课 Vue子组件slot插槽让子组件自定义样式：
 

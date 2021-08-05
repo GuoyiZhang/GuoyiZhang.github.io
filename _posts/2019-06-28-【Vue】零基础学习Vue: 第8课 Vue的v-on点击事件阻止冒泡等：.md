@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第8课 Vue的v-on点击事件阻止冒泡等：
 
 # 【Vue】零基础学习Vue: 第8课 Vue的v-on点击事件阻止冒泡等：
 

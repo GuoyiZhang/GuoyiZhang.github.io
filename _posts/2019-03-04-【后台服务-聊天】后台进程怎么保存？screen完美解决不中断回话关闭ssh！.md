@@ -9,7 +9,8 @@ catalog: true
 tags:
     - Linux
 ---
->blog.getTitle() 
+
+>【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！
 
 # 【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！
 

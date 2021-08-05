@@ -11,7 +11,8 @@ tags:
     - PHP
     - 开发工具
 ---
->blog.getTitle() 
+
+>Linux上部署php+MySQL+Apache开发环境【deepin - xampp】
 
 # Linux上部署php+MySQL+Apache开发环境【deepin - xampp】
 

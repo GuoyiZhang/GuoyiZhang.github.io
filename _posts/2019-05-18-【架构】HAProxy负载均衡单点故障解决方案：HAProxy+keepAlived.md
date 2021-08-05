@@ -12,7 +12,8 @@ tags:
     - HAProxy
     - keepAlived&nbsp;
 ---
->blog.getTitle() 
+
+>【架构】HAProxy负载均衡单点故障解决方案：HAProxy+keepAlived
 
 # 【架构】HAProxy负载均衡单点故障解决方案：HAProxy+keepAlived
 

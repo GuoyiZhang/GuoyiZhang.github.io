@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第9课 Vue的 v-model指令,设置input表单输入的方法：
 
 # 【Vue】零基础学习Vue: 第9课 Vue的 v-model指令,设置input表单输入的方法：
 

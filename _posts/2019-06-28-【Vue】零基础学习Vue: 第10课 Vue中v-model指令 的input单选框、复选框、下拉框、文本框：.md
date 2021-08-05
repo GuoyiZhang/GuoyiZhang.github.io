@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第10课 Vue中v-model指令 的input单选框、复选框、下拉框、文本框：
 
 # 【Vue】零基础学习Vue: 第10课 Vue中v-model指令 的input单选框、复选框、下拉框、文本框：
 

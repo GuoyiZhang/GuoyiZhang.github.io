@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第13课 Watch侦听属性、计算属性缓存computed、方法methods的区别
 
 # 【Vue】零基础学习Vue: 第13课 Watch侦听属性、计算属性缓存computed、方法methods的区别
 

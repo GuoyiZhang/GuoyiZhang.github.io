@@ -11,7 +11,8 @@ tags:
     - 架构学习
     - Linux
 ---
->blog.getTitle() 
+
+>php负载中使用redis实现session会话保持?【redis】
 
 # php负载中使用redis实现session会话保持?【redis】
 

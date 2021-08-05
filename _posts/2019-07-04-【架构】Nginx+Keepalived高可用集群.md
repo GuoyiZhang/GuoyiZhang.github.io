@@ -10,7 +10,8 @@ tags:
     - 架构学习
     - 开发工具
 ---
->blog.getTitle() 
+
+>【架构】Nginx+Keepalived高可用集群
 
 # 【架构】Nginx+Keepalived高可用集群
 

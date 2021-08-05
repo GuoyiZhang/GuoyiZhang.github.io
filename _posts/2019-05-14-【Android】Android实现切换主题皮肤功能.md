@@ -9,7 +9,8 @@ catalog: true
 tags:
     - Android
 ---
->blog.getTitle() 
+
+>【Android】Android实现切换主题皮肤功能
 
 # 【Android】Android实现切换主题皮肤功能
 

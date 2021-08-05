@@ -10,7 +10,8 @@ tags:
     - 开发工具
     - 「实战篇」开源项目docker化运维部署
 ---
->blog.getTitle() 
+
+>【Docker】「实战篇」开源项目docker化运维部署-redis高速缓存（六）
 
 # 【Docker】「实战篇」开源项目docker化运维部署-redis高速缓存（六）
 

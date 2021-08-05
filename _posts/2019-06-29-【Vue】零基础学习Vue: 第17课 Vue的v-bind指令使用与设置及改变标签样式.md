@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第17课 Vue的v-bind指令使用与设置及改变标签样式
 
 # 【Vue】零基础学习Vue: 第17课 Vue的v-bind指令使用与设置及改变标签样式
 

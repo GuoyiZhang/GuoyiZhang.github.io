@@ -11,7 +11,8 @@ tags:
     - 零基础学习Vue
     - vue
 ---
->blog.getTitle() 
+
+>【Vue】零基础学习Vue: 第20课 Vue定义子组件template的常见3种写法：
 
 # 【Vue】零基础学习Vue: 第20课 Vue定义子组件template的常见3种写法：
 
