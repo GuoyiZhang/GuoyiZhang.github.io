@@ -14,10 +14,10 @@ tags:
 
 # 【区块链 | EOS】如何正常停止nodeos？（database dirty flag set (likely due to unclean shutdown): replay required）
 
-
+```
 kill 命令再次执行时会导致以下错误。
 pkill -9 nodeos or kill -9 {pid} database dirty flag set (likely due to unclean shutdown): replay required
-
+```
 当重新运行nodeos时，必须使用--replay-blockchain命令忽略它。
 
 让我们安全的结束nodeos 进程
