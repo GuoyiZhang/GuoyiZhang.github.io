@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Redis】Redis5.x支持的6中数据类型
+subtitle:   【Redis】Redis5.x支持的6中数据类型
+date:       2019-12-11 16:22:29
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+---
+
+>【Redis】Redis5.x支持的6中数据类型
+
 # 【Redis】Redis5.x支持的6中数据类型
 
 

@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【架构 | Redis】新手从零入门搭建Redis集群（cluster-enable 3主+3备配置）
+subtitle:   【架构 | Redis】新手从零入门搭建Redis集群（cluster-enable 3主+3备配置）
+date:       2019-12-12 14:44:42
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+---
+
+>【架构 | Redis】新手从零入门搭建Redis集群（cluster-enable 3主+3备配置）
+
 # 【架构 | Redis】新手从零入门搭建Redis集群（cluster-enable 3主+3备配置）
 
 在开始redis集群搭建之前，我们先简单回顾一下redis单机版的搭建过程

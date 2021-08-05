@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【易错概念】以太坊Solidity函数的external/internal，public/private，view/pure/payable区别
+subtitle:   【易错概念】以太坊Solidity函数的external/internal，public/private，view/pure/payable区别
+date:       2020-08-26 15:41:54
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 数字货币
+    - ETH
+    - 区块链
+---
+
+>【易错概念】以太坊Solidity函数的external/internal，public/private，view/pure/payable区别
+
 # 【易错概念】以太坊Solidity函数的external/internal，public/private，view/pure/payable区别
 
 

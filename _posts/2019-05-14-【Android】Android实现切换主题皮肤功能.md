@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      【Android】Android实现切换主题皮肤功能
+subtitle:   【Android】Android实现切换主题皮肤功能
+date:       2019-05-14 14:21:40
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Android
+---
+>blog.getTitle() 
+
 # 【Android】Android实现切换主题皮肤功能
 
 

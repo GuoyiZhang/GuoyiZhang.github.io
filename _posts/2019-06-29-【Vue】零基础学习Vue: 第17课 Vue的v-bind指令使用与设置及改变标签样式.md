@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第17课 Vue的v-bind指令使用与设置及改变标签样式
+subtitle:   【Vue】零基础学习Vue: 第17课 Vue的v-bind指令使用与设置及改变标签样式
+date:       2019-06-29 16:58:45
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第17课 Vue的v-bind指令使用与设置及改变标签样式
 
 

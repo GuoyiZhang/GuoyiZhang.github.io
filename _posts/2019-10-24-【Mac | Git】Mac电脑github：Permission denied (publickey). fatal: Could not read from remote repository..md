@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Mac | Git】Mac电脑github：Permission denied (publickey). fatal: Could not read from remote repository.
+subtitle:   【Mac | Git】Mac电脑github：Permission denied (publickey). fatal: Could not read from remote repository.
+date:       2019-10-24 10:27:35
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+---
+
+>【Mac | Git】Mac电脑github：Permission denied (publickey). fatal: Could not read from remote repository.
+
 # 【Mac | Git】Mac电脑github：Permission denied (publickey). fatal: Could not read from remote repository.
 
 

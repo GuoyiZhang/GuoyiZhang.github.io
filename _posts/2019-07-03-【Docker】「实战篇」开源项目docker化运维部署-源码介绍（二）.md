@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-源码介绍（二）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-源码介绍（二）
+date:       2019-07-03 17:17:47
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-源码介绍（二）
 
 本次一起了解下人人网前后端开源项目， 之前也说过，前后端分离的特点和目标就是为了高可用，高负载，高性能的三高特点。公司都有自己的前后端分离框架，因为都签署的保密协议，也不好拿出来讲，就找了一个相对比较代码质量非常高出身名门的优秀框架：人人开源前后端框架。

@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-redis高速缓存（六）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-redis高速缓存（六）
+date:       2019-07-03 17:38:37
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-redis高速缓存（六）
 
 现在一般的项目都会用到redis做缓存，也不免有老铁没用过，我就一起说下吧。源码：[https://github.com/limingios/netFuture/tree/master/redis-cluster](https://github.com/limingios/netFuture/tree/master/redis-cluster)

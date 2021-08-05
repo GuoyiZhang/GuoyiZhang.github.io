@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Vue】countUp.js 实现数字滚动 动态效果
+subtitle:   【Vue】countUp.js 实现数字滚动 动态效果
+date:       2019-04-10 11:46:45
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - VUE
+---
+>blog.getTitle() 
+
 # 【Vue】countUp.js 实现数字滚动 动态效果
 
 https://github.com/xlsdg/vue-countup-v2

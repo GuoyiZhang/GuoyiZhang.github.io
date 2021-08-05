@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【数据库】如何通过命令行连接mysql？mysql密码重置？
+subtitle:   【数据库】如何通过命令行连接mysql？mysql密码重置？
+date:       2019-07-02 10:44:51
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 数据库
+    - mysql
+---
+>blog.getTitle() 
+
 # 【数据库】如何通过命令行连接mysql？mysql密码重置？
 
 

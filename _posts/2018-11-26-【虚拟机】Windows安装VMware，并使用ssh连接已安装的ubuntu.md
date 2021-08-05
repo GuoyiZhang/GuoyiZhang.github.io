@@ -1,3 +1,15 @@
+---
+layout:     post
+title:      【虚拟机】Windows安装VMware，并使用ssh连接已安装的ubuntu
+subtitle:   【虚拟机】Windows安装VMware，并使用ssh连接已安装的ubuntu
+date:       2018-11-26 11:47:18
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+---
+>blog.getTitle() 
+
 # 【虚拟机】Windows安装VMware，并使用ssh连接已安装的ubuntu
 
 

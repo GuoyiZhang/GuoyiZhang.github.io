@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Android】如何限制 EditText 输入的长度与小数点位数？
+subtitle:   【Android】如何限制 EditText 输入的长度与小数点位数？
+date:       2019-03-08 16:02:58
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Android
+    - 交易所
+    - 数字货币
+---
+>blog.getTitle() 
+
 # 【Android】如何限制 EditText 输入的长度与小数点位数？
 
 

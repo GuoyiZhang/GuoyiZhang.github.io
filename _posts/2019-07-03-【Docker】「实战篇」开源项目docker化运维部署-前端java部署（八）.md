@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-前端java部署（八）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-前端java部署（八）
+date:       2019-07-03 17:52:02
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-前端java部署（八）
 
 [https://github.com/limingios/netFuture/blob/master/](https://github.com/limingios/netFuture/blob/master/)前端/

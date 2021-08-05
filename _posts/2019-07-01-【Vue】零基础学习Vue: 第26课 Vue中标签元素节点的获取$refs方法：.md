@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第26课 Vue中标签元素节点的获取$refs方法：
+subtitle:   【Vue】零基础学习Vue: 第26课 Vue中标签元素节点的获取$refs方法：
+date:       2019-07-01 10:30:44
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第26课 Vue中标签元素节点的获取$refs方法：
 
 

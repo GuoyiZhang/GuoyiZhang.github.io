@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      php负载中使用redis实现session会话保持?【redis】
+subtitle:   php负载中使用redis实现session会话保持?【redis】
+date:       2019-03-09 10:40:10
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+    - 架构学习
+    - Linux
+---
+>blog.getTitle() 
+
 # php负载中使用redis实现session会话保持?【redis】
 
 

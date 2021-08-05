@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第12课 Vue计算属性computed与methods环境的区别
+subtitle:   【Vue】零基础学习Vue: 第12课 Vue计算属性computed与methods环境的区别
+date:       2019-06-29 16:14:57
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第12课 Vue计算属性computed与methods环境的区别
 
 

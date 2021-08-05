@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【数据库】SQL之LIMIT ,OFFSET
+subtitle:   【数据库】SQL之LIMIT ,OFFSET
+date:       2019-07-17 13:10:15
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 数据库
+---
+
+>【数据库】SQL之LIMIT ,OFFSET
+
 # 【数据库】SQL之LIMIT ,OFFSET
 
 SELECT prod_name FROM Products LIMIT 4 OFFSET 3;

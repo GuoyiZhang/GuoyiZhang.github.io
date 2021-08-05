@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【SpringBoot】SpringBoot + Spring data JPA使用方言（自定义函数、一些自带函数）
+subtitle:   【SpringBoot】SpringBoot + Spring data JPA使用方言（自定义函数、一些自带函数）
+date:       2019-12-24 17:08:36
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Spring Boot
+---
+
+>【SpringBoot】SpringBoot + Spring data JPA使用方言（自定义函数、一些自带函数）
+
 # 【SpringBoot】SpringBoot + Spring data JPA使用方言（自定义函数、一些自带函数）
 
 

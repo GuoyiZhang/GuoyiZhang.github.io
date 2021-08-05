@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      【Linux】Linux创建root权限用户、禁用root登录
+subtitle:   【Linux】Linux创建root权限用户、禁用root登录
+date:       2018-11-29 10:06:06
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+---
+>blog.getTitle() 
+
 # 【Linux】Linux创建root权限用户、禁用root登录
 
 

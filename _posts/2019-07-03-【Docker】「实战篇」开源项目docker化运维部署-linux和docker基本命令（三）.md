@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-linux和docker基本命令（三）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-linux和docker基本命令（三）
+date:       2019-07-03 17:20:19
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-linux和docker基本命令（三）
 
 长期使用windows，windows的图形界面非常的方便易用，入门的门槛很低。缺点是图形界面有时候会卡顿，一些软件需要安装完系统需要重新启动，在硬件系统不是很好的情况下，可能会蓝屏死机。这些缺点就阻碍了windows进入服务器市场的主要原因。linux没有这些缺点。

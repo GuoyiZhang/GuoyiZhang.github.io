@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Spring Boot | Jpa】Spring Boot 2.0 JPA 实现分页（简单查询分页、复杂查询分页）
+subtitle:   【Spring Boot | Jpa】Spring Boot 2.0 JPA 实现分页（简单查询分页、复杂查询分页）
+date:       2019-12-12 17:16:40
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Spring Boot
+    - 数据库
+---
+
+>【Spring Boot | Jpa】Spring Boot 2.0 JPA 实现分页（简单查询分页、复杂查询分页）
+
 # 【Spring Boot | Jpa】Spring Boot 2.0 JPA 实现分页（简单查询分页、复杂查询分页）
 
 

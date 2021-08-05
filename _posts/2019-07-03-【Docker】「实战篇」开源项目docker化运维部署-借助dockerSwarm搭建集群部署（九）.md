@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-借助dockerSwarm搭建集群部署（九）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-借助dockerSwarm搭建集群部署（九）
+date:       2019-07-03 17:54:32
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-借助dockerSwarm搭建集群部署（九）
 
 为了让学习的知识融汇贯通，目前是把所有的集群都放在了一个虚拟机上，如果这个虚拟机宕机了怎么办？俗话说鸡蛋不要都放在一个篮子里面，把各种集群的节点拆分部署，应该把各种节点分机器部署，多个宿主机，这样部署随便挂哪个主机我们都不担心。

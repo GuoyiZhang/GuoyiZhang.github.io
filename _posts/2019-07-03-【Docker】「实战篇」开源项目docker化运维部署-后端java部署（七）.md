@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-后端java部署（七）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-后端java部署（七）
+date:       2019-07-03 17:50:04
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-后端java部署（七）
 
 本节主要说说后端的部署需要注意的点，本身人人快这个项目就是通过springboot来进行开发的，springboot内置的有tomcat的所以，咱们不用在容器内安装tomcat的，直接用罐子文件来进行运行。源码：[https](https://github.com/limingios/netFuture/blob/master/)：[//github.com/limingios/netFuture/blob/master/](https://github.com/limingios/netFuture/blob/master/)后端/后端双机热备

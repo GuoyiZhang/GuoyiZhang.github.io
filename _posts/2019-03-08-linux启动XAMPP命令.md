@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      linux启动XAMPP命令
+subtitle:   linux启动XAMPP命令
+date:       2019-03-08 20:01:19
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+    - 开发工具
+---
+>blog.getTitle() 
+
 # linux启动XAMPP命令
 
 

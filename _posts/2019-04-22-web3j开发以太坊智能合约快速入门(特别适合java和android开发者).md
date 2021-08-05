@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      web3j开发以太坊智能合约快速入门(特别适合java和android开发者)
+subtitle:   web3j开发以太坊智能合约快速入门(特别适合java和android开发者)
+date:       2019-04-22 15:26:51
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 区块链
+    - ETH
+---
+>blog.getTitle() 
+
 # web3j开发以太坊智能合约快速入门(特别适合java和android开发者)
 
 

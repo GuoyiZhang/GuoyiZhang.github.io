@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      docker下修改mysql配置文件
+subtitle:   docker下修改mysql配置文件
+date:       2019-12-24 16:07:28
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Docker
+---
+
+>docker下修改mysql配置文件
+
 # docker下修改mysql配置文件
 
 

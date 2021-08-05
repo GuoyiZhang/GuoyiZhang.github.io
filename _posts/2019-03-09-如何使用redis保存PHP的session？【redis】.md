@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      如何使用redis保存PHP的session？【redis】
+subtitle:   如何使用redis保存PHP的session？【redis】
+date:       2019-03-09 10:34:05
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+    - Linux
+    - 架构学习
+---
+>blog.getTitle() 
+
 # 如何使用redis保存PHP的session？【redis】
 
 

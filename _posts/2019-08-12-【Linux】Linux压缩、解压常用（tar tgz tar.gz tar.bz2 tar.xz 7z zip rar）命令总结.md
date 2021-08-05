@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Linux】Linux压缩、解压常用（tar/tgz/tar.gz/tar.bz2/tar.xz/7z/zip/rar）命令总结
+subtitle:   【Linux】Linux压缩、解压常用（tar/tgz/tar.gz/tar.bz2/tar.xz/7z/zip/rar）命令总结
+date:       2019-08-12 11:06:14
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+---
+
+>【Linux】Linux压缩、解压常用（tar/tgz/tar.gz/tar.bz2/tar.xz/7z/zip/rar）命令总结
+
 # 【Linux】Linux压缩、解压常用（tar/tgz/tar.gz/tar.bz2/tar.xz/7z/zip/rar）命令总结
 
 

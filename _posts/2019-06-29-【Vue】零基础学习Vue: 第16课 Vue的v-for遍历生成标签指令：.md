@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第16课 Vue的v-for遍历生成标签指令：
+subtitle:   【Vue】零基础学习Vue: 第16课 Vue的v-for遍历生成标签指令：
+date:       2019-06-29 16:55:17
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第16课 Vue的v-for遍历生成标签指令：
 
 

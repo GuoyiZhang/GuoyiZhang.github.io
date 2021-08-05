@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第15课 Watch 如何监听对象
+subtitle:   【Vue】零基础学习Vue: 第15课 Watch 如何监听对象
+date:       2019-06-29 16:47:45
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第15课 Watch 如何监听对象
 
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>Document</title> <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script> </head> <body> <div id="app"> <div>___{{obj}}__</div> </div> <script> let vm = new Vue({ el:"/#app", data: { obj:{ name:"小明", age: "18", sex: "男" } }, watch:{ obj(){ console.log("data 中数组arr被修改") } } }) </script> </body> </html>

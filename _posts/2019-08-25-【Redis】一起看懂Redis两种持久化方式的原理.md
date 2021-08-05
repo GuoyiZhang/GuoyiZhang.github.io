@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Redis】一起看懂Redis两种持久化方式的原理
+subtitle:   【Redis】一起看懂Redis两种持久化方式的原理
+date:       2019-08-25 15:18:10
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+---
+
+>【Redis】一起看懂Redis两种持久化方式的原理
+
 # 【Redis】一起看懂Redis两种持久化方式的原理
 
 

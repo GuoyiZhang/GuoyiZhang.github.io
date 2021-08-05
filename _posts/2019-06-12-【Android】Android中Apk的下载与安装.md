@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      【Android】Android中Apk的下载与安装
+subtitle:   【Android】Android中Apk的下载与安装
+date:       2019-06-12 11:50:10
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Android
+---
+>blog.getTitle() 
+
 # 【Android】Android中Apk的下载与安装
 
 

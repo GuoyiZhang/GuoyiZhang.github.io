@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【架构】HAProxy负载均衡单点故障解决方案：HAProxy+keepAlived
+subtitle:   【架构】HAProxy负载均衡单点故障解决方案：HAProxy+keepAlived
+date:       2019-05-18 17:14:52
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 架构学习
+    - 高并发系统设计
+    - HAProxy
+    - keepAlived&nbsp;
+---
+>blog.getTitle() 
+
 # 【架构】HAProxy负载均衡单点故障解决方案：HAProxy+keepAlived
 
 

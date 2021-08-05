@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Redis】详解Redis5.x支持的流（Streams）数据类型
+subtitle:   【Redis】详解Redis5.x支持的流（Streams）数据类型
+date:       2019-12-11 16:29:01
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+---
+
+>【Redis】详解Redis5.x支持的流（Streams）数据类型
+
 # 【Redis】详解Redis5.x支持的流（Streams）数据类型
 
 

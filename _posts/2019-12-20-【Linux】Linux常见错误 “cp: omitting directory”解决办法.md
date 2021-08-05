@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Linux】Linux常见错误 “cp: omitting directory”解决办法
+subtitle:   【Linux】Linux常见错误 “cp: omitting directory”解决办法
+date:       2019-12-20 18:03:24
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+---
+
+>【Linux】Linux常见错误 “cp: omitting directory”解决办法
+
 # 【Linux】Linux常见错误 “cp: omitting directory”解决办法
 
 

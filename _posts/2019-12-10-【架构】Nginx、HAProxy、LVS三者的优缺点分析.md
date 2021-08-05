@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【架构】Nginx、HAProxy、LVS三者的优缺点分析
+subtitle:   【架构】Nginx、HAProxy、LVS三者的优缺点分析
+date:       2019-12-10 18:46:03
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 服务器
+    - 架构学习
+---
+
+>【架构】Nginx、HAProxy、LVS三者的优缺点分析
+
 # 【架构】Nginx、HAProxy、LVS三者的优缺点分析
 
 

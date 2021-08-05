@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      Spring Cloud 5分钟搭建教程(附上一个分布式日志系统项目作为参考)
+subtitle:   Spring Cloud 5分钟搭建教程(附上一个分布式日志系统项目作为参考)
+date:       2019-01-12 15:24:12
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 架构学习
+    - 高并发系统设计
+---
+>blog.getTitle() 
+
 # Spring Cloud 5分钟搭建教程(附上一个分布式日志系统项目作为参考)
 
 

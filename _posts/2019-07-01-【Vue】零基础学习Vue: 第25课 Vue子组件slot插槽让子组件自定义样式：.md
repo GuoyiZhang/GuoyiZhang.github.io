@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第25课 Vue子组件slot插槽让子组件自定义样式：
+subtitle:   【Vue】零基础学习Vue: 第25课 Vue子组件slot插槽让子组件自定义样式：
+date:       2019-07-01 10:25:58
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第25课 Vue子组件slot插槽让子组件自定义样式：
 
 

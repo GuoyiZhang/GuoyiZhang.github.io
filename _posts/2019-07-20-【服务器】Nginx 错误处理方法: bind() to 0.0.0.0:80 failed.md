@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【服务器】Nginx 错误处理方法: bind() to 0.0.0.0:80 failed
+subtitle:   【服务器】Nginx 错误处理方法: bind() to 0.0.0.0:80 failed
+date:       2019-07-20 12:49:58
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 服务器
+---
+
+>【服务器】Nginx 错误处理方法: bind() to 0.0.0.0:80 failed
+
 # 【服务器】Nginx 错误处理方法: bind() to 0.0.0.0:80 failed
 
 

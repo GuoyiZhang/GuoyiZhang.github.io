@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【Java | ETH】web3j 对于智能合约有两种方式
+subtitle:   【Java | ETH】web3j 对于智能合约有两种方式
+date:       2019-08-14 18:10:08
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+    - ETH
+    - 区块链
+---
+
+>【Java | ETH】web3j 对于智能合约有两种方式
+
 # 【Java | ETH】web3j 对于智能合约有两种方式
 
 

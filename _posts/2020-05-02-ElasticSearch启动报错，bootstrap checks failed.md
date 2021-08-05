@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      ElasticSearch启动报错，bootstrap checks failed
+subtitle:   ElasticSearch启动报错，bootstrap checks failed
+date:       2020-05-02 19:31:22
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+---
+
+>ElasticSearch启动报错，bootstrap checks failed
+
 # ElasticSearch启动报错，bootstrap checks failed
 
 

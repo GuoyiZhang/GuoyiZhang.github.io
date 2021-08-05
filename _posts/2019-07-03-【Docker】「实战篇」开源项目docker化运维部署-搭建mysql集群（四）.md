@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-搭建mysql集群（四）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-搭建mysql集群（四）
+date:       2019-07-03 17:24:23
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-搭建mysql集群（四）
 
 有了docker虚拟机，就需要利用平台部署数据库的集群，在实际操作之前介绍下数据库集群的方案和各自的特点。源码：[https://github.com/limingios/netFuture/tree/master/mysql-pxc/](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Flimingios%2FnetFuture%2Ftree%2Fmaster%2Fmysql-pxc%2F)

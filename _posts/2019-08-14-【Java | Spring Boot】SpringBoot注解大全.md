@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Java | Spring Boot】SpringBoot注解大全
+subtitle:   【Java | Spring Boot】SpringBoot注解大全
+date:       2019-08-14 16:20:25
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+---
+
+>【Java | Spring Boot】SpringBoot注解大全
+
 # 【Java | Spring Boot】SpringBoot注解大全
 
 

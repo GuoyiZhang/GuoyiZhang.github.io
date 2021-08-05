@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【Dubbo】Dubbo 从入门到实战——很详细的一篇文章
+subtitle:   【Dubbo】Dubbo 从入门到实战——很详细的一篇文章
+date:       2020-04-13 10:04:02
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Spring Cloud
+    - Dubbo
+    - 后端
+---
+
+>【Dubbo】Dubbo 从入门到实战——很详细的一篇文章
+
 # 【Dubbo】Dubbo 从入门到实战——很详细的一篇文章
 
 

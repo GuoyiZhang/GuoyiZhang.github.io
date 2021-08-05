@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-mysql 热备份数据（五）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-mysql 热备份数据（五）
+date:       2019-07-03 17:28:20
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-mysql 热备份数据（五）
 
 本次说说热热备份数据，上次搭建了pxc的集群，搭建好了复杂均衡，做了双机热备这种方案。无论做前后端分离的项目，还是做微服务的项目，都需要有一个强大稳定的集群。数据库备份分为：热备份和冷备份，如果项目没有上线冷备份没问题。如果上线用冷备份就有问题。源码：[https://github.com/limingios/netFuture/tree/master/mysql-pxc/](https://github.com/limingios/netFuture/tree/master/mysql-pxc/)

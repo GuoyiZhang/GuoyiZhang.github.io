@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第20课 Vue定义子组件template的常见3种写法：
+subtitle:   【Vue】零基础学习Vue: 第20课 Vue定义子组件template的常见3种写法：
+date:       2019-06-29 17:36:27
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第20课 Vue定义子组件template的常见3种写法：
 
 

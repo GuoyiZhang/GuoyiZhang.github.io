@@ -1,3 +1,20 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第1课 Windows下Node.js与npm的安装与配置
+subtitle:   【Vue】零基础学习Vue: 第1课 Windows下Node.js与npm的安装与配置
+date:       2019-05-06 10:55:25
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+    - npm
+    - node
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第1课 Windows下Node.js与npm的安装与配置
 
 

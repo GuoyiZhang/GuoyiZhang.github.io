@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Java|多线程】使用CompletableFuture 捕获异常，CompletableFuture的异常处理 ？
+subtitle:   【Java|多线程】使用CompletableFuture 捕获异常，CompletableFuture的异常处理 ？
+date:       2021-01-13 14:54:11
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+    - 后端
+---
+
+>【Java|多线程】使用CompletableFuture 捕获异常，CompletableFuture的异常处理 ？
+
 # 【Java|多线程】使用CompletableFuture 捕获异常，CompletableFuture的异常处理 ？
 
 

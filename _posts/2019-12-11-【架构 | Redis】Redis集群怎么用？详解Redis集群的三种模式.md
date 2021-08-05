@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【架构 | Redis】Redis集群怎么用？详解Redis集群的三种模式
+subtitle:   【架构 | Redis】Redis集群怎么用？详解Redis集群的三种模式
+date:       2019-12-11 18:19:20
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Redis
+    - 架构学习
+---
+
+>【架构 | Redis】Redis集群怎么用？详解Redis集群的三种模式
+
 # 【架构 | Redis】Redis集群怎么用？详解Redis集群的三种模式
 
 

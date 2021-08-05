@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-Portainer管理集群部署（十）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-Portainer管理集群部署（十）
+date:       2019-07-03 17:55:38
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-Portainer管理集群部署（十）
 
 之前都是通过命令的方式，管理docker的，其实docker还是有图形界面的。使用图形界面如何管理docker，其实业界很多公司都对docker进行了图形化的封装。之前在初级和中级的时候也有界面marathon。这里说下业界比较出名的portainer。

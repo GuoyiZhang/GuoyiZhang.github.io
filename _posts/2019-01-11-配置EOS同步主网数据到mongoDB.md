@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      配置EOS同步主网数据到mongoDB
+subtitle:   配置EOS同步主网数据到mongoDB
+date:       2019-01-11 12:18:23
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - EOS
+    - 区块链
+    - MongoDb
+---
+>blog.getTitle() 
+
 # 配置EOS同步主网数据到mongoDB
 
 

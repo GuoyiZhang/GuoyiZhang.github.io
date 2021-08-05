@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Java | Spring Boot】史上最全的Spring Boot Cache使用与整合
+subtitle:   【Java | Spring Boot】史上最全的Spring Boot Cache使用与整合
+date:       2019-08-30 13:23:16
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+    - Spring Boot
+---
+
+>【Java | Spring Boot】史上最全的Spring Boot Cache使用与整合
+
 # 【Java | Spring Boot】史上最全的Spring Boot Cache使用与整合
 
 

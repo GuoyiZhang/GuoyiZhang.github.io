@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      Linux上部署php+MySQL+Apache开发环境【deepin - xampp】
+subtitle:   Linux上部署php+MySQL+Apache开发环境【deepin - xampp】
+date:       2019-03-06 10:28:19
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+    - PHP
+    - 开发工具
+---
+>blog.getTitle() 
+
 # Linux上部署php+MySQL+Apache开发环境【deepin - xampp】
 
 

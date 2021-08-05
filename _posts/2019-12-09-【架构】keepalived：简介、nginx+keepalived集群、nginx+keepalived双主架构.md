@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【架构】keepalived：简介、nginx+keepalived集群、nginx+keepalived双主架构
+subtitle:   【架构】keepalived：简介、nginx+keepalived集群、nginx+keepalived双主架构
+date:       2019-12-09 14:44:40
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 高并发系统设计
+    - Nginx
+    - 架构学习
+---
+
+>【架构】keepalived：简介、nginx+keepalived集群、nginx+keepalived双主架构
+
 # 【架构】keepalived：简介、nginx+keepalived集群、nginx+keepalived双主架构
 
 

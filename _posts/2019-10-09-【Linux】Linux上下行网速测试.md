@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Linux】Linux上下行网速测试
+subtitle:   【Linux】Linux上下行网速测试
+date:       2019-10-09 09:23:58
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+---
+
+>【Linux】Linux上下行网速测试
+
 # 【Linux】Linux上下行网速测试
 
 此程序是基于Python开发的脚本程序，利用了speedtest.net的服务来测量出上下行的宽带。Speedtest-cli能根据机房离测速服务器的物理距离来列出测速服务器，或者针对某一服务器进行测速，同时还能为你生成一个URL以便你分享你的测速结果。

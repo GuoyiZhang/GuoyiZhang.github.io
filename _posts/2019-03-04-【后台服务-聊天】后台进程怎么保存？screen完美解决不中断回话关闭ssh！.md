@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！
+subtitle:   【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！
+date:       2019-03-04 10:38:47
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+---
+>blog.getTitle() 
+
 # 【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！
 
 

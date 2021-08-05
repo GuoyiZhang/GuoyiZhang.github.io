@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第4课 vue的模板语法v-once﹑v-html
+subtitle:   【Vue】零基础学习Vue: 第4课 vue的模板语法v-once﹑v-html
+date:       2019-05-06 11:11:05
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第4课 vue的模板语法v-once﹑v-html
 
 

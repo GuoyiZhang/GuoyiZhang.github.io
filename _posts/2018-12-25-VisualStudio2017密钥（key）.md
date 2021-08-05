@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      VisualStudio2017密钥（key）
+subtitle:   VisualStudio2017密钥（key）
+date:       2018-12-25 10:42:16
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - VS
+---
+>blog.getTitle() 
+
 # VisualStudio2017密钥（key）
 
 

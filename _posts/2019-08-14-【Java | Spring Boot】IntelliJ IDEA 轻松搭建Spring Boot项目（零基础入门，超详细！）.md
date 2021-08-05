@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Java | Spring Boot】IntelliJ IDEA 轻松搭建Spring Boot项目（零基础入门，超详细！）
+subtitle:   【Java | Spring Boot】IntelliJ IDEA 轻松搭建Spring Boot项目（零基础入门，超详细！）
+date:       2019-08-14 14:56:47
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+---
+
+>【Java | Spring Boot】IntelliJ IDEA 轻松搭建Spring Boot项目（零基础入门，超详细！）
+
 # 【Java | Spring Boot】IntelliJ IDEA 轻松搭建Spring Boot项目（零基础入门，超详细！）
 
 

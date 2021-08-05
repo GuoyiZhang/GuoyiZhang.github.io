@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【后端 | JAVA】RESTful API 最佳实践
+subtitle:   【后端 | JAVA】RESTful API 最佳实践
+date:       2020-02-15 12:53:42
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 后端
+---
+
+>【后端 | JAVA】RESTful API 最佳实践
+
 # 【后端 | JAVA】RESTful API 最佳实践
 
 

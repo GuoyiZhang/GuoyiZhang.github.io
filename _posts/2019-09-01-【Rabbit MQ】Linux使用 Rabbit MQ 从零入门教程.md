@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Rabbit MQ】Linux使用 Rabbit MQ 从零入门教程
+subtitle:   【Rabbit MQ】Linux使用 Rabbit MQ 从零入门教程
+date:       2019-09-01 00:50:36
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Rabbit MQ
+---
+
+>【Rabbit MQ】Linux使用 Rabbit MQ 从零入门教程
+
 # 【Rabbit MQ】Linux使用 Rabbit MQ 从零入门教程
 
 

@@ -1,3 +1,22 @@
+---
+layout:     post
+title:      【Dubbo】Spring 中 Dubbo配置实现负载均衡、集群环境详细资料
+subtitle:   【Dubbo】Spring 中 Dubbo配置实现负载均衡、集群环境详细资料
+date:       2020-04-20 14:49:19
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Dubbo
+    - 架构学习
+    - 高并发系统设计
+    - java
+    - 负载均衡
+    - 分布式
+---
+
+>【Dubbo】Spring 中 Dubbo配置实现负载均衡、集群环境详细资料
+
 # 【Dubbo】Spring 中 Dubbo配置实现负载均衡、集群环境详细资料
 
 

@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      (error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on d
+subtitle:   (error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on d
+date:       2018-12-11 13:53:55
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+    - Redis
+---
+>blog.getTitle() 
+
 # (error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on d
 
 

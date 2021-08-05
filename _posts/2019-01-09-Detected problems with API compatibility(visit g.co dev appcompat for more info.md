@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      Detected problems with API compatibility(visit g.co/dev/appcompat for more info
+subtitle:   Detected problems with API compatibility(visit g.co/dev/appcompat for more info
+date:       2019-01-09 13:54:41
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Android
+---
+>blog.getTitle() 
+
 # Detected problems with API compatibility(visit g.co/dev/appcompat for more info
 
 

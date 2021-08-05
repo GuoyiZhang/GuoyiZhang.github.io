@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Java】linkedlist和arraylist的区别是什么?各自有什么优点？
+subtitle:   【Java】linkedlist和arraylist的区别是什么?各自有什么优点？
+date:       2020-12-10 14:29:22
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Java
+---
+
+>【Java】linkedlist和arraylist的区别是什么?各自有什么优点？
+
 # 【Java】linkedlist和arraylist的区别是什么?各自有什么优点？
 
 LinkedeList和ArrayList是常用的两种存储结构，都可以实现了List接口，那么它们之间有什么区别？下面本篇文章就来带大家了解一下LinkedeList和ArrayList之间的区别，希望对大家有所帮助。

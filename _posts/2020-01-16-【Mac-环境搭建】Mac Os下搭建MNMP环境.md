@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【Mac-环境搭建】Mac Os下搭建MNMP环境
+subtitle:   【Mac-环境搭建】Mac Os下搭建MNMP环境
+date:       2020-01-16 18:05:52
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 服务器
+    - Mac
+    - 开发工具
+---
+
+>【Mac-环境搭建】Mac Os下搭建MNMP环境
+
 # 【Mac-环境搭建】Mac Os下搭建MNMP环境
 
 

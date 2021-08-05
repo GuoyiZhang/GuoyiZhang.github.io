@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      在 Ubuntu 上如何安装Docker及基本用法
+subtitle:   在 Ubuntu 上如何安装Docker及基本用法
+date:       2018-11-26 18:43:07
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Linux
+    - EOS
+    - Docker
+    - Ubuntu
+---
+>blog.getTitle() 
+
 # 在 Ubuntu 上如何安装Docker及基本用法
 
 

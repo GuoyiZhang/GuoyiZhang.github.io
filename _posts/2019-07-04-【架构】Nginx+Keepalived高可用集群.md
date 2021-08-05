@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【架构】Nginx+Keepalived高可用集群
+subtitle:   【架构】Nginx+Keepalived高可用集群
+date:       2019-07-04 09:12:42
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 架构学习
+    - 开发工具
+---
+>blog.getTitle() 
+
 # 【架构】Nginx+Keepalived高可用集群
 
 

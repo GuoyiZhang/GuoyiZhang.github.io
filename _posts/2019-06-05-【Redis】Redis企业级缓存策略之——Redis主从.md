@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Redis】Redis企业级缓存策略之——Redis主从
+subtitle:   【Redis】Redis企业级缓存策略之——Redis主从
+date:       2019-06-05 20:07:47
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 架构学习
+    - Redis
+---
+>blog.getTitle() 
+
 # 【Redis】Redis企业级缓存策略之——Redis主从
 
 

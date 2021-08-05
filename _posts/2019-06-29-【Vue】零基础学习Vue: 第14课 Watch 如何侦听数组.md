@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Vue】零基础学习Vue: 第14课 Watch 如何侦听数组
+subtitle:   【Vue】零基础学习Vue: 第14课 Watch 如何侦听数组
+date:       2019-06-29 16:42:19
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+    - 零基础学习Vue
+    - vue
+---
+>blog.getTitle() 
+
 # 【Vue】零基础学习Vue: 第14课 Watch 如何侦听数组
 
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>Document</title> <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script> </head> <body> <div id="app"> <div>___{{arr}}__</div> </div> <script> let vm = new Vue({ el:"/#app", data: { arr:[0,1,2,3,4] }, watch:{ arr(){ console.log("data 中数组arr被修改") } } }) </script> </body> </html>

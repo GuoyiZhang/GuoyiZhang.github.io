@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      Mac安装Adobe软件，提示Error解决方法
+subtitle:   Mac安装Adobe软件，提示Error解决方法
+date:       2020-12-15 14:23:51
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Mac
+---
+
+>Mac安装Adobe软件，提示Error解决方法
+
 # Mac安装Adobe软件，提示Error解决方法
 
 

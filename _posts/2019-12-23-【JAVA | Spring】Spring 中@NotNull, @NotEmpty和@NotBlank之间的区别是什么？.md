@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【JAVA | Spring】Spring 中@NotNull, @NotEmpty和@NotBlank之间的区别是什么？
+subtitle:   【JAVA | Spring】Spring 中@NotNull, @NotEmpty和@NotBlank之间的区别是什么？
+date:       2019-12-23 18:02:27
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Spring Boot
+---
+
+>【JAVA | Spring】Spring 中@NotNull, @NotEmpty和@NotBlank之间的区别是什么？
+
 # 【JAVA | Spring】Spring 中@NotNull, @NotEmpty和@NotBlank之间的区别是什么？
 
 

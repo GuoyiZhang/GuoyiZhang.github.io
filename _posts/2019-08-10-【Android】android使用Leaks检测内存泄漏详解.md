@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Android】android使用Leaks检测内存泄漏详解
+subtitle:   【Android】android使用Leaks检测内存泄漏详解
+date:       2019-08-10 18:15:17
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Android
+---
+
+>【Android】android使用Leaks检测内存泄漏详解
+
 # 【Android】android使用Leaks检测内存泄漏详解
 
 

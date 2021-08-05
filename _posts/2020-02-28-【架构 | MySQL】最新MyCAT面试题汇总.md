@@ -1,3 +1,19 @@
+---
+layout:     post
+title:      【架构 | MySQL】最新MyCAT面试题汇总
+subtitle:   【架构 | MySQL】最新MyCAT面试题汇总
+date:       2020-02-28 17:33:51
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 架构学习
+    - 数据库
+    - 面试
+---
+
+>【架构 | MySQL】最新MyCAT面试题汇总
+
 # 【架构 | MySQL】最新MyCAT面试题汇总
 
 

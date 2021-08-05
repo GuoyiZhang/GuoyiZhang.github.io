@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【前端】javascript 去掉小数末尾多余的零
+subtitle:   【前端】javascript 去掉小数末尾多余的零
+date:       2019-07-18 09:09:52
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 前端
+---
+
+>【前端】javascript 去掉小数末尾多余的零
+
 # 【前端】javascript 去掉小数末尾多余的零
 
 

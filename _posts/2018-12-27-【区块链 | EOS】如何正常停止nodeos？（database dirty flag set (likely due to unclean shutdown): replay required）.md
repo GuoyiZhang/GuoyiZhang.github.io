@@ -1,3 +1,16 @@
+---
+layout:     post
+title:      【区块链 | EOS】如何正常停止nodeos？（database dirty flag set (likely due to unclean shutdown): replay required）
+subtitle:   【区块链 | EOS】如何正常停止nodeos？（database dirty flag set (likely due to unclean shutdown): replay required）
+date:       2018-12-27 18:01:08
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - EOS
+---
+>blog.getTitle() 
+
 # 【区块链 | EOS】如何正常停止nodeos？（database dirty flag set (likely due to unclean shutdown): replay required）
 
 

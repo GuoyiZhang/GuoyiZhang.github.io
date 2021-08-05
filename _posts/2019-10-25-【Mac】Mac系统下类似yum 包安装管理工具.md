@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Mac】Mac系统下类似yum 包安装管理工具
+subtitle:   【Mac】Mac系统下类似yum 包安装管理工具
+date:       2019-10-25 14:58:22
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+---
+
+>【Mac】Mac系统下类似yum 包安装管理工具
+
 # 【Mac】Mac系统下类似yum 包安装管理工具
 
 

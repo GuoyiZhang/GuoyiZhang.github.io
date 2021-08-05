@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署-开篇（一）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署-开篇（一）
+date:       2019-07-03 17:15:15
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署-开篇（一）
 
 原创文章，欢迎转载。转载请注明：转载自[IT人故事会](https://idig8.com/)，谢谢！

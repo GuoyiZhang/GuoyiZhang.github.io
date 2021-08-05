@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Mac | Python】MAC pip 安装慢的解决办法
+subtitle:   【Mac | Python】MAC pip 安装慢的解决办法
+date:       2019-10-25 14:34:37
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Python
+---
+
+>【Mac | Python】MAC pip 安装慢的解决办法
+
 # 【Mac | Python】MAC pip 安装慢的解决办法
 
 $ mkdir ~/.pip $ vim ~/.pip/pip.conf

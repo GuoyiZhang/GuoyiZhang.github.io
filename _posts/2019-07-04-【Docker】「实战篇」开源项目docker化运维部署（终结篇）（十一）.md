@@ -1,3 +1,17 @@
+---
+layout:     post
+title:      【Docker】「实战篇」开源项目docker化运维部署（终结篇）（十一）
+subtitle:   【Docker】「实战篇」开源项目docker化运维部署（终结篇）（十一）
+date:       2019-07-04 09:12:31
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - 开发工具
+    - 「实战篇」开源项目docker化运维部署
+---
+>blog.getTitle() 
+
 # 【Docker】「实战篇」开源项目docker化运维部署（终结篇）（十一）
 
 最早系统部署到自己的服务器，有虚拟IP，可以完成热备，大概是2013年的时候，公司的服务器要升级到云端放到阿里云上，阿里云没有虚拟ip，keepalived没办法完成热备。只能通过nginx来进行负载完成十几台机器的负载。也有nginx挂的时候，2014年，面试认识了个大哥，建议接触下docker。于是自己搭建虚拟网络，学习至今，发现docker-swarm方便实在想热备就可以热备。通过docker-swarm得虚拟网络--net 多台机器轻松互联，容器挂了自动重启。如果知道Docker可以这样用，你就会彻底爱上Docker！

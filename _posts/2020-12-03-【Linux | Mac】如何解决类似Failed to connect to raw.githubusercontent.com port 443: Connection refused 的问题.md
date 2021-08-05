@@ -1,3 +1,18 @@
+---
+layout:     post
+title:      【Linux | Mac】如何解决类似Failed to connect to raw.githubusercontent.com port 443: Connection refused 的问题
+subtitle:   【Linux | Mac】如何解决类似Failed to connect to raw.githubusercontent.com port 443: Connection refused 的问题
+date:       2020-12-03 17:10:49
+author:     Sunny day
+header-img: img/post-bg-ios9-web.jpg
+catalog: true
+tags:
+    - Mac
+    - 开发工具
+---
+
+>【Linux | Mac】如何解决类似Failed to connect to raw.githubusercontent.com port 443: Connection refused 的问题
+
 # 【Linux | Mac】如何解决类似Failed to connect to raw.githubusercontent.com port 443: Connection refused 的问题
 
 
