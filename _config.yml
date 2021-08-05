@@ -50,10 +50,19 @@ gems: [jekyll-paginate]
 # document: http://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
 highlighter: rouge
+#kramdown:
+#  input: GFM                            # use Github Flavored Markdown !important
+
 kramdown:
-  input: GFM                            # use Github Flavored Markdown !important
-
-
+  input: GFM
+  extensions:
+    - autolink
+    - footnotes
+    - smart
+  use_coderay: true
+  syntax_highlighter: rouge
+  coderay:
+    coderay_line_numbers:  nil
 
 # 评论系统
 # Disqus（https://disqus.com/）
