@@ -8,7 +8,6 @@ header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
     - Java
-    - Spring Boot
 ---
 
 >【SpringBoot】SpringBoot 构建RestFul API 含单元测试

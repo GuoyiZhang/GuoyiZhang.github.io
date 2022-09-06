@@ -7,8 +7,6 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Linux
-    - 开发工具
 ---
 
 >linux启动XAMPP命令

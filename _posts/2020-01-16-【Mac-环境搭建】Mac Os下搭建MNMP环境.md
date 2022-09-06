@@ -9,7 +9,6 @@ catalog: true
 tags:
     - 服务器
     - Mac
-    - 开发工具
 ---
 
 >【Mac-环境搭建】Mac Os下搭建MNMP环境

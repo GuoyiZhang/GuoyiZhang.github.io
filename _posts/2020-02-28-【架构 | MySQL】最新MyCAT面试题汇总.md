@@ -9,7 +9,6 @@ catalog: true
 tags:
     - 架构学习
     - 数据库
-    - 面试
 ---
 
 >【架构 | MySQL】最新MyCAT面试题汇总

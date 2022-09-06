@@ -9,7 +9,6 @@ catalog: true
 tags:
     - Redis
     - 架构学习
-    - Linux
 ---
 
 >php负载中使用redis实现session会话保持?【redis】

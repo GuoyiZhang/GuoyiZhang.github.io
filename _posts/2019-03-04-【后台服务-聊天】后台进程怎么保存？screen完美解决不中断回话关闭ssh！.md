@@ -7,7 +7,6 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Linux
 ---
 
 >【后台服务-聊天】后台进程怎么保存？screen完美解决不中断回话关闭ssh！

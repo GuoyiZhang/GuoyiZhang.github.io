@@ -8,7 +8,6 @@ header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
     - Spring Cloud
-    - Dubbo
     - 后端
 ---
 

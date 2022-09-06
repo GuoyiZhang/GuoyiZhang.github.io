@@ -7,7 +7,6 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Linux
 ---
 
 >【Linux】Linux创建root权限用户、禁用root登录

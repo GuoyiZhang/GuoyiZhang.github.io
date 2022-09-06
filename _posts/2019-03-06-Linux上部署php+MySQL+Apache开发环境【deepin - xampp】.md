@@ -7,9 +7,7 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Linux
     - PHP
-    - 开发工具
 ---
 
 >Linux上部署php+MySQL+Apache开发环境【deepin - xampp】

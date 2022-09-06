@@ -7,7 +7,6 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Dubbo
     - 架构学习
     - 高并发系统设计
     - java

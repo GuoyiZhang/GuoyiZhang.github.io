@@ -7,7 +7,6 @@ author:     Sunny day
 header-img: img/post-bg-ios9-web.jpg
 catalog: true
 tags:
-    - Spring Boot
     - Java
     - 后端
 ---
