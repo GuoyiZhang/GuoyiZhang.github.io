@@ -10,23 +10,23 @@ tags: 一致性哈希 Consistent hashing 分布式系统
 **Note. 本文翻译参考至[consistent-hashing](https://www.toptal.com/big-data/consistent-hashing),结合github上的一个开源实现[lafikl/consistent](https://github.com/lafikl/consistent)对consistent hashing原理和细节作介绍。希望能帮助读者了解consistent hashing算法以及在分布式系统中的作用，解决一些分布式系统中遇到的问题。**
 
 
--  [0. 简介](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#0-%E7%AE%80%E4%BB%8B)
+-  [0. 简介](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#0-%E7%AE%80%E4%BB%8B)
 
--  [1. 什么是hashing(哈希)？](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#1-%E4%BB%80%E4%B9%88%E6%98%AFhashing%E5%93%88%E5%B8%8C)
+-  [1. 什么是hashing(哈希)？](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#1-%E4%BB%80%E4%B9%88%E6%98%AFhashing%E5%93%88%E5%B8%8C)
 
--  [2. 扩展：分布式哈希](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#2-%E6%89%A9%E5%B1%95%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C)
+-  [2. 扩展：分布式哈希](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#2-%E6%89%A9%E5%B1%95%E5%88%86%E5%B8%83%E5%BC%8F%E5%93%88%E5%B8%8C)
 
--  [3. rehashing问题（再散列问题）](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#3-rehashing%E9%97%AE%E9%A2%98%E5%86%8D%E6%95%A3%E5%88%97%E9%97%AE%E9%A2%98)
+-  [3. rehashing问题（再散列问题）](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#3-rehashing%E9%97%AE%E9%A2%98%E5%86%8D%E6%95%A3%E5%88%97%E9%97%AE%E9%A2%98)
 
--  [4. 解决方案：一致性哈希（Consistent hashing）](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#4-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8Cconsistent-hashing)
+-  [4. 解决方案：一致性哈希（Consistent hashing）](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#4-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8Cconsistent-hashing)
 
-    - [4.1 情况一：减少服务器数量](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#41-%E6%83%85%E5%86%B5%E4%B8%80%E5%87%8F%E5%B0%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E9%87%8F)
+    - [4.1 情况一：减少服务器数量](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#41-%E6%83%85%E5%86%B5%E4%B8%80%E5%87%8F%E5%B0%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E9%87%8F)
     
-    - [4.2 情况二：增加服务器数量](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#42-%E6%83%85%E5%86%B5%E4%BA%8C%E5%A2%9E%E5%8A%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E9%87%8F)
+    - [4.2 情况二：增加服务器数量](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#42-%E6%83%85%E5%86%B5%E4%BA%8C%E5%A2%9E%E5%8A%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B0%E9%87%8F)
 
--  [5. 实现](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#5-%E5%AE%9E%E7%8E%B0)
+-  [5. 实现](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#5-%E5%AE%9E%E7%8E%B0)
 
--  [6. 总结](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#6-%E6%80%BB%E7%BB%93)
+-  [6. 总结](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-25-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C(Consistent%20hashing)%E7%AE%97%E6%B3%95.md#6-%E6%80%BB%E7%BB%93)
 
 ## 0. 简介
 

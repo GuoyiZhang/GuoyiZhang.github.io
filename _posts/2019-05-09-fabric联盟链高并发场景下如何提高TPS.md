@@ -14,17 +14,17 @@ tags: fabric hyperledger 区块链 高并发 TPS
 
 **这两种避免冲突的方式有各自的优缺点，开发者可以根据实际的业务场景选择不同的方式来提高TPS。而后者又可以细分为阻塞式和分阻塞式两种避免交易冲突方式。**
 
-- [1. fabric高并发场景下的交易冲突](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#1-fabric%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81)
+- [1. fabric高并发场景下的交易冲突](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#1-fabric%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81)
 
-- [2. 基于高效chaincode数据模型的避免交易冲突方式](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#2-%E5%9F%BA%E4%BA%8E%E9%AB%98%E6%95%88chaincode%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%81%BF%E5%85%8D%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81%E6%96%B9%E5%BC%8F)
+- [2. 基于高效chaincode数据模型的避免交易冲突方式](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#2-%E5%9F%BA%E4%BA%8E%E9%AB%98%E6%95%88chaincode%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%81%BF%E5%85%8D%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81%E6%96%B9%E5%BC%8F)
 
-- [3. 基于阻塞和非阻塞式的避免交易冲突方式](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#3-%E5%9F%BA%E4%BA%8E%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8F%E7%9A%84%E9%81%BF%E5%85%8D%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81%E6%96%B9%E5%BC%8F)
+- [3. 基于阻塞和非阻塞式的避免交易冲突方式](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#3-%E5%9F%BA%E4%BA%8E%E9%98%BB%E5%A1%9E%E5%92%8C%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8F%E7%9A%84%E9%81%BF%E5%85%8D%E4%BA%A4%E6%98%93%E5%86%B2%E7%AA%81%E6%96%B9%E5%BC%8F)
 
-	- [3.1. 使用分布式锁阻塞型同步机制](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#31-%E4%BD%BF%E7%94%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E9%98%BB%E5%A1%9E%E5%9E%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6)
+	- [3.1. 使用分布式锁阻塞型同步机制](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#31-%E4%BD%BF%E7%94%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E9%98%BB%E5%A1%9E%E5%9E%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6)
 
-	- [3.2. 利用MVCC非阻塞型的方式](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#32-%E5%88%A9%E7%94%A8mvcc%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%9E%8B%E7%9A%84%E6%96%B9%E5%BC%8F)
+	- [3.2. 利用MVCC非阻塞型的方式](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#32-%E5%88%A9%E7%94%A8mvcc%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%9E%8B%E7%9A%84%E6%96%B9%E5%BC%8F)
 
-- [4. 参考资料](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+- [4. 参考资料](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-05-07-fabric%E8%81%94%E7%9B%9F%E9%93%BE%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E4%B8%8B%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98TPS.md#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 
 
@@ -58,7 +58,7 @@ done
 ```
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/2019-05-02-high-throughout/result.png?raw=true" >	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/2019-05-02-high-throughout/result.png?raw=true" >	
 </div>
 
 <p align="center">
@@ -70,7 +70,7 @@ done
 图2是peer容器的日志，从日志来看，在这10笔交易里有9笔交易的读写集发生冲突，导致交易被标记为无效交易，a和b的世界状态也只改变了1次。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/2019-05-02-high-throughout/mmvc_read_conflict.jpeg?raw=true" >
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/2019-05-02-high-throughout/mmvc_read_conflict.jpeg?raw=true" >
 </div>
 
 <p align="center">

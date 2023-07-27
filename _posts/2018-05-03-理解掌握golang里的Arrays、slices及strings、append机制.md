@@ -9,33 +9,33 @@ tags: golang arrays slices strings append
 
 **Note. 本文参考至[官方介绍slice博客](https://blog.golang.org/slices),希望能帮助读者理解golang里的数组、slice、字符串原理以及掌握使用方法。**
 
--  [0. 介绍](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#0-%E4%BB%8B%E7%BB%8D)
+-  [0. 介绍](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#0-%E4%BB%8B%E7%BB%8D)
 
--  [1. Arrays数组](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#1-arrays%E6%95%B0%E7%BB%84)
+-  [1. Arrays数组](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#1-arrays%E6%95%B0%E7%BB%84)
 
--  [2. Slices：slice header（切片与切片头部）](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#2-slicesslice-header%E5%88%87%E7%89%87%E4%B8%8E%E5%88%87%E7%89%87%E5%A4%B4%E9%83%A8)
+-  [2. Slices：slice header（切片与切片头部）](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#2-slicesslice-header%E5%88%87%E7%89%87%E4%B8%8E%E5%88%87%E7%89%87%E5%A4%B4%E9%83%A8)
 
--  [3. 函数传递中的slice](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#3-%E5%87%BD%E6%95%B0%E4%BC%A0%E9%80%92%E4%B8%AD%E7%9A%84slice)
+-  [3. 函数传递中的slice](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#3-%E5%87%BD%E6%95%B0%E4%BC%A0%E9%80%92%E4%B8%AD%E7%9A%84slice)
 
--  [4. slice指针：方法接收者](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#4-slice%E6%8C%87%E9%92%88)
+-  [4. slice指针：方法接收者](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#4-slice%E6%8C%87%E9%92%88)
 
--  [5. slice capacity（切片容量）](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#5-slice-capacity%E5%88%87%E7%89%87%E5%AE%B9%E9%87%8F)
+-  [5. slice capacity（切片容量）](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#5-slice-capacity%E5%88%87%E7%89%87%E5%AE%B9%E9%87%8F)
 
--  [6. Make函数](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#6-make%E5%87%BD%E6%95%B0)
+-  [6. Make函数](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#6-make%E5%87%BD%E6%95%B0)
 
--  [7. Copy函数](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#7-copy%E5%87%BD%E6%95%B0)
+-  [7. Copy函数](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#7-copy%E5%87%BD%E6%95%B0)
 
--  [8. Append函数：看一个例子](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#8-append%E5%87%BD%E6%95%B0%E7%9C%8B%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90)
+-  [8. Append函数：看一个例子](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#8-append%E5%87%BD%E6%95%B0%E7%9C%8B%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90)
 
--  [9. Append函数：golang内置函数](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#9-append%E5%87%BD%E6%95%B0golang%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0)
+-  [9. Append函数：golang内置函数](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#9-append%E5%87%BD%E6%95%B0golang%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0)
 
--  [10. Nil空值](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#10-nil%E7%A9%BA%E5%80%BC)
+-  [10. Nil空值](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#10-nil%E7%A9%BA%E5%80%BC)
 
--  [11. Strings字符串](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#11-strings%E5%AD%97%E7%AC%A6%E4%B8%B2)
+-  [11. Strings字符串](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#11-strings%E5%AD%97%E7%AC%A6%E4%B8%B2)
 
--  [12. 总结](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#12-%E6%80%BB%E7%BB%93)
+-  [12. 总结](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#12-%E6%80%BB%E7%BB%93)
 
--  [13. 扩展阅读](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#13-%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB)
+-  [13. 扩展阅读](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-03-%E7%90%86%E8%A7%A3%E6%8E%8C%E6%8F%A1golang%E9%87%8C%E7%9A%84Arrays%E3%80%81slices%E5%8F%8Astrings%E3%80%81append%E6%9C%BA%E5%88%B6.md#13-%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB)
 
 ## 0. 介绍
 
@@ -666,7 +666,7 @@ sliceHeader{}
 
 ## 11. Strings字符串
 
-字符串本质上是[]byte类型的slice，有关字符串的详细介绍参考我的[另外一篇博客](https://berryjam.github.io/2018/03/%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7/)。
+字符串本质上是[]byte类型的slice，有关字符串的详细介绍参考我的[另外一篇博客](https://guoyizhang.github.io/2018/03/%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7/)。
 
 ## 12. 总结
 

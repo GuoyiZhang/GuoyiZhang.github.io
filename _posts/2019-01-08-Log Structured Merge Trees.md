@@ -10,19 +10,19 @@ tags: 数据结构 LSM 数据存储 BloomFilter
 
 **Note. 本文主要翻译自[Log Structured Merge Trees](https://kunigami.blog/2018/07/19/log-structured-merge-trees/)一文，在那篇文章里作者详细介绍了LSM这种写密集型高效存储数据结构，本文在此基础上补充了一些性能分析如时间复杂度、空间复杂度等内容和提出一些疑惑。希望能给各位读者抛砖引玉，本人水平有限请多指教。**
 
-- [1. B+树和Append Logs](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#1-b%E6%A0%91%E5%92%8Cappend-logs)
+- [1. B+树和Append Logs](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#1-b%E6%A0%91%E5%92%8Cappend-logs)
 
-- [2. LSM树](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#2-lsm%E6%A0%91)
+- [2. LSM树](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#2-lsm%E6%A0%91)
 
-- [3. 具有层级压缩的LSM](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#3-%E5%85%B7%E6%9C%89%E5%B1%82%E7%BA%A7%E5%8E%8B%E7%BC%A9%E7%9A%84lsm)
+- [3. 具有层级压缩的LSM](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#3-%E5%85%B7%E6%9C%89%E5%B1%82%E7%BA%A7%E5%8E%8B%E7%BC%A9%E7%9A%84lsm)
     
-- [4. 一些实现细节](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#4-%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82)
+- [4. 一些实现细节](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#4-%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82)
 
-- [5. 存储性能分析](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#5-%E5%AD%98%E5%82%A8%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)
+- [5. 存储性能分析](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#5-%E5%AD%98%E5%82%A8%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)
 
-- [6. 读性能简析](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#6-%E8%AF%BB%E6%80%A7%E8%83%BD%E7%AE%80%E6%9E%90)
+- [6. 读性能简析](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#6-%E8%AF%BB%E6%80%A7%E8%83%BD%E7%AE%80%E6%9E%90)
 
-- [7. 参考资料](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#7-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+- [7. 参考资料](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-01-08-Log%20Structured%20Merge%20Trees.md#7-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 
 在这篇博客中我们讲讨论一种名为Log Structured Merge树(LSM树)。在写密集情境下，是一种有效替代类似B+树应用存储的数据结构。
@@ -46,7 +46,7 @@ LSM树这种数据结构就是为了不牺牲太多的读性能情况下，去�
 我们先了解下如何基于LSM树实现一个key-value型数据库。在刚开始写入一个key-value对的时候，会把数据写入到一个叫做<b>memtable</b>的内存结构里。而key-value对根据key的顺序存储到memtable（随机访问内容的耗时是很少的，并且可以使用二分法之类的搜索很快就能检索到一个key-value对）。当memtable达到存储容量上限的时候，就会将数据持久化到硬盘里（**注：如果在达到容量上限并且持久化到硬盘前，数据库崩溃了，memtable的数据会不会对丢失，从而导致整个数据库丢失部分数据？定期维护快照是否能够解决问题？**）。写入数据过程大致如图1所述：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/lsm/lsm-insert-mem2.png?raw=true" height="200" width="600">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/lsm/lsm-insert-mem2.png?raw=true" height="200" width="600">	
 </div>
 
 <p align="center">
@@ -56,7 +56,7 @@ LSM树这种数据结构就是为了不牺牲太多的读性能情况下，去�
 在这种结构下，查找一个key-value对，需要遍历文件然后在每个文件中用二分查找去搜索具体的key。为key创建索引的话，就可以很快检索到数据。要注意的是：一个key可能会出现在多个文件中，这表示该key被多次写入。我们可以只扫描包含这个key-value对的最近更新的文件，因为最近更新的文件包含着这个key的最新值。检索过程中大部分开销在于线性扫描文件。当数据库数的存储量很大的时候，要线性遍历大量文件将非常耗时，导致读取key-value对也非常耗时。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/lsm/lsm-write-disk2.png?raw=true" height="150" width="600">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/lsm/lsm-write-disk2.png?raw=true" height="150" width="600">	
 </div>
 
 <p align="center">
@@ -66,7 +66,7 @@ LSM树这种数据结构就是为了不牺牲太多的读性能情况下，去�
 为了避免这种情况，当数据库的文件数量增长超过指定数量后，LSM树会以外部归并排序方式，两两合并文件，并继续保持数据是以key排序。所以再次查找key-value对的时候，虽然文件的大小翻倍了，但是需要线性检索的文件数量减少了一半，从而搜索速度快了近一倍。（**注：假设原来文件数量为N，每个文件包含的key-value对数目为M，那么原来的检查平均时间复杂度为O(N/2 * lgM)，而合并后的时间复杂度为O(N/4 * lg(M/2))，为前者的一半。**）这种方式就是所谓的<b>tiered compaction</b>[2]，如图3所示。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/lsm/lsm-compaction1.png?raw=true" height="150" width="600">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/lsm/lsm-compaction1.png?raw=true" height="150" width="600">	
 </div>
 
 <p align="center">
@@ -84,7 +84,7 @@ LSM树这种数据结构就是为了不牺牲太多的读性能情况下，去�
 **提升.**无论哪一层，只要文件大小总和达到上限，就需要从这一层中选出一个文件与下一层的文件进行合并，或者提升到下一层。为了继续保持同一层不能包含相同的key这个属性，我们首先需要层下一层里面找出包含与需要合并的文件的key-value对的文件，并把它们合并成一个文件。但这种方式不是简单的生成一个合并完毕的文件，而是会生成多个大小上限为2MB的文件。在合并过程中，如果我们找到冲突（key相同的key-value对），我们只用从高层中丢弃key相同的key-value对即可，因为低层的文件包含的数据越新，只要丢掉老数据就可以了。图4描述了第0层提升到第1层的过程：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/lsm/lsm-level-promotion.png?raw=true" height="300" width="900">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/lsm/lsm-level-promotion.png?raw=true" height="300" width="900">	
 </div>
 
 <p align="center">

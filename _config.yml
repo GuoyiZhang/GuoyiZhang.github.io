@@ -1,11 +1,11 @@
 # Basic
-title: 黄先森
-subtitle: 西二旗民工
-welcome_message: <a href="https://github.com/berryjam" target="_blank">欢迎访问个人github</a>
+title: 张国毅
+subtitle: 区块链工程师
+welcome_message: <a href="https://github.com/guoyizhang" target="_blank">欢迎访问个人github</a>
 description: 分享一些与编程、分布式系统、区块链技术相关的内容
-creator: <a href="http://onev.cat">@onevcat</a>
+creator: <a href="http://guoyi.pro">@guoyi</a>
 
-url: "https://berryjam.github.io"
+url: "https://guoyizhang.github.io"
 
 permalink: /:year/:month/:title/
 
@@ -32,18 +32,18 @@ paginate_path: "page/:num/"
 
 # Comment
 comment:
-    disqus: berryjam
+    disqus: guoyizhang
     # duoshuo: 
     
 # Social
 social:
-    weibo: berryjamcoding
-    github: berryjam
+    weibo: guoyizhangcoding
+    github: guoyizhang
     twitter: 
     gplus: 101610351739388375515
-    mail: berryjamcoding@gmail.com
+    mail: guoyizhangcoding@gmail.com
 
 # Google Analytics
 ga:
      id: UA-114392495-1
-     host: https://berryjam.github.io/
+     host: https://guoyizhang.github.io/

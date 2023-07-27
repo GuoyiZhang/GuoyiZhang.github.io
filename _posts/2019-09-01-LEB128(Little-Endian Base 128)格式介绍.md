@@ -10,15 +10,15 @@ tags: LEB128 变长编码 大小端
 
 **Note. 本篇介绍Andorid系统在Dex文件采用LEB128变长编码格式，相对固定长度的编码格式，leb128编码存储利用率比较高，能让Dex文件尽可能的小。对于存储空间比较紧缺的移动设备，这非常有用。其中LEB128可以分为无符号(ULEB128)、有符号整数编码(SLEB128)，其中还包括一种特殊的无符号整数编码(ULEB128p1 unsigned LEB128 plus 1)。下面将分别具体介绍，并给出相关的编码、解码代码，在区块链领域内的应用场景有智能合约编码，希望能带来启发。**
 
-- [1. 大小端表示法](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#1-%E5%A4%A7%E5%B0%8F%E7%AB%AF%E8%A1%A8%E7%A4%BA%E6%B3%95)
+- [1. 大小端表示法](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#1-%E5%A4%A7%E5%B0%8F%E7%AB%AF%E8%A1%A8%E7%A4%BA%E6%B3%95)
 
-- [2. ULEB128(unsigned LEB128，无符号整数编码)](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#2-uleb128unsigned-leb128%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
+- [2. ULEB128(unsigned LEB128，无符号整数编码)](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#2-uleb128unsigned-leb128%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
 
-- [3. SLEB128(signed LEB128，有符号整数编码)](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#3-sleb128signed-leb128%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
+- [3. SLEB128(signed LEB128，有符号整数编码)](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#3-sleb128signed-leb128%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
 
-- [4. ULEB128p1(unsigned LEB128 plus 1，特殊无符号整数编码)](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#4-uleb128p1unsigned-leb128-plus-1%E7%89%B9%E6%AE%8A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
+- [4. ULEB128p1(unsigned LEB128 plus 1，特殊无符号整数编码)](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#4-uleb128p1unsigned-leb128-plus-1%E7%89%B9%E6%AE%8A%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B4%E6%95%B0%E7%BC%96%E7%A0%81)
 
-- [5. 参考资料](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#5-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+- [5. 参考资料](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-09-01-LEB128(Little-Endian%20Base%20128)%E6%A0%BC%E5%BC%8F%E4%BB%8B%E7%BB%8D.md#5-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 
 
@@ -28,7 +28,7 @@ tags: LEB128 变长编码 大小端
 在介绍LEB128编码前，先回忆下小端表示法。在计算机里，数据一般以字节为单位存储，如果任何数据都能用一个字节来表示的话，就没有大小端什么事了。但是现实中很多数据需要多个字节来表示（一个字节能表示最大的整数也就是127，像128至少要2个字节），这就会涉及到字节的存放先后顺序问题。比如说4个字节长度的一个十六进制的无符号整数：```0x12 34 56 78```，使用大、小端两种表示方法的内存布局示意图如图1所示：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/2019-09-01/%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF%E6%B3%95%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png?raw=true" >	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/2019-09-01/%E5%A4%A7%E7%AB%AF%E5%B0%8F%E7%AB%AF%E6%B3%95%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png?raw=true" >	
 </div>
 
 
@@ -71,7 +71,7 @@ Little-Endian Base 128很显然是使用小端表示法，因为计算机处理�
 其中无符号整数12726的解码过程，如图2所示：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/2019-09-01/uleb128_sample.jpg?raw=true" height="60%" width="60%">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/2019-09-01/uleb128_sample.jpg?raw=true" height="60%" width="60%">	
 </div>
 
 <p align="center">
@@ -128,7 +128,7 @@ func uleb128decode(bytes []byte) uint64 {
 对于有符号的sleb128来说，计算方式与uleb128是一样的。只是对uleb128的最后一个字节的最高有效位进行了符号扩展。将上面的例子中的"**b6 63**"按照sleb128进行解读。"**b6 63**"的二进制形式不变，还是"**1011 0110,0110 0011**"，这个值的最后一个字节的最高有效位为1，所以这个值是个负数。所以这个值的最终结果为"**-1 0001,1011 0110**"。另外计算机中的数都是用补码表示的，所以需要求**1 0001，1011 0110**的相反数补码。由于**1 0001,1011 0110**实际占了14个比特（连续右移2次，每次7位，即**01 0001,1011 0110**），解码时最高位需要填充1，即**11 0001,1011 0110**,即-3658。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/2019-09-01/sleb128_sample.jpg?raw=true" height="60%" width="60%">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/2019-09-01/sleb128_sample.jpg?raw=true" height="60%" width="60%">	
 </div>
 
 <p align="center">

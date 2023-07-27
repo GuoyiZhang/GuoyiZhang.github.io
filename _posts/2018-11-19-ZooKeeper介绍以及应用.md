@@ -10,15 +10,15 @@ tags: ZooKeeper 分布式配置 分布式锁 zab
 
 **Note. 本文主要介绍[ZooKeeper的基本概念](https://zookeeper.apache.org/doc/current/zookeeperOver.html)，以及基于ZooKeeper的分布式配置平台demo和分布式锁，记录学习过程中的体会与总结。**
 
-- [1. 一个分布式配置平台原型](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#1-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E5%B9%B3%E5%8F%B0%E5%8E%9F%E5%9E%8B)
+- [1. 一个分布式配置平台原型](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#1-%E4%B8%80%E4%B8%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E5%B9%B3%E5%8F%B0%E5%8E%9F%E5%9E%8B)
 
-- [2. ZooKeeper背景介绍](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#2-zookeeper%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D)
+- [2. ZooKeeper背景介绍](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#2-zookeeper%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D)
 
-- [3. ZooKeeper基础概念](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#3-zookeeper%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5)
+- [3. ZooKeeper基础概念](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#3-zookeeper%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5)
     
-- [4. ZAB协议](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#4-zab%E5%8D%8F%E8%AE%AE)
+- [4. ZAB协议](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#4-zab%E5%8D%8F%E8%AE%AE)
 
-- [5. 基于ZooKeeper的分布式锁](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#5-%E5%9F%BA%E4%BA%8Ezookeeper%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81)
+- [5. 基于ZooKeeper的分布式锁](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-11-19-ZooKeeper%E4%BB%8B%E7%BB%8D%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8.md#5-%E5%9F%BA%E4%BA%8Ezookeeper%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81)
 
 
 ## 1. 一个分布式配置平台原型
@@ -28,7 +28,7 @@ tags: ZooKeeper 分布式配置 分布式锁 zab
 下面是一个简单demo的网络拓扑图
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AEdemo%E6%8B%93%E6%89%91.png?raw=true" height="400" width="550">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AEdemo%E6%8B%93%E6%89%91.png?raw=true" height="400" width="550">	
 </div>
 
 <p align="center">
@@ -79,7 +79,7 @@ func main() {
 由于目前/didi路径的znode数据为hello，两台ZooKeeper Client同时运行后，都会输出hello，如下：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/disf_demo_pre.png?raw=true" height="550" width="1000">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/disf_demo_pre.png?raw=true" height="550" width="1000">	
 </div>
 
 <p align="center">
@@ -89,7 +89,7 @@ func main() {
 接下来修改znode的数据为world，可以看到图3，两台机器现在的输出几乎同时变为world。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/disf_demo_after.png?raw=true" height="550" width="1000">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/disf_demo_after.png?raw=true" height="550" width="1000">	
 </div>
 
 <p align="center">
@@ -121,7 +121,7 @@ ZooKeeper是一个面向分布式应用的开源协调服务，像Hadoop生态�
 ZooKeeper实现非常重视性能，高可用性，严格有序的访问。ZooKeeper的性能决定了它能够在大型分布式系统中使用，可靠性方面使其不会遭受单点故障问题。严格排序能够让客户端实现复杂的同步组件。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zkservice.jpg?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zkservice.jpg?raw=true">	
 </div>
 
 <p align="center">
@@ -137,7 +137,7 @@ ZooKeeper实现非常重视性能，高可用性，严格有序的访问。ZooKe
 ZooKeeper通过类似unix的文件系统来存储数据，ZooKeeper Client再基于这些数据作协调，就像在同一台机器上操作文件一样。每个znode可以看作是一个文件夹，下面可以存储文件或者文件夹。但是与一般的文件夹系统又不一样，自身可以存储数据。根目录是‘/’，每层路径以'/'分割，整体构成一棵树型结构。**删除znode的时候，只能删除没有子节点的znode.**
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zknamespace.jpg?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zknamespace.jpg?raw=true">	
 </div>
 
 <p align="center">
@@ -151,7 +151,7 @@ znode存储容量很小，大概几B～几KB，并且会维护以下数据结构
 而临时节点是一种特殊的znode，只要创建znode的会话处于活动状态，就会存在这些znode。 会话结束时，znode将被删除。这种节点在实现分布式锁等场景下非常有用。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zk_stat.png?raw=true" height="400" width="600">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zk_stat.png?raw=true" height="400" width="600">	
 </div>
 
 <p align="center">
@@ -163,7 +163,7 @@ znode存储容量很小，大概几B～几KB，并且会维护以下数据结构
 ZooKeeper支持Watcher机制。 客户端可以在znodes上设置Watcher， 当znode更改时，将触发并删除Watcher。 当触发Watcher时，客户端会收到一个数据包，说明znode已更改。 如果客户端与其中一个Zoo Keeper服务器之间的连接中断，客户端将收到本地通知。Watcher机制是ZooKeeper重要机制，是实现分布式锁和分布式配置平台的关键特性。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zk_watcher.png?raw=true" height="400" width="400">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zk_watcher.png?raw=true" height="400" width="400">	
 </div>
 
 <p align="center">
@@ -191,7 +191,7 @@ ZooKeeper支持Watcher机制。 客户端可以在znodes上设置Watcher， 当z
 ZooKeeper使用一种自定义的原子消息传递协议(ZAB)。由于消息传递层是原子的，因为ZooKeeper可以保证所有zk server的本地副本最终一致性。当leader收到写请求时，它会计算出处理完写请求后的系统状态并将其转换为一个事务。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zkcomponents.jpg?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zkcomponents.jpg?raw=true">	
 </div>
 
 <p align="center">
@@ -203,7 +203,7 @@ ZooKeeper使用一种自定义的原子消息传递协议(ZAB)。由于消息传
 图9是ZooKeeper集群在不同读写请求比下的吞吐率，可以看到如果读请求越多的情况下，吞吐率越高，这是因为处理写请求需要同步状态。3台配置为2GHz的CPU和15K RPM的硬盘最高能处理的QPS将近8万。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zkperfRW-3.2.jpg?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zkperfRW-3.2.jpg?raw=true">	
 </div>
 
 <p align="center">
@@ -221,7 +221,7 @@ ZooKeeper使用一种自定义的原子消息传递协议(ZAB)。由于消息传
 广播模式下请求处理过程如图10所示：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zkbroadcast.png?raw=true" height="300" width="500">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zkbroadcast.png?raw=true" height="300" width="500">	
 </div>
 
 <p align="center">
@@ -237,7 +237,7 @@ ZooKeeper使用一种自定义的原子消息传递协议(ZAB)。由于消息传
 这两种情况分别如图11、12所示。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zab_recover_case1.png?raw=true" height="300" width="500">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zab_recover_case1.png?raw=true" height="300" width="500">	
 </div>
 
 <p align="center">
@@ -245,7 +245,7 @@ ZooKeeper使用一种自定义的原子消息传递协议(ZAB)。由于消息传
 </p>
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/zab_recover_case2_.png?raw=true?raw=true" height="400" width="500">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/zab_recover_case2_.png?raw=true?raw=true" height="400" width="500">	
 </div>
 
 <p align="center">
@@ -295,7 +295,7 @@ Unlock // 释放锁
 
 修改后的加锁过程与之前有点不一样，主要是创建顺序特性的znode，并且每个客户端在尝试获取锁的时候，只需要监测前一个节点状态来等待唤醒。这种方式下，每次释放锁的时候，只有唤醒一个客户端，避免唤醒大量客户端后又有大量客户端继续阻塞产生大量的上下文切换开销。
 
-本文提供了基于go-zookeeper的客户端的无惊群效应锁实现，代码snippet如下，完整的示例请见[distributed_lock.go](https://github.com/berryjam/distributed-conf-demo/blob/master/src/distributed_lock.go)：
+本文提供了基于go-zookeeper的客户端的无惊群效应锁实现，代码snippet如下，完整的示例请见[distributed_lock.go](https://github.com/guoyizhang/distributed-conf-demo/blob/master/src/distributed_lock.go)：
 
 ```
 func lock() string {

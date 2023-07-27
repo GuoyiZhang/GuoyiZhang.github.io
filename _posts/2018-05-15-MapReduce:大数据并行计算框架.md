@@ -9,51 +9,51 @@ tags: mapreduce 并行计算 大数据 6.824
 
 **Note. 本文参考至[官方MapReduce论文](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf),结合MIT开设的[6.824](https://pdos.csail.mit.edu/6.824/index.html)这门与分布式系统相关的课程实验，对MapReduce框架的原理和细节作介绍。希望能帮助读者了解MapReduce框架以及相关细节，以便编写基于MapReuce框架的代码。**
 
--  [0. 摘要](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#0-%E6%91%98%E8%A6%81)
+-  [0. 摘要](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#0-%E6%91%98%E8%A6%81)
 
--  [1. MapReduce介绍](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#1-mapreduce%E4%BB%8B%E7%BB%8D)
+-  [1. MapReduce介绍](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#1-mapreduce%E4%BB%8B%E7%BB%8D)
 
--  [2. MapReduce编程模型](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#2-mapreduce%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B)
+-  [2. MapReduce编程模型](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#2-mapreduce%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B)
 
-    - [2.1 例子](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#21-%E4%BE%8B%E5%AD%90)
+    - [2.1 例子](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#21-%E4%BE%8B%E5%AD%90)
     
-    - [2.2 类型](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#22-%E7%B1%BB%E5%9E%8B)
+    - [2.2 类型](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#22-%E7%B1%BB%E5%9E%8B)
     
-    - [2.3 更多MapReduce例子](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#23-%E6%9B%B4%E5%A4%9Amapreduce%E4%BE%8B%E5%AD%90)
+    - [2.3 更多MapReduce例子](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#23-%E6%9B%B4%E5%A4%9Amapreduce%E4%BE%8B%E5%AD%90)
     
-- [3. MapReduce实现](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#3-mapreduce%E5%AE%9E%E7%8E%B0)
+- [3. MapReduce实现](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#3-mapreduce%E5%AE%9E%E7%8E%B0)
 
-    - [3.1 MapReduce整体执行过程](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#31-mapreduce%E6%95%B4%E4%BD%93%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B)
+    - [3.1 MapReduce整体执行过程](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#31-mapreduce%E6%95%B4%E4%BD%93%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B)
     
-    - [3.2 Master数据结构](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#32-master%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
+    - [3.2 Master数据结构](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#32-master%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)
     
-    - [3.3 MapReduce容错机制](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#33-mapreduce%E5%AE%B9%E9%94%99%E6%9C%BA%E5%88%B6)
+    - [3.3 MapReduce容错机制](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#33-mapreduce%E5%AE%B9%E9%94%99%E6%9C%BA%E5%88%B6)
     
-    - [3.4 MapReduce输入的局部性特点](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#34-mapreduce%E8%BE%93%E5%85%A5%E7%9A%84%E5%B1%80%E9%83%A8%E6%80%A7%E7%89%B9%E7%82%B9)
+    - [3.4 MapReduce输入的局部性特点](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#34-mapreduce%E8%BE%93%E5%85%A5%E7%9A%84%E5%B1%80%E9%83%A8%E6%80%A7%E7%89%B9%E7%82%B9)
     
-    - [3.5 Map任务和Reduce任务粒度](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#35-map%E4%BB%BB%E5%8A%A1%E5%92%8Creduce%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6)
+    - [3.5 Map任务和Reduce任务粒度](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#35-map%E4%BB%BB%E5%8A%A1%E5%92%8Creduce%E4%BB%BB%E5%8A%A1%E7%B2%92%E5%BA%A6)
     
-    - [3.6 备份任务](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#36-%E5%A4%87%E4%BB%BD%E4%BB%BB%E5%8A%A1)
+    - [3.6 备份任务](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#36-%E5%A4%87%E4%BB%BD%E4%BB%BB%E5%8A%A1)
     
-- [4. 相关改进](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#4-%E7%9B%B8%E5%85%B3%E6%94%B9%E8%BF%9B)
+- [4. 相关改进](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#4-%E7%9B%B8%E5%85%B3%E6%94%B9%E8%BF%9B)
 
-    - [4.1 Partitioning函数](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#41-partitioning%E5%87%BD%E6%95%B0)
+    - [4.1 Partitioning函数](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#41-partitioning%E5%87%BD%E6%95%B0)
     
-    - [4.2 中间结果有序性](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#42-%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E6%9C%89%E5%BA%8F%E6%80%A7)
+    - [4.2 中间结果有序性](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#42-%E4%B8%AD%E9%97%B4%E7%BB%93%E6%9E%9C%E6%9C%89%E5%BA%8F%E6%80%A7)
     
-    - [4.3 Combiner函数](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#43-combiner%E5%87%BD%E6%95%B0)
+    - [4.3 Combiner函数](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#43-combiner%E5%87%BD%E6%95%B0)
     
-    - [4.4 MapReduce的输入输出类型](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#44-mapreduce%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B)
+    - [4.4 MapReduce的输入输出类型](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#44-mapreduce%E7%9A%84%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B)
     
-    - [4.5 副作用](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#45-%E5%89%AF%E4%BD%9C%E7%94%A8)
+    - [4.5 副作用](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#45-%E5%89%AF%E4%BD%9C%E7%94%A8)
     
-    - [4.6 忽略错误结果](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#46-%E5%BF%BD%E7%95%A5%E9%94%99%E8%AF%AF%E7%BB%93%E6%9E%9C)
+    - [4.6 忽略错误结果](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#46-%E5%BF%BD%E7%95%A5%E9%94%99%E8%AF%AF%E7%BB%93%E6%9E%9C)
     
-    - [4.7 调试模式：本地执行](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#47-%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F%E6%9C%AC%E5%9C%B0%E6%89%A7%E8%A1%8C)
+    - [4.7 调试模式：本地执行](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#47-%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F%E6%9C%AC%E5%9C%B0%E6%89%A7%E8%A1%8C)
     
-    - [4.8 状态信息](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#48-%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF)
+    - [4.8 状态信息](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#48-%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF)
     
-    - [4.9 数据统计](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#49-%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1)
+    - [4.9 数据统计](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-05-15-MapReduce:%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6.md#49-%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1)
     
 ## 0. 摘要
 
@@ -62,7 +62,7 @@ tags: mapreduce 并行计算 大数据 6.824
 这个框架的原理就是把一个大任务划分成若干小任务，然后在多台机器上同时执行这些若干小任务，再通过汇总若干小任务的中间输出结果，生成最终结果。下面图1是框架原理图：
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/mapreduce%E6%A8%A1%E5%9E%8B.png?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/mapreduce%E6%A8%A1%E5%9E%8B.png?raw=true">	
 </div>
 
 <p align="center">
@@ -145,7 +145,7 @@ MapReduce接口有很多种实现。该选择怎么的实现取决于执行环�
 **Map**函数会在不同机器上被调用，自动把输入的数据分成**M**份。而被分割后**M**份数据能够在不同的机器上并行处理。**Reduce**函数会=也会在不同机器上被调用，基于partitioning函数（如：*hash(key)* **mod** *R*）把中间格式的key/value对划分为**R**份。partitions(R)的数量和partitioning函数由用户指定。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/MRExecution.png?raw=true">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/MRExecution.png?raw=true">	
 </div>
 
 <p align="center">

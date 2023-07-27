@@ -9,24 +9,24 @@ tags: golang 字符串 strings UTF-8 遍历
 
 **Note. 本文主要参考[官方介绍字符串的博客](https://blog.golang.org/strings),希望能帮助读者在编码过程中能够正确处理字符串。**
 
--  [0. 为什么读取不到字符串下标n的值？](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#0-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%BB%E5%8F%96%E4%B8%8D%E5%88%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8B%E6%A0%87n%E7%9A%84%E5%80%BC)
+-  [0. 为什么读取不到字符串下标n的值？](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#0-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%BB%E5%8F%96%E4%B8%8D%E5%88%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8B%E6%A0%87n%E7%9A%84%E5%80%BC)
 
--  [1. 介绍](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#1-%E4%BB%8B%E7%BB%8D)
+-  [1. 介绍](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#1-%E4%BB%8B%E7%BB%8D)
 
--  [2. 什么是string？](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#2-%E4%BB%80%E4%B9%88%E6%98%AFstring)
+-  [2. 什么是string？](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#2-%E4%BB%80%E4%B9%88%E6%98%AFstring)
 
--  [3. 看一个例子：打印string](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#3-%E7%9C%8B%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90%E6%89%93%E5%8D%B0string)
+-  [3. 看一个例子：打印string](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#3-%E7%9C%8B%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90%E6%89%93%E5%8D%B0string)
 
--  [4. UTF-8和字符串文字](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#4-utf-8%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97)
+-  [4. UTF-8和字符串文字](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#4-utf-8%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E5%AD%97)
 
--  [5. code point、字符和runes之间的关系](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#5-code-point%E5%AD%97%E7%AC%A6%E5%92%8Crunes%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%)
+-  [5. code point、字符和runes之间的关系](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#5-code-point%E5%AD%97%E7%AC%A6%E5%92%8Crunes%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%)
 
 -  [6. 再看一个例子：range循环和下标循环的区别](
-https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#6-range%E5%BE%AA%E7%8E%AF%E5%92%8C%E4%B8%8B%E6%A0%87%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%8C%BA%E5%88%AB)
+https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#6-range%E5%BE%AA%E7%8E%AF%E5%92%8C%E4%B8%8B%E6%A0%87%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%8C%BA%E5%88%AB)
 
--  [7. 一些常用的字符串处理库](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#7-%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86%E5%BA%93)
+-  [7. 一些常用的字符串处理库](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#7-%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86%E5%BA%93)
 
--  [8. 总结](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#8-%E6%80%BB%E7%BB%93)
+-  [8. 总结](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2018-03-26-%E4%BB%8Egolang%E5%AD%97%E7%AC%A6%E4%B8%B2string%E9%81%8D%E5%8E%86%E8%AF%B4%E8%B5%B7.md#8-%E6%80%BB%E7%BB%93)
 
 ## 0. 为什么读取不到字符串下标n的值？
 

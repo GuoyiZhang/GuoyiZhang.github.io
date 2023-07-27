@@ -10,13 +10,13 @@ tags: BloomFilter bitmap 布隆过滤器 位图 数据结构
 
 **Note. 本篇介绍一种存储结构-布隆过滤器。这种存储结构类似于散列表，能够存储和查询元素是否存在，并且存储效率一般要比散列表高很多。应用场景有，比如爬虫应用会应用它来进行URL去重，避免重复爬取相同网页。在区块链领域方面，以太坊把Bloom Filter应用到数量庞大的交易receipt日志里，能够快速查找log。在介绍布隆过滤器之前，再介绍一种数据结构-位图。本质上，布隆过滤器是一种改进后的位图，存储效率更高。**
 
-- [1.有1000万个整数，范围在1～1亿之间，如何快速判断某个整数是否存在？](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#1-%E6%9C%891000%E4%B8%87%E4%B8%AA%E6%95%B4%E6%95%B0%E8%8C%83%E5%9B%B4%E5%9C%A811%E4%BA%BF%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%95%B4%E6%95%B0%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8)
+- [1.有1000万个整数，范围在1～1亿之间，如何快速判断某个整数是否存在？](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#1-%E6%9C%891000%E4%B8%87%E4%B8%AA%E6%95%B4%E6%95%B0%E8%8C%83%E5%9B%B4%E5%9C%A811%E4%BA%BF%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%95%B4%E6%95%B0%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8)
 
-- [2. 位图](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#2-%E4%BD%8D%E5%9B%BE)
+- [2. 位图](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#2-%E4%BD%8D%E5%9B%BE)
 
-- [3. 布隆过滤器](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
+- [3. 布隆过滤器](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)
 
-- [4. 参考资料](https://github.com/berryjam/berryjam.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
+- [4. 参考资料](https://github.com/guoyizhang/guoyizhang.github.io/blob/master/_posts/2019-10-25-BloomFilter(%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8)%E4%BB%8B%E7%BB%8D.md#4-%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99)
 
 
 ## 1. 有1000万个整数，范围在1～1亿之间，如何快速判断某个整数是否存在？
@@ -84,7 +84,7 @@ func (b *BitMap) Get(k int) bool {
 当要查询某个整数是否存在的时候，用同样的K个散列函数，对该数字求散列值，分别得到Y[<sub>1</sub>],Y[<sub>2</sub>],Y[<sub>3</sub>],...,Y[<sub>K</sub>]。如果这个K个散列值，对应位图中的值都为1，则表示这个数字**可能存在**；如果有任意一个不为1，那就说明数字**真的不存在**，布隆过滤器对存在的情况可能存在误报，下面举例说明。
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/bloom_filter/true_negative.jpg?raw=true" height="60%" width="60%">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/bloom_filter/true_negative.jpg?raw=true" height="60%" width="60%">	
 </div>
 
 <p align="center">
@@ -92,7 +92,7 @@ func (b *BitMap) Get(k int) bool {
 </p>
 
 <div align="center">
-<img src="https://github.com/berryjam/berryjam.github.io/blob/master/image/bloom_filter/false_positive.jpg?raw=true" height="60%" width="60%">	
+<img src="https://github.com/guoyizhang/guoyizhang.github.io/blob/master/image/bloom_filter/false_positive.jpg?raw=true" height="60%" width="60%">	
 </div>
 
 <p align="center">
