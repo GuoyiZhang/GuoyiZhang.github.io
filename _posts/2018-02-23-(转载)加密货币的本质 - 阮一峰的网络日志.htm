@@ -1,0 +1,3743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="Movable Type  5.2.2" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="http://www.ruanyifeng.com/blog/styles.css" type="text/css" />
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home" />
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng" />
+<script type="text/javascript" src="http://www.ruanyifeng.com/blog/mt.js"></script>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html">
+<dc:title>持续集成服务 Travis CI 教程</dc:title>
+<dc:description>编写代码只是软件开发的一小部分，更多的时间往往花在构建（build）和测试（test）。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2017-12-19T20:09:02+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程" />
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html" title="汇编语言入门教程" />
+    
+    <title>加密货币的本质 - 阮一峰的网络日志</title>
+</head>
+<body id="scrapbook" class="mt-entry-archive one-column">
+<script>
+if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) document.body.classList.add('mobile');
+
+window.addEventListener('load', function(event) {
+  setTimeout(function () {
+    hab('#sup-post-2');
+    hab('#gd1-inner');
+  }, 1000);
+});
+</script>
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="https://www.baidu.com/s" target="_blank" method="get" id="cse-search-box">
+  <div>
+  <input type="text" size="20" name="origin" class="searchbox" id="sbi" value="" />
+  <input type="hidden" name="wd" value="" />
+  <!--input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' inurl:www.ruanyifeng.com/blog'" /-->
+  <input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' 阮一峰'" />
+</div>
+</form>
+
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;" />
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-1972" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程">比特币入门教程&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html" title="汇编语言入门教程">汇编语言入门教程&nbsp;&nbsp;&nbsp;</a></li>
+</ul>
+</div>
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/computer/" rel="tag">理解计算机</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+                                            
+<div class="entry-location-mobile" style="float: right;">
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程">⇐&nbsp;</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html" title="汇编语言入门教程">&nbsp;⇒</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+                          
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">加密货币的本质</h1>
+                                            <div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;"></div>
+
+<div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com">阮一峰</a></p>
+                                    <p>日期： <a href="http://www.ruanyifeng.com/blog/2018/01/"><abbr class="published" title="2018-01-11T08:02:19+08:00">2018年1月11日</abbr></a></p>
+
+
+                                    
+</div>
+
+                    
+<div class="entry-sponsor" style="border: 1px solid #c6c6c6;border-radius: 4px;background-color: #f5f2f0;">
+<p>
+<a title="珠峰培训" href="http://www.zhufengpeixun.cn/main/course/guide.html?ref=ruanyifeng.com" target="_blank">
+<img alt="珠峰培训" src="http://www.ruanyifeng.com/blog/images/sponsor_zhufeng5.png" style="border: none;windth: 90%;max-width: 90%;display: inline-block;margin-top: -0.5rem;margin-bottom: 0.5rem;"/>
+</a>
+</p>
+</div>
+
+
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p>去年，比特币暴涨，其他币也像雨后春笋一样冒出来，已经有1000多种了。</p>
+
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>很多人都在问，加密货币（cryptocurrency）的时代，真的来临了吗？将来会不会人类不再使用美元、人民币，改用加密货币？那么多品种，我应该使用哪一种币？要不要现在就去投资一些？</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011101.jpg" alt="" title="" /></p>
+
+<p>这些问题的答案，我也想知道，就花了很多时间查阅资料、研究协议。前两周发表的<a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">《区块链入门教程》</a>和<a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html">《比特币入门教程》</a>，是我的学习心得。但是，那两篇教程主要介绍基本概念、探讨协议的可行性，没回答一个根本的问题：加密货币到底是什么？</p>
+
+<p>下面就是我对这个问题的思考。阅读之前，如果你已经了解区块链和比特币，那很好；如果不了解，也没关系，本文不涉及技术，只讨论最基本的原理。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011102.jpg" alt="" title="" /></p>
+
+<h2>一、钱是什么？</h2>
+
+<p>我们都知道，人民币是钱，美元是钱，金银财宝是钱。我问一个问题，它们为什么能成为钱？</p>
+
+<p>你可能回答，因为它们有价值，或者是价值的代表。但是，有价值的东西多了，为什么只有这些品种成为了钱？</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011103.jpg" alt="" title="" /></p>
+
+<p>答案很容易想到，因为人们普遍相信（认同）它们的价值，其他东西的价值难以得到普通认同，无法成为钱。比如，邮票的价值就没有普遍的认同，除了集邮爱好者，其他地方都不能当钱用。一般来说，认同的人越多，这种钱的通用性就越高。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011104.jpg" alt="" title="" /></p>
+
+<p>我曾经去俄罗斯旅行，当地货币是卢布。可是，一旦离开俄国，没人相信它的购买力，所以卢布离开俄国就没用了。相反，全世界人民都相信美元的价值，所以全世界都能用。我用美元付账的时候，我发现那些俄国人都很满意。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011105.jpg" alt="" title="" /></p>
+
+<p>所以，<strong>钱的本质，或者说货币的本质，就是它的可信性。</strong>它必须使人们相信，它是有价值的，然后才能成为钱，才能被收藏和支付。</p>
+
+<h2>二、可信性</h2>
+
+<p>为什么钱必须是可信的？因为对方必须相信它的价值，否则你没法支付出去。那么，接下来的问题就是，可信的东西是否就是钱？</p>
+
+<p>我的回答是 Yes。<strong>一样东西能否成为钱，只取决于人们是否相信它的价值，至于它是不是真的有价值，根本不重要。</strong></p>
+
+<p>如果马云在一张纸条上写"这张纸条价值10000元"，下面签了他的名，并且附上防伪标记。你说这纸条是钱吗？我跟你保证，这就是钱，你用来支付，人们都会接受，马云等同于发行了一种新的纸币。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011106.jpg" alt="" title="" /></p>
+
+<p>比特币也是如此，它是什么，其实不太重要。重要的是，它必须保证自己是可信的，这样才能让足够的人相信它的价值，然后才能成为钱。</p>
+
+<h2>三、比特币的可信性</h2>
+
+<p><strong>比特币要解决的核心问题，就是创造一种可信的数字凭证。</strong>由于这种凭证可信，所以能够当做货币。</p>
+
+<p>比特币的技术基础是加密学，因为只有加密学才能保证它的可信性。一旦加密被破解，它就没法当作货币了。这也是这一类数字凭证被称为"加密货币"的原因。</p>
+
+<p>技术人员对比特币感兴趣，还有一个重要原因。任何需要可靠的数字凭证的场合，也许都可以用到这种技术。</p>
+
+<h2>四、比特币的特点</h2>
+
+<p>比特币有三个特点，就是因为做到了这三点，所以它可信，能够当作钱。</p>
+
+<p><strong>首先，它不会被（轻易）偷走。</strong>或者反过来说，它使得你无法去偷别人，你只能花你自己的钱。因为必须要有别人的私钥，才能取出他的钱。正常情况下，你拿不到别人的私钥。</p>
+
+<p><strong>其次，它无法伪造。</strong>每一个比特币都能追溯来源，而所有比特币都来源于矿工获得的奖励。矿工只有新建区块，才能获得奖励，这是很难的事情，所以无法伪造比特币。</p>
+
+<p><strong>最后，它无法大批生成。</strong>原因跟上一条一样，比特币的发行速度是稳定的，现在每10分钟新增12.5个，然后每四年减半，最终停止增长。因此不会像纸币那样，政府滥发导致通货膨胀。</p>
+
+<h2>五、比特币有实体吗？</h2>
+
+<p>由于后面要提到的原因，比特币不可能拥有实体，没法做到"从口袋里掏出一个币"这种场景，交易都必须通过互联网完成。</p>
+
+<p>你可能会说，钱都有实体，怎么可能存在无形的钱呢？答案正好相反，<strong>钱就应该是无形的，那些实体的钱其实是对物质材料的浪费，由于技术不够发达，不得不做成实体。</strong></p>
+
+<p>我小时候买东西，都必须用现金，否则没法证明，自己拥有购买力。只有通过实体的钱，才能保证对方确实收到了钱。如果银行业发达，就不用现金了，可以使用银行卡。支付的时候，对方抄一下银行卡号码，查询银行"这个账户有钱吗"。银行回答有钱，OK，成交。</p>
+
+<p>但是，互联网使得实体的银行卡也不需要了。如果存在一个开放的中央记账系统，任何人都可以查询，你把钱划到老板的账户，老板查询一下，发现收到了，交易自动成交，整个过程都是无形的，还需要什么银行卡呢？</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011108.jpg" alt="" title="" /></p>
+
+<p>这个中央记账系统已经实现了，就叫做区块链。</p>
+
+<h2>六、区块链的作用</h2>
+
+<p><strong>区块链就是一个数据库，记载了所有的交易，用作中央记账系统。</strong></p>
+
+<p><strong>每笔交易的核心，就是一句话，比如"张三向李四转移了1个比特币"。</strong>为了证明这句话可信，张三为它加上了数字签名。任何人都可以用张三的公钥，证明这确实是张三本人的行为。另一方面，其他人无法伪造张三的数字签名，所以不可能伪造这笔交易。</p>
+
+<p>矿工们收到这句话，首先验证数字签名的可信性，然后验证张三确实拥有这些比特币（每一笔交易都有上一笔交易的编号，用来查询比特币的来源）。验证通过以后，就着手把这句话写入区块链了。一旦写入区块链，所有人就都可以查询到，因此这笔比特币就被认为，从张三转移到了李四。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011107.png" alt="" title="" /></p>
+
+<p><strong>区块链的作用就是把这句话永久保存下来了，让任何人都可以查看，并且任何人（包括张三本人在内）都无法再修改了。</strong></p>
+
+<p><strong>货币是什么？其实就是这句话。这一句话就完成了一次支付。</strong>我们平时用人民币支付，其实只是用纸币表达这条信息。如果每个人都可以实时写入/读取中央记账系统（区块链），那么完全可以不携带货币。</p>
+
+<h2>七、双重支出</h2>
+
+<p>前面说过，交易不可能被伪造。但是，由于每一笔交易都是一串二进制信号，因此可能被复制。举例来说，"张三向李四转移了1个比特币"这句话，可能被其他人复制，也可能被张三自己复制，提交到区块链。</p>
+
+<p><strong>如果这句话被两次写入区块链，就意味着张三可以把同一笔钱花掉两次。</strong>但是，第二次写入的时候，查询区块链可以发现张三已经把这笔钱花掉了，从而认定这是不合法的交易，不能写入区块链。因此，复制交易是不可能的。</p>
+
+<p><strong>比较麻烦的是另一种情况，就是张三把同一笔钱付给两个人。</strong>他先向区块链提交一个交易"张三向李四转移了1个比特币"，然后又提交了另一个交易"张三向王五转移了1个比特币"。这两个交易都可能被认为是真实的交易，从而进入区块链。因此，必须有办法防止出现这种情况。</p>
+
+<p>情况一：同一个矿工收到了这两个交易。那么他会察觉到，它们不可能同时成立，因此选择其中的一笔写入区块链。</p>
+
+<p>情况二：矿工 A 收到了第一笔交易，矿工 B 收到了第二笔交易，他们各自都会认定这是合法的交易，分别把这两笔交易写入了两个区块，这时区块链就出现了分叉。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018011109.png" alt="" title="" /></p>
+
+<p>比特币协议规定，分叉点之后最先达到6个区块的那个分支，被认定为正式的区块链，其他分支都将被放弃。由于区块的生成速度由计算能力决定，所以到底哪一笔交易最后会被写入区块链，完全由它所在的分支能吸引多少计算能力决定。<strong>隐藏的逻辑是，如果大多数人（计算能力）选择相信某一笔交易，那么它就应该是真的。</strong></p>
+
+<p>综上所述，双重支出不可能发生。因为中央记账系统总有办法发现，你把同一笔钱花了两遍。但是，这也说明了比特币的一个代价，就是交易不能实时确认，必须等待至少一个小时。</p>
+
+<h2>八、参考链接</h2>
+
+<ul>
+<li><a href="http://www.michaelnielsen.org/ddi/how-the-bitcoin-protocol-actually-works/">How the Bitcoin protocol actually works</a>, by Michael Nielsen</li>
+</ul>
+
+<p>（完）</p>
+
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2018-01-11T08:02:19+08:00">2018年1月11日</abbr></li>
+<li>更多内容： <a href="http://www.ruanyifeng.com/blog/archives.html" target="_blank"> 档案</a>  » 
+<a href="http://www.ruanyifeng.com/blog/computer/"> 理解计算机</a> 
+</li>
+<li>文集：<a href="/road" target="_blank">《前方的路》</a>，<a href="/survivor" target="_blank">《未来世界的幸存者》</a></li>
+<li>社交媒体：<a href="https://twitter.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAk1JREFUeNqsVc9rE0EU/mZ3dhPNJl2bVIk/Km09aFBE8GLvnrwJXvwLxIsgCP4Fnit6E8Gb0IMHwUsL9SSNgiAoooJIpE1Joo1h82uT7IxvxmRN3Q32kAdvdrI773vfe+/bDTu9WioDcDAda3Ja8piepQ1avCkCeny0Y+R9KenKwOmHHLvPaKn7AtVOoO8dOWDCMpg+41gMQv5FNEJACgoE8MsPNLDBhgfoutMOsJDmWLmU037C4TApciljwQ/kHoohQxV06+wMXNvE7WINuaSpvdYVKLgWnl3O4zAxU3Z1IYVGT+B5qYWV9z2kbQaT/cOwTsxOUUYF+mB5Dkmi8HG3h2q9hxsFNwRTdvQgxxnXRrMvIdkEhllis/qtiWuLDm4WZnBlPoWnXz28LHdw0uGR7m9Wu3j0qYGEubfn4UlBfXO4gTZltRNMg9w9f0i7kNFxllsBlS0x75gYfxyWTBUjT2W5CSMSPBrQuG21+hiMDS8CeCzF8eSLp13uQ3Ab1IqMFZN8tFHPmgOBF99bYP8Be1Xp6t7OJszJgKpPSiZvaj7uf2hguz2IBQuozDvFH6RDBjuK9wdQDvt0nMpW+8efGyh5UcAeZb2+UcHbnz5Jx4wdlp4yJYU3kLiQtfBwOYeLc8nIwfXtNu69q2Oz4mMxbemYOOOjKarhvq51KUjg3GwiFPIuvcNF6pnSnWK0lOEabNLgQh1aJFAhlGB9rG110B2+oyRNPc0sZbRNFltmLKDKqj4Qrm1ojzOxDz2pyPQ0P7CK4c40/wJ+CzAAGYrXsvfFXR4AAAAASUVORK5CYII=" style="border:0;"> twitter</a>，<a href="http://weibo.com/ruanyf" target="_blank"><img src="data:image/png;base64,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" style="border:0;" /> weibo</a></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+  <div id="sup-post-2" style="display: inline-block ! important;width: 100%;">
+    <p style="text-align:center;"><a title=”一灯学堂“ href="http://www.yidengxuetang.com/recruit?utm_source=ruanyifeng.com" target="_blank"><image alt="一灯学堂" src="http://www.ruanyifeng.com/blog/images/sup_yideng_201711a.jpg" style="border:none;display: block !important;" /></a></p>  
+    <p style="text-align:center;"><a title="优达学城"  href="https://cn.udacity.com/fend/?utm_source=ruanyfc&utm_medium=kol&utm_campaign=fend" target="_blank"><image alt="优达学城" src="http://www.ruanyifeng.com/blog/images/sup_udacity_201801.jpg" style="border:none;display: block !important;" /></a></p>
+  </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2018.01.21: <a href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a></strong>
+
+                           <div class="entry-body">
+                              学习编程其实就是学高级语言，即那些为人类设计的计算机语言。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2018.01.04: <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html">比特币入门教程</a></strong>
+
+                           <div class="entry-body">
+                              比特币（bitcoin）诞生于2008年的一篇论文。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2017.12.26: <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">区块链入门教程</a></strong>
+
+                           <div class="entry-body">
+                              区块链（blockchain）是眼下的大热门，新闻媒体大量报道，宣称它将创造未来。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2017.07.23: <a href="http://www.ruanyifeng.com/blog/2017/07/iaas-paas-saas.html">IaaS，PaaS，SaaS 的区别</a></strong>
+
+                           <div class="entry-body">
+                              越来越多的软件，开始采用云服务。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="gd1" style="display: block !important;">
+<h2>广告<a href="/support.html">（购买广告位）</a></h2>
+<div id="gd1-inner">
+<div id="gd1-left">
+<a href="https://2018.qconbeijing.com/?utm_source=ruanyf&utm_campaign=8&utm_medium=banner&utm_term=0212" title="InfoQ" target="_blank"><image alt="InfoQ" src="http://www.ruanyifeng.com/blog/images/sup_geekbang_20180212b.jpg" style="border:none;display: block !important;" /></a>
+</div>
+<div id="gd1-right">
+<a href="https://cn.udacity.com/course/react-nanodegree--nd019-cn/?utm_source=ruanyfb&utm_medium=kol&utm_campaign=react" title="优达学城" target="_blank"><image alt="优达学城" src="/blog/images/sup_udacity_b20180115.jpg" style="border:none;display: block !important;" /></a>
+
+</div>
+</div>
+</div>
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（94条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-384353" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xiechen</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384353">
+            <p>实体货币也有所谓高下，比如美元是全球货币而卢布使用范围会被局限，所以美国可以享受美元红利；<br />
+同理虚拟加密货币的setting下，哪种货币是最会被人认可的呢？E.g. 比特币、以太币，都是电子货币，什么样的factor会决定这些加密货币的地位呢</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  8:56 AM">2018年1月11日 08:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384353">#</a>
+ | <a href="#comment-text" title="引用xiechen的这条留言" onclick="return CommentQuote('comment-quote-384353','xiechen');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384354" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://w4n9hu1.site/" href="http://w4n9hu1.site/" target="_blank" rel="nofollow">w4n9hu1</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384354">
+            <p>越来越多的虚拟货币和政府滥发有区别吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  8:59 AM">2018年1月11日 08:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384354">#</a>
+ | <a href="#comment-text" title="引用w4n9hu1的这条留言" onclick="return CommentQuote('comment-quote-384354','w4n9hu1');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384355" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">spartucus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384355">
+            <p>下篇文章能讲讲区块链2.0, 3.0，智能合约，闪电网络，隔离见证等吗</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:01 AM">2018年1月11日 09:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384355">#</a>
+ | <a href="#comment-text" title="引用spartucus的这条留言" onclick="return CommentQuote('comment-quote-384355','spartucus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384357" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">llo</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384357">
+            <p>现在价格很火的是哪一种比特币呢？还有哪些相对热门的比特币？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:06 AM">2018年1月11日 09:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384357">#</a>
+ | <a href="#comment-text" title="引用llo的这条留言" onclick="return CommentQuote('comment-quote-384357','llo');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384361" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://fanzhiyang.com" href="http://fanzhiyang.com" target="_blank" rel="nofollow">zhiyang</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384361">
+            <blockquote>
+<pre>引用llo的发言：</pre>
+
+<p>现在价格很火的是哪一种比特币呢？还有哪些相对热门的比特币？</p>
+
+</blockquote>
+
+<p>比特币就是比特币，没有哪一种之说</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:36 AM">2018年1月11日 09:36</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384361">#</a>
+ | <a href="#comment-text" title="引用zhiyang的这条留言" onclick="return CommentQuote('comment-quote-384361','zhiyang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384362" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">JIMMY</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384362">
+            <p>不是很懂这个比特币，国家发行货币，好歹有个国家做担保。比特币一串数字，谁担保一定能有价值？我拉出来的一坨那个它不会被（轻易）偷走，它无法伪造，它也无法大批生产。那是不是也有人买？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:45 AM">2018年1月11日 09:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384362">#</a>
+ | <a href="#comment-text" title="引用JIMMY的这条留言" onclick="return CommentQuote('comment-quote-384362','JIMMY');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384371" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kexiang</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384371">
+            <p>今年以太币会大火吗？各位怎么看待</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:52 AM">2018年1月11日 09:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384371">#</a>
+ | <a href="#comment-text" title="引用kexiang的这条留言" onclick="return CommentQuote('comment-quote-384371','kexiang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384372" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">陶</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384372">
+            <p>我认为货币的本质还有一点：有政府机构作信用保证，否则再有价值，也只是圈内人士的狂欢，就像集邮一样。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:56 AM">2018年1月11日 09:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384372">#</a>
+ | <a href="#comment-text" title="引用陶的这条留言" onclick="return CommentQuote('comment-quote-384372','陶');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384376" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xjz</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384376">
+            <blockquote>
+<pre>引用llo的发言：</pre>
+
+<p>现在价格很火的是哪一种比特币呢？还有哪些相对热门的比特币？</p>
+
+</blockquote>
+
+<p>比特币是加密货币的一种，最火的当然是比特币了<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:03 AM">2018年1月11日 10:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384376">#</a>
+ | <a href="#comment-text" title="引用xjz的这条留言" onclick="return CommentQuote('comment-quote-384376','xjz');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384385" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">肖龙</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384385">
+            <p>可信性是一方面，和历史上所有的货币一样，不管是贝壳，还是金银铜，都是为了货物流通而产生的。所以文中所说的 “无法大批生成，最终停止增长”  恰恰是比特币想作为货币的局限性所在，货币供给量的连续下降，流通货币的减少会造成通货紧缩是常识。比特币支持者那种朴素的限制政府超发的思想其实和70年代被取消的黄金本位制是一样的。和黄金一样，不能满足日益扩大的商品流通需要，不能承担货币本身职能，那么就做不成货币了。</p>
+
+<p>而比特币的支持者往往有以下解释说比特币作为电子货币可以切割到多位小数之后来做交易，甚至无限切割下去。那么先不说无限切割的可行性，你自己不觉得0.0000几的比特币去买东西反人类么？而且这种今天0.0001的一斤猪肉，因为比特币流通的减少，明天就只能0.00001了，你觉得会有什么后果？</p>
+
+<p>区块链是个好东西，而比特币的价值，我是从来不认的，电子郁金香而已。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:22 AM">2018年1月11日 10:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384385">#</a>
+ | <a href="#comment-text" title="引用肖龙的这条留言" onclick="return CommentQuote('comment-quote-384385','肖龙');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384386" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">aaa</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384386">
+            <p>钱B，就是 压榨剥削的一种手段。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:34 AM">2018年1月11日 10:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384386">#</a>
+ | <a href="#comment-text" title="引用aaa的这条留言" onclick="return CommentQuote('comment-quote-384386','aaa');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384388" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://zaishanda.com/" href="http://zaishanda.com/" target="_blank" rel="nofollow">朴泽唯</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384388">
+            <p>越来越多的虚拟货币和政府滥发有区别吗？</p>
+
+<p>———</p>
+
+<p>当然有区别，虚拟货币是人们选择相信它，而政府发行的货币被滥发是人们没有选择的</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:36 AM">2018年1月11日 10:36</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384388">#</a>
+ | <a href="#comment-text" title="引用朴泽唯的这条留言" onclick="return CommentQuote('comment-quote-384388','朴泽唯');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384393" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Jimmy</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384393">
+            <p>跟一些楼友想法差不多，货币的可信性不只是货币本身的防伪和交易中的可靠精准，这两点其实也并非货币的本质。 货币大部分含义还有要有国家的信用在，也只有国家政府才能赋予货币的价值几何。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:43 AM">2018年1月11日 10:43</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384393">#</a>
+ | <a href="#comment-text" title="引用Jimmy的这条留言" onclick="return CommentQuote('comment-quote-384393','Jimmy');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384394" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://yangerxiao.com" href="https://yangerxiao.com" target="_blank" rel="nofollow">杨二</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384394">
+            <p>比特币是区块链1.0产物，ETH是区块链2.0产物，EOS是区块链3.0产物，这样总结，有毛病吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:44 AM">2018年1月11日 10:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384394">#</a>
+ | <a href="#comment-text" title="引用杨二的这条留言" onclick="return CommentQuote('comment-quote-384394','杨二');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384395" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://alexinea.com" href="https://alexinea.com" target="_blank" rel="nofollow">行者自若</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384395">
+            <p>只有具有暴击机关为背书的国家政权进行过赋权的纸张，才是具有可信性的货币。比特币没有经过赋权，所以它只是一种名字里带着「币」字的商品，而不是货币。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:47 AM">2018年1月11日 10:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384395">#</a>
+ | <a href="#comment-text" title="引用行者自若的这条留言" onclick="return CommentQuote('comment-quote-384395','行者自若');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384401" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">lzlhero</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384401">
+            <p>长期来看，比特币与各种法币会共存，某种货币所包含的总价值，是人们的信心。当人们不看好法币时，人们买入比特币，比特币所包含的总社会价值会上升。相反时，同理。</p>
+
+<p>比特币提供了基础的技术手段，防止滥发，本质上是好的。相对于法币，它会吸引更多的社会价值。由于比特币与法币存在竞争，所以各种法币的增发就会受限，等于限制了各国的财政权利，长久来看，比特币必然会遭到打压。我觉得这是比特币的社会意义。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:59 AM">2018年1月11日 10:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384401">#</a>
+ | <a href="#comment-text" title="引用lzlhero的这条留言" onclick="return CommentQuote('comment-quote-384401','lzlhero');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384405" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">马六甲海虾</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384405">
+            <p>个人感觉谈数字货币如果能结合货币这个概念的金融背景就更完美了，比如它的三个职能：交易媒介、价值储藏和记帐单位。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 11:23 AM">2018年1月11日 11:23</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384405">#</a>
+ | <a href="#comment-text" title="引用马六甲海虾的这条留言" onclick="return CommentQuote('comment-quote-384405','马六甲海虾');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384407" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://kevinyanggit.github.io" href="http://kevinyanggit.github.io" target="_blank" rel="nofollow">Kevin</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384407">
+            <p>我应该使用哪一种币？要不要现在就去投资一些？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 11:28 AM">2018年1月11日 11:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384407">#</a>
+ | <a href="#comment-text" title="引用Kevin的这条留言" onclick="return CommentQuote('comment-quote-384407','Kevin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384411" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">JayLee</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384411">
+            <blockquote>
+<pre>引用Jimmy的发言：</pre>
+
+<p>跟一些楼友想法差不多，货币的可信性不只是货币本身的防伪和交易中的可靠精准，这两点其实也并非货币的本质。 货币大部分含义还有要有国家的信用在，也只有国家政府才能赋予货币的价值几何。</p>
+
+</blockquote>
+
+<p>你这里提到的可信性，其实有两层意思：<br />
+1、货币本身的可靠程度<br />
+2、货币价值的可靠程度</p>
+
+<p>作为货币，就必须满足1，方法是货币本身的防伪和交易中的可靠精准，这个是任何货币/法币的基本要求。<br />
+至于2，那就是要有一系列的其他保障，以使大多数人相信价值是有保证的，比如，信用体系。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 12:45 PM">2018年1月11日 12:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384411">#</a>
+ | <a href="#comment-text" title="引用JayLee的这条留言" onclick="return CommentQuote('comment-quote-384411','JayLee');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384413" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.xiaoc.cc/" href="http://www.xiaoc.cc/" target="_blank" rel="nofollow">小柴</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384413">
+            <p>@肖龙：</p>
+
+<p>赞同您的说法，前期依靠优势持有大量数字货币的人躺着就可以享受数字货币升值带来的利益。这点相比公平性不如纸币（当然纸币也有劣势，是指相比而已）</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  1:04 PM">2018年1月11日 13:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384413">#</a>
+ | <a href="#comment-text" title="引用小柴的这条留言" onclick="return CommentQuote('comment-quote-384413','小柴');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384415" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://123" href="http://123" target="_blank" rel="nofollow">11</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384415">
+            <p>发布发行还是政府说了算，毕竟铸币权在政府手里。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  2:13 PM">2018年1月11日 14:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384415">#</a>
+ | <a href="#comment-text" title="引用11的这条留言" onclick="return CommentQuote('comment-quote-384415','11');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384417" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">SaWolf</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384417">
+            <blockquote>
+<pre>引用w4n9hu1的发言：</pre>
+
+<p>越来越多的虚拟货币和政府滥发有区别吗？</p>
+
+</blockquote>
+
+<p>有的。<br />
+政府滥发政府背锅，虚拟货币没人背锅。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  2:51 PM">2018年1月11日 14:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384417">#</a>
+ | <a href="#comment-text" title="引用SaWolf的这条留言" onclick="return CommentQuote('comment-quote-384417','SaWolf');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384419" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">max210</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384419">
+            <p>即使到了数字货币时代，我觉得币的发布也是由政府决定，我现在想不通的是区块链技术除了在金融银行方面可以大施拳脚，还有什么其他的应用场景吗</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  3:40 PM">2018年1月11日 15:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384419">#</a>
+ | <a href="#comment-text" title="引用max210的这条留言" onclick="return CommentQuote('comment-quote-384419','max210');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384429" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Sean</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384429">
+            <p>能介绍一下以太坊与比特币的区别吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  7:03 PM">2018年1月11日 19:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384429">#</a>
+ | <a href="#comment-text" title="引用Sean的这条留言" onclick="return CommentQuote('comment-quote-384429','Sean');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384432" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ZX</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384432">
+            <blockquote>
+<pre>引用kexiang的发言：</pre>
+
+<p>今年以太币会大火吗？各位怎么看待</p>
+
+</blockquote>
+
+<p>已经够火了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:28 PM">2018年1月11日 21:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384432">#</a>
+ | <a href="#comment-text" title="引用ZX的这条留言" onclick="return CommentQuote('comment-quote-384432','ZX');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384433" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">herbal</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384433">
+            <p>除了比特币这样久经考验、有信任基础的非中心化密码币才能算是货币。那些由企业，银行等在背后背书的，顶多算是金融衍生品，人们再这样非理性投资，必有一劫。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:25 PM">2018年1月11日 22:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384433">#</a>
+ | <a href="#comment-text" title="引用herbal的这条留言" onclick="return CommentQuote('comment-quote-384433','herbal');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384434" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">大猫猫</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384434">
+            <p>然后验证张三确实拥有这些比特币（每一笔交易都有上一笔交易的编号，用来查询比特币的来源）<br />
+如果上一笔收到2元，这次支付1元，那么下次支付剩下的1元如何操作？<br />
+如果收到1元两次，这次合并支付他人2元，上一笔交易怎么算？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:55 PM">2018年1月11日 22:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384434">#</a>
+ | <a href="#comment-text" title="引用大猫猫的这条留言" onclick="return CommentQuote('comment-quote-384434','大猫猫');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384443" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">一位</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384443">
+            <p>可信性是货币的必要性，受信的范围定义货币流通范围。可在国家范围内流通而不受监控，现实中不可能。<br />
+货币本身没有价值，定义货币的价格就是可退换商品的价格。<br />
+加密货币本质是货币，离不开货币的本质。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  6:37 AM">2018年1月12日 06:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384443">#</a>
+ | <a href="#comment-text" title="引用一位的这条留言" onclick="return CommentQuote('comment-quote-384443','一位');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384445" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">东星</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384445">
+            <p>大神只是说了美元是全世界都认可的，所以能成为世界通用货币。但是我们要思考一下为什么美元可以世界通用？背后是因为强大的美国的国家信用做支撑。如果美国完蛋了，美元也就变成废纸了。那么比特币的后面是啥？虚拟货币99%都是博傻而已。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  9:08 AM">2018年1月12日 09:08</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384445">#</a>
+ | <a href="#comment-text" title="引用东星的这条留言" onclick="return CommentQuote('comment-quote-384445','东星');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384448" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">L14</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384448">
+            <p>可否解惑一下，此“货币”如何实现借贷。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018 10:25 AM">2018年1月12日 10:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384448">#</a>
+ | <a href="#comment-text" title="引用L14的这条留言" onclick="return CommentQuote('comment-quote-384448','L14');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384450" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://nshen.net" href="http://nshen.net" target="_blank" rel="nofollow">NN</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384450">
+            <p>比特币确实无法伪造，无法大批生成。但没办法限制别人合法fork它啊。</p>
+
+<p>如果在中国除了人民币合法，还可以合法随意大量发行中国男人币，中国公主币，汉族币，东北币，那人民币还有那么高价值吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018 11:09 AM">2018年1月12日 11:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384450">#</a>
+ | <a href="#comment-text" title="引用NN的这条留言" onclick="return CommentQuote('comment-quote-384450','NN');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384462" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jadedrip</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384462">
+            <p>其实无限切割后并不会有用 0.00000001 个比特币的情况，到时候创建个新单位就 OK 了，在计算机上，这只是个简单的显示问题。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  2:02 PM">2018年1月12日 14:02</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384462">#</a>
+ | <a href="#comment-text" title="引用jadedrip的这条留言" onclick="return CommentQuote('comment-quote-384462','jadedrip');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384463" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jojoyoung</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384463">
+            <p>“这个中央记账系统已经实现了”，差点以为是我国中央。。虎躯一震。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  2:36 PM">2018年1月12日 14:36</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384463">#</a>
+ | <a href="#comment-text" title="引用jojoyoung的这条留言" onclick="return CommentQuote('comment-quote-384463','jojoyoung');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384469" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://zhangjh.me" href="http://zhangjh.me" target="_blank" rel="nofollow">但丁</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384469">
+            <p>比特币虽然总个数不能增长，但可以无限拆分，单位不以个计。就像原来一个比特币几百，现在一个比特币十万，说白了这不也是一种通货膨胀吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  4:07 PM">2018年1月12日 16:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384469">#</a>
+ | <a href="#comment-text" title="引用但丁的这条留言" onclick="return CommentQuote('comment-quote-384469','但丁');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384471" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">路遥</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384471">
+            <p>我觉得,比特币越来越像一个泡沫了,他不稳定.在现实的交易过程中,大家大都无法接受一个你无法确定他价值的东西.或许下一秒他翻了10倍以上.或许下一秒一文不值.这个不稳定行,不能满足货币的基本属性.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  4:55 PM">2018年1月12日 16:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384471">#</a>
+ | <a href="#comment-text" title="引用路遥的这条留言" onclick="return CommentQuote('comment-quote-384471','路遥');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384498" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384498">
+            <p>比特币是为去中心化而生的，它不应该有什么“中央记账系统”，如果有了，就是比特币的失败，还不如现有的VISA、支付宝。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:47 AM">2018年1月13日 01:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384498">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384498','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384528" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.xttblog.com" href="http://www.xttblog.com" target="_blank" rel="nofollow">业余草</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384528">
+            <p>@路遥：</p>
+
+<p>比特币是不是泡沫并不重要，重要的是只有资本才能推动区块链技术的发展！</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  5:22 PM">2018年1月13日 17:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384528">#</a>
+ | <a href="#comment-text" title="引用业余草的这条留言" onclick="return CommentQuote('comment-quote-384528','业余草');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384562" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">aee</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384562">
+            <p>micheal nelson那真的有好多好东西~</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 14, 2018  3:31 PM">2018年1月14日 15:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384562">#</a>
+ | <a href="#comment-text" title="引用aee的这条留言" onclick="return CommentQuote('comment-quote-384562','aee');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384565" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">萝卜</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384565">
+            <blockquote>
+<pre>引用但丁的发言：</pre>
+
+<p>比特币虽然总个数不能增长，但可以无限拆分，单位不以个计。就像原来一个比特币几百，现在一个比特币十万，说白了这不也是一种通货膨胀吗？</p>
+
+</blockquote>
+
+<p>这算是通货紧缩吧</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 10:10 AM">2018年1月15日 10:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384565">#</a>
+ | <a href="#comment-text" title="引用萝卜的这条留言" onclick="return CommentQuote('comment-quote-384565','萝卜');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384569" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.cnblogs.com/mingbai/" href="http://www.cnblogs.com/mingbai/" target="_blank" rel="nofollow">名白</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384569">
+            <p>看着一些根本不懂通货膨胀和区块链的人，讨论滥发货币和信用问题，，，，哈哈</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 10:34 AM">2018年1月15日 10:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384569">#</a>
+ | <a href="#comment-text" title="引用名白的这条留言" onclick="return CommentQuote('comment-quote-384569','名白');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384570" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jarvis</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384570">
+            <p>读完了解了很多</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 10:44 AM">2018年1月15日 10:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384570">#</a>
+ | <a href="#comment-text" title="引用jarvis的这条留言" onclick="return CommentQuote('comment-quote-384570','jarvis');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384576" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">DDK</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384576">
+            <p>作者一点经济学常识都没有，就在这里来瞎扯淡。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 12:46 PM">2018年1月15日 12:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384576">#</a>
+ | <a href="#comment-text" title="引用DDK的这条留言" onclick="return CommentQuote('comment-quote-384576','DDK');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384583" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">hotebeb</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384583">
+            <p>51% 攻击呢？理论上来说掌握了全网 51% 的算力，是可以在分叉处伪造新的最长链，制造双花的吧。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018  4:31 PM">2018年1月15日 16:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384583">#</a>
+ | <a href="#comment-text" title="引用hotebeb的这条留言" onclick="return CommentQuote('comment-quote-384583','hotebeb');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384597" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Her-ero</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384597">
+            <p>1. 不解决实时交易的问题, 永远不可能取代国家信用式货币. <br />
+2. 政府不一定是永存的, 电子数据和互联网也可能不是永存的. <br />
+3. 但互联网伴随人类直到毁灭的可能性比政府伴随的概率要大. <br />
+4. 通缩是个大问题, 另外加密货币导致了个人财富不可被公权力强行再分配. <br />
+5. 人类是社会性生物, 如果没有财富再分配, 可能会导致人类的阶层彻底撕裂. <br />
+6. 比特币在长远的一段时间内会是一种"贵金属", 不会跌破, 不会永涨, 不会用于日常交易. <br />
+7. 电费(能源)在未来也许不是个(大)问题. </p>
+
+<p>我的七点猜想, 诸位见笑了. </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  9:54 AM">2018年1月16日 09:54</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384597">#</a>
+ | <a href="#comment-text" title="引用Her-ero的这条留言" onclick="return CommentQuote('comment-quote-384597','Her-ero');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384603" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">C.Jay</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384603">
+            <p>数字货币的问题是没有实体支撑无人、组织为其背书。而银行卡中的数字，支票由银行背书，现金可以理解为由国家背书。 数字货币：如比特币完全是建立在一种信任机制下，一旦这种信任机制坍塌，比特币将会一文不值。2014年Mt.Gox遭攻丢失85W比特币，随后宣布破产，导致比特币价格大跌，也能看出信任度在这中间的作用。因此我认为，相信比特币的人数越多，比特币就还会涨，比特币还没有到高点的时候。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018 11:41 AM">2018年1月16日 11:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384603">#</a>
+ | <a href="#comment-text" title="引用C.Jay的这条留言" onclick="return CommentQuote('comment-quote-384603','C.Jay');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384604" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.lovejavascript.com" href="http://www.lovejavascript.com" target="_blank" rel="nofollow">拭目以待</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384604">
+            <p>我对货币的理解：<br />
+国家信用体制下产生的交易媒介就是货币。</p>
+
+<p>钱应该掌握在政府手中，而不是无人管理的区块链内。这是很危险的，除了钱，我们还应该有一个安全的社会环境。而这个环境只能由政府来提供，虽然有些做的并不完美。</p>
+
+<p>比特币最大的作用就是在浪费电力，而很多电力的来源是以生态为代价的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  1:29 PM">2018年1月16日 13:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384604">#</a>
+ | <a href="#comment-text" title="引用拭目以待的这条留言" onclick="return CommentQuote('comment-quote-384604','拭目以待');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384614" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Geass</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384614">
+            <p>感觉比特币这种虚拟货币主要还是看个人是否认同</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  2:23 PM">2018年1月16日 14:23</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384614">#</a>
+ | <a href="#comment-text" title="引用Geass的这条留言" onclick="return CommentQuote('comment-quote-384614','Geass');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384621" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Fang</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384621">
+            <blockquote>
+<pre>引用JIMMY的发言：</pre>
+
+<p>不是很懂这个比特币，国家发行货币，好歹有个国家做担保。比特币一串数字，谁担保一定能有价值？我拉出来的一坨那个它不会被（轻易）偷走，它无法伪造，它也无法大批生产。那是不是也有人买？</p>
+
+</blockquote>
+
+<p>有国家担保，对应的这就是中心化，只有国家可以发行货币。价值对于此类去中心化的货币才说，认可的人越多 价值越高<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  3:52 PM">2018年1月16日 15:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384621">#</a>
+ | <a href="#comment-text" title="引用Fang的这条留言" onclick="return CommentQuote('comment-quote-384621','Fang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384634" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Mir</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384634">
+            <blockquote>
+<pre>引用肖龙的发言：</pre>
+
+<p>而比特币的支持者往往有以下解释说比特币作为电子货币可以切割到多位小数之后来做交易，甚至无限切割下去。那么先不说无限切割的可行性，你自己不觉得0.0000几的比特币去买东西反人类么？而且这种今天0.0001的一斤猪肉，因为比特币流通的减少，明天就只能0.00001了，你觉得会有什么后果？</p>
+
+</blockquote>
+
+<p>是直接后面加8个0放大1亿倍，就够用了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018 12:24 AM">2018年1月17日 00:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384634">#</a>
+ | <a href="#comment-text" title="引用Mir的这条留言" onclick="return CommentQuote('comment-quote-384634','Mir');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384663" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">shirphy</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384663">
+            <p>我还是明白，区块数据是如何生成的？有什么算法，规则来保证生成的区块是有效区块？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  1:18 PM">2018年1月17日 13:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384663">#</a>
+ | <a href="#comment-text" title="引用shirphy的这条留言" onclick="return CommentQuote('comment-quote-384663','shirphy');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384671" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">marsprince</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384671">
+            <blockquote>
+<pre>引用w4n9hu1的发言：</pre>
+
+<p>越来越多的虚拟货币和政府滥发有区别吗？</p>
+
+</blockquote>
+
+<p>政府是无限滥发，虚拟货币是竞争，如果你做的无法比比特币好，就代替不了比特币，一旦代替了比特币，比特币的开发者又会分叉，做更优的虚拟货币，竞争机制自然会选出最优的货币留在台面上，至于那些空气币，最后一定无人问津</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  8:38 PM">2018年1月17日 20:38</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384671">#</a>
+ | <a href="#comment-text" title="引用marsprince的这条留言" onclick="return CommentQuote('comment-quote-384671','marsprince');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384674" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Anony</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384674">
+            <p>請問貴站文章的回應是否也能用RSS訂閱？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018 10:13 AM">2018年1月18日 10:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384674">#</a>
+ | <a href="#comment-text" title="引用Anony的这条留言" onclick="return CommentQuote('comment-quote-384674','Anony');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384677" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xna</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384677">
+            <p>至少一个小时的交易确认时间？ 对于正常的商业生活交易，一分钟恐怕都不能等。 这样的交易标的，有真实的应用价值吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018 11:14 AM">2018年1月18日 11:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384677">#</a>
+ | <a href="#comment-text" title="引用xna的这条留言" onclick="return CommentQuote('comment-quote-384677','xna');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384683" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">aAa</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384683">
+            <blockquote>
+<pre>引用DDK的发言：</pre>
+
+<p>作者一点经济学常识都没有，就在这里来瞎扯淡。</p>
+
+</blockquote>
+
+<p>人家是经济学博士</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018  2:26 PM">2018年1月18日 14:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384683">#</a>
+ | <a href="#comment-text" title="引用aAa的这条留言" onclick="return CommentQuote('comment-quote-384683','aAa');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384690" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zd</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384690">
+            <p>货币是权利的象征，只要有国家之分，btc 之流的不能受政权控制的，只能当做投机倒把发横财的机会啦，作为货币流通，想多了。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018  3:03 PM">2018年1月18日 15:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384690">#</a>
+ | <a href="#comment-text" title="引用zd的这条留言" onclick="return CommentQuote('comment-quote-384690','zd');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384699" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">随便说说</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384699">
+            <p>比特币技术我很认可，可是，既然比特币具备货币性，那为什么要用美元来体现出它的价值，而不是直接用黄金来体现。还有一个就是他的数量限制性，不具备真正成为货币的可能，因为经济体量越来越大，需要的量也就越大。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018  9:25 PM">2018年1月18日 21:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384699">#</a>
+ | <a href="#comment-text" title="引用随便说说的这条留言" onclick="return CommentQuote('comment-quote-384699','随便说说');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384700" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">随便说说</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384700">
+            <p>比特币交易手续费，谁出的手续费高，谁就优先交易。由此可以确定，比特币无法成为流通性货币的原因，他就是一种可以炒作的虚拟商品，但这种虚拟货币却非常的耗电。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 18, 2018  9:41 PM">2018年1月18日 21:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384700">#</a>
+ | <a href="#comment-text" title="引用随便说说的这条留言" onclick="return CommentQuote('comment-quote-384700','随便说说');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384719" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Vinci321</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384719">
+            <p>技术上没问题．但是从经济上来看，比特币的数量限制了它的发挥．试想，当人们知道某种东西终究会是稀缺品，价值会不断增长之后，会怎么做？当然是不断囤积，以备后用．而当一种货币被囤积之后，市面上流通的货币将越来越少，人们越来越不舍得将货币花出去，这将造成什么后果？－－通货紧缩．这比通货膨胀还要命．社会不断发展，人们生活水平不断提高，靠的是什么？靠的是人们相信通过努力工作可以获得更多的货币，相信更多的货币可以换来更好的生活水平．但是通货紧缩却让人们不愿花钱，同时，工作所获得到的货币越来越少，市场上的物品没有人去舍得去买，没人买厂家就要倒闭，经济一片凋零．请问这样的货币有什么用？试想，如果现在恢复金本位，所有买卖由黄金可以由进行交易，有谁会傻到去用黄金买东西吗？</p>
+
+<p>在我看来，比特币最大的社会价值，如上面有的朋友说的，在于对主权货币的补充，当主权货币超发，购买力稀释时，人们可以选择保值增值的商品/货币．</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018 10:15 AM">2018年1月19日 10:15</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384719">#</a>
+ | <a href="#comment-text" title="引用Vinci321的这条留言" onclick="return CommentQuote('comment-quote-384719','Vinci321');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384747" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Travis</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384747">
+            <blockquote>
+<pre>引用DDK的发言：</pre>
+
+<p>作者一点经济学常识都没有，就在这里来瞎扯淡。</p>
+
+</blockquote>
+
+<p>阮老师是经济学博士，而且我看到他的专业里有货币一项。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:44 PM">2018年1月19日 16:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384747">#</a>
+ | <a href="#comment-text" title="引用Travis的这条留言" onclick="return CommentQuote('comment-quote-384747','Travis');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384757" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">MarvinHoo</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384757">
+            <blockquote>
+<pre>引用朴泽唯的发言：</pre>
+
+<p>越来越多的虚拟货币和政府滥发有区别吗？</p>
+
+<p>———</p>
+
+<p>当然有区别，虚拟货币是人们选择相信它，而政府发行的货币被滥发是人们没有选择的</p>
+
+</blockquote>
+
+<p>可以说是两个概念。越来越多的虚拟货币可以理解为越来越多的币种，比如：人民币、美元、欧元....，如果越来越多如果没人使用，对现有的虚拟货币是没有什么影响的；而所谓政府滥发表示同种货币，并且有人民使用，发行量增大，会影响人民拥有财产的多少。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  6:13 PM">2018年1月19日 18:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384757">#</a>
+ | <a href="#comment-text" title="引用MarvinHoo的这条留言" onclick="return CommentQuote('comment-quote-384757','MarvinHoo');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384759" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">20180119</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384759">
+            <p>偶然发现您的个人的NB的blog，以及看完这篇言简意赅阐述区块链及token本质的文章，欣喜之余，对您的读者质量表示惋惜。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  7:03 PM">2018年1月19日 19:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384759">#</a>
+ | <a href="#comment-text" title="引用20180119的这条留言" onclick="return CommentQuote('comment-quote-384759','20180119');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384764" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Youngffon</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384764">
+            <blockquote>
+<pre>引用大猫猫的发言：</pre>
+
+<p>然后验证张三确实拥有这些比特币（每一笔交易都有上一笔交易的编号，用来查询比特币的来源）<br />
+如果上一笔收到2元，这次支付1元，那么下次支付剩下的1元如何操作？<br />
+如果收到1元两次，这次合并支付他人2元，上一笔交易怎么算？</p>
+
+</blockquote>
+
+<p>发起支付请求时有两个地址，第一填给你要转账的人，第二个填自己的；（实现找零功能）<br />
+而收款可以来源于无线多的交易地址；</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018 10:22 PM">2018年1月19日 22:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384764">#</a>
+ | <a href="#comment-text" title="引用Youngffon的这条留言" onclick="return CommentQuote('comment-quote-384764','Youngffon');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384812" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">冰河末日</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384812">
+            <p>还是要人民对这种货币的认可才行，否则都是废纸</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 21, 2018  9:21 PM">2018年1月21日 21:21</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384812">#</a>
+ | <a href="#comment-text" title="引用冰河末日的这条留言" onclick="return CommentQuote('comment-quote-384812','冰河末日');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384831" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">熊德</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384831">
+            <p>个人感觉是个不错的技术 但是你说拿他当货币 我觉得不可靠</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018  9:47 AM">2018年1月22日 09:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384831">#</a>
+ | <a href="#comment-text" title="引用熊德的这条留言" onclick="return CommentQuote('comment-quote-384831','熊德');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384866" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://没有呃。。。" href="http://没有呃。。。" target="_blank" rel="nofollow">Poemrain</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384866">
+            <blockquote>
+<pre>引用DDK的发言：</pre>
+
+<p>作者一点经济学常识都没有，就在这里来瞎扯淡。</p>
+
+</blockquote>
+
+<p>您都没了解清楚情况就说人家瞎扯淡，所以到底是谁在瞎扯淡？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018  2:04 PM">2018年1月22日 14:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384866">#</a>
+ | <a href="#comment-text" title="引用Poemrain的这条留言" onclick="return CommentQuote('comment-quote-384866','Poemrain');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384920" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">关雨凝</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384920">
+            <p>国家不承认，比特币就是垃圾。国家有人名币，为什么要承认比特币呢？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 23, 2018  4:59 PM">2018年1月23日 16:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384920">#</a>
+ | <a href="#comment-text" title="引用关雨凝的这条留言" onclick="return CommentQuote('comment-quote-384920','关雨凝');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384946" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">x7lovelin</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384946">
+            <p>有个问题啊，最后那个双重支付请教下：<br />
+如果张三转了1比特币给李四，然后复制一份同样的转给王五，<br />
+后来两个矿工分别收到了请求进行处理，出现了分叉，最后由谁先最快产生6块决定存留方。<br />
+如果我本质是转给李四，后来处理王五那份的矿工计算能力快，不是最后存留的是转给王五的吗？<br />
+那这样交易不是出现问题了，因为我实际上是要转给李四的。</p>
+
+<p>求软老师解答下。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 24, 2018  4:09 PM">2018年1月24日 16:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384946">#</a>
+ | <a href="#comment-text" title="引用x7lovelin的这条留言" onclick="return CommentQuote('comment-quote-384946','x7lovelin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384952" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://9bao.tv" href="http://9bao.tv" target="_blank" rel="nofollow">孙伟男</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384952">
+            <p>利用比特币分叉时间差，那么就是张三向A、B分别付款1比特币，只有在一个小时后，A或者B才能察觉支付失败吗？<br />
+还有矿工记账的时候会不会记错呢。比如验明张三只有1个比特币，并且转给了A。这条消息是张三转1比特币给A。但是这条记录写错了。写成张三转10比特币给A。？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 24, 2018  5:39 PM">2018年1月24日 17:39</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384952">#</a>
+ | <a href="#comment-text" title="引用孙伟男的这条留言" onclick="return CommentQuote('comment-quote-384952','孙伟男');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384974" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xujianzhe</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384974">
+            <p>比特币动了太多人的蛋糕，最终加密电子货币一定会流行，但绝不是比特币，而是国家或者当权者分配了蛋糕后，放出的由国家或者组织信用背书的加密电子货币。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 25, 2018 10:19 AM">2018年1月25日 10:19</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-384974">#</a>
+ | <a href="#comment-text" title="引用xujianzhe的这条留言" onclick="return CommentQuote('comment-quote-384974','xujianzhe');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385015" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">leon</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385015">
+            <p>以国家信用为依托的纸币以及其他信用货币没有价值，但是有使用价值。而贵金属金银从商品中分离出来固定充当一般等价物，成为货币，这样的货币才具有价值。所以开头说美元，人民币具有价值不正确。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 25, 2018  6:51 PM">2018年1月25日 18:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385015">#</a>
+ | <a href="#comment-text" title="引用leon的这条留言" onclick="return CommentQuote('comment-quote-385015','leon');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385167" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">三个字</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385167">
+            <p>国家发二十元纸币，用十元找一个工人做锄头，再花十元找一农民种地。然后锄头一把五元卖给农民，出售一部分粮食五元卖给工人吃。<br />
+工人与农民买卖行为共交税两元。结果是：<br />
+工人有粮吃，有钱剩4元，农民有锄头用，有钱剩4元。<br />
+国家有收入12元。<br />
+-----------<br />
+本质是什么呢，国家本来欠20元的债，现在一个生产消费过程，字面债务变成了8元。而国家仍然拥有工人，农民，锄头，粮食等各类资产。<br />
+而比特币的本质是什么？一场游戏，根本就没有生产消费过程。<br />
+当然，人民币数字化与加密货币化有本质差别的。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 28, 2018  6:30 PM">2018年1月28日 18:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385167">#</a>
+ | <a href="#comment-text" title="引用三个字的这条留言" onclick="return CommentQuote('comment-quote-385167','三个字');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385222" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">wzz</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385222">
+            <p>不得不说您写的这几篇文章最终让我明白了比特币、区块链和挖矿这几个概念。之前看了好多文章都似懂非懂。这三篇文章解决了我的所有疑问！激动的点了广告，也算是另一种打赏。太厉害了，谢谢。期待后续~</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 30, 2018  2:11 AM">2018年1月30日 02:11</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385222">#</a>
+ | <a href="#comment-text" title="引用wzz的这条留言" onclick="return CommentQuote('comment-quote-385222','wzz');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385255" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">tony</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385255">
+            <p>现实货币的价值是由政府信用支撑的，而比特币的价值是靠媒体鼓吹出来的，如果有一天媒体说比特币是骗局，大多数人也相信的话，它就没有价值。未来可能会使用类似的数字货币，但这必须由政府牵头法律保证才能真正实现。仅仅有可信任的技术机制恐怕是不够。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 30, 2018  6:12 PM">2018年1月30日 18:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385255">#</a>
+ | <a href="#comment-text" title="引用tony的这条留言" onclick="return CommentQuote('comment-quote-385255','tony');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385296" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.mting.net" href="http://blog.mting.net" target="_blank" rel="nofollow">MTing</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385296">
+            <p>@肖龙：</p>
+
+<p>不同意您的观点.</p>
+
+<p>黄金无法增发而无法成为可持续支付手段, 但比特币可以增发, 只要大多数人同意, 一个新的分支就是增发, 增发量也是可以根据需要而自定义, 这是其它所有货币无法想象的.<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 31, 2018  5:24 PM">2018年1月31日 17:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385296">#</a>
+ | <a href="#comment-text" title="引用MTing的这条留言" onclick="return CommentQuote('comment-quote-385296','MTing');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385339" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">吴华佳</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385339">
+            <p>区块链的精髓不是去中心化吗？ 本文里把区块链比作中央记账系统是不是不太贴切？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  1, 2018 10:49 AM">2018年2月 1日 10:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385339">#</a>
+ | <a href="#comment-text" title="引用吴华佳的这条留言" onclick="return CommentQuote('comment-quote-385339','吴华佳');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385366" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">李白</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385366">
+            <blockquote>
+<pre>引用JIMMY的发言：</pre>
+
+<p>不是很懂这个比特币，国家发行货币，好歹有个国家做担保。比特币一串数字，谁担保一定能有价值？我拉出来的一坨那个它不会被（轻易）偷走，它无法伪造，它也无法大批生产。那是不是也有人买？</p>
+
+</blockquote>
+
+<p>    这么简单的跟你说吧，如果你拉出来的一坨，马老板说这一坨屎的每一克重量都可以换100Q币，这坨屎就是有价值的。<br />
+    同理比特币，因为他的百分之五十一原则，一群矿工给他记账，所以他足够安全。一群资本家自己先屯下一堆比特币之后（如马云马化腾刘强东等），就对外宣布比特币可以在我的网站商店上面进行交易（如比特币可以充Q币，可以在淘宝京东上面买物品），那比特币自然就有价值，但是比特币的数量也有限，哪怕挖完了只有2100万颗，所以投资者们购入比特币就供不应求，就导致了比特币的价格上涨。说到这里，也许有人问，资本家是不是傻，承认比特币的价值，在自己商店上消费。其实资本家一点都不傻，他们在事先购入了大量比特币，只要承认比特币的人足够多，他们手头上的比特币就足够值得信赖，而且随着比特币的升值获利的还是他们。<br />
+    总结来说，你啦出来的一坨之所以不能成为等价物，得到资本家的青睐，是因为你拉出来的一坨不具有比特币所特有的方便性不可伪造性和资源有限性（你今天拉一坨，明天拉稀了，拉了一堆谁受得了呀），因此你的拉出来的一坨不能和比特币的性质相提并论，通俗来讲就这么简单。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  1, 2018  6:28 PM">2018年2月 1日 18:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385366">#</a>
+ | <a href="#comment-text" title="引用李白的这条留言" onclick="return CommentQuote('comment-quote-385366','李白');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385410" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zhang</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385410">
+            <p>我想请教一下ios11中文输入法会覆盖下方文本框的问题，现在ios11存在设置window.scroll置为0的bug，还有什么办法可以解决这个问题</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018  6:00 PM">2018年2月 2日 18:00</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385410">#</a>
+ | <a href="#comment-text" title="引用zhang的这条留言" onclick="return CommentQuote('comment-quote-385410','zhang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385416" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Geomatic</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385416">
+            <p>粗略的看了下，评论也一扫而过，提出一点个人的看法。<br />
+首先，作者用信用货币（人民币、美元等）的信用和比特币的可信性（密码学实现）做类比，我觉得是有问题的。<br />
+信用货币背后的信用是来自国家或政府的担保，比特币利用密码学实现的的可信性应该是不易被伪造，这个是两个东西。<br />
+信用货币另外一个名称是法偿货币，法律规定国家范围内商品交易等必须使用该货币，原谅不是学经济的，说法可能不太准确。<br />
+抛开比特币的其他特性，记得之前最早百度比特币的时候，注意到一条，说比特币的总量是有限的，越晚进场越难获得，我觉得这点可以类比旧的黄金、白银的特性，总量有限，获得困难，然后同时很好奇的一个问题，为什么之前世界文化还没开始交流的时代，东西方不约而同使用黄金等作为货币。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018  6:37 PM">2018年2月 2日 18:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385416">#</a>
+ | <a href="#comment-text" title="引用Geomatic的这条留言" onclick="return CommentQuote('comment-quote-385416','Geomatic');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385428" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">葫芦</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385428">
+            <p>交易中货币代表的是产品，产品来源与劳动，货币也就是劳动。就目前而说货币还承担资本等等经济学上的功能，电子货币无非代表货币而已？还是说他有其他的功能我没看懂</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  3, 2018  6:07 AM">2018年2月 3日 06:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385428">#</a>
+ | <a href="#comment-text" title="引用葫芦的这条留言" onclick="return CommentQuote('comment-quote-385428','葫芦');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385460" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kang</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385460">
+            <p>有一点不太明白，就是在区块链的节点中，最短最快计算出的区块hash才会被认为有效，并且计算该hash需要强大的算力，各个节点都会不断的拼算力，这样长久下去，会导致一些节点浪费了算力而并没有回报，从而导致退出节点，至此分布式的节点会减少，可能最终就会存在一部分，甚至几个，甚至几十个的大型矿场的节点所掌握整个区块链，而这时候所谓的去中心化，到了这种地步的时候，则是这部分矿场成了中心化，这样就违背了区块链的本质</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  3, 2018  5:18 PM">2018年2月 3日 17:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385460">#</a>
+ | <a href="#comment-text" title="引用kang的这条留言" onclick="return CommentQuote('comment-quote-385460','kang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385467" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ma</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385467">
+            <p>假设在比特币诞生时，没有人使用比特币，也就没有人账可记，那么怎么产生新的区块？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  3, 2018 11:26 PM">2018年2月 3日 23:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385467">#</a>
+ | <a href="#comment-text" title="引用ma的这条留言" onclick="return CommentQuote('comment-quote-385467','ma');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385504" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://lasy.site" href="http://lasy.site" target="_blank" rel="nofollow">Lasy</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385504">
+            <p>“其次，它无法伪造。每一个比特币都能追溯来源，而所有比特币都来源于矿工获得的奖励” 这句话不理解，矿工的收益来源于手续费，与“所有比特币都来源于矿工获得的奖励”相矛盾。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  4, 2018 12:35 PM">2018年2月 4日 12:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385504">#</a>
+ | <a href="#comment-text" title="引用Lasy的这条留言" onclick="return CommentQuote('comment-quote-385504','Lasy');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385544" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">于见怪不怪</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385544">
+            <blockquote>
+<pre>引用东星的发言：</pre>
+
+<p>大神只是说了美元是全世界都认可的，所以能成为世界通用货币。但是我们要思考一下为什么美元可以世界通用？背后是因为强大的美国的国家信用做支撑。如果美国完蛋了，美元也就变成废纸了。那么比特币的后面是啥？虚拟货币99%都是博傻而已。</p>
+
+</blockquote>
+
+<p>比特币的背后是hash算法，如果有一天该hash算法被攻破，比特币就完蛋了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  2:48 PM">2018年2月 5日 14:48</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385544">#</a>
+ | <a href="#comment-text" title="引用于见怪不怪的这条留言" onclick="return CommentQuote('comment-quote-385544','于见怪不怪');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385545" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">生汆丸子汤</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385545">
+            <blockquote>
+<pre>引用DDK的发言：</pre>
+
+<p>作者一点经济学常识都没有，就在这里来瞎扯淡。</p>
+
+</blockquote>
+
+<p>哇，你也不看看作者的工作是什么就敢这样说话</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  4:02 PM">2018年2月 5日 16:02</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385545">#</a>
+ | <a href="#comment-text" title="引用生汆丸子汤的这条留言" onclick="return CommentQuote('comment-quote-385545','生汆丸子汤');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385600" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kalista</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385600">
+            <p>我和评论一些看法一样，比特币目前仍然只是一个圈子的狂欢，暂时可以把它当成货物看待，而不能是货币</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  6, 2018  5:44 PM">2018年2月 6日 17:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385600">#</a>
+ | <a href="#comment-text" title="引用kalista的这条留言" onclick="return CommentQuote('comment-quote-385600','kalista');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385644" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.4377.me" href="http://blog.4377.me" target="_blank" rel="nofollow">林志勇</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385644">
+            <p>印象中经济学上是這樣描述「錢」（貨幣）的：貨幣是商品流通的一般等價物，貨幣本身是沒有價值的，貨幣的存在只是為了使商品流通更方便更有效率。</p>
+
+<p>商品賣得貴取決於兩個因素：1.使用價值；2.稀缺性。</p>
+
+<p>所以，不敢苟同「錢有價值」這種說法，即使是全球認可的黃金，實際上也是只有稀缺性而已。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  7, 2018 11:46 AM">2018年2月 7日 11:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385644">#</a>
+ | <a href="#comment-text" title="引用林志勇的这条留言" onclick="return CommentQuote('comment-quote-385644','林志勇');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385655" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">小前端</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385655">
+            <blockquote>
+<pre>引用肖龙的发言：</pre>
+
+<p>而比特币的支持者往往有以下解释说比特币作为电子货币可以切割到多位小数之后来做交易，甚至无限切割下去。那么先不说无限切割的可行性，你自己不觉得0.0000几的比特币去买东西反人类么？而且这种今天0.0001的一斤猪肉，因为比特币流通的减少，明天就只能0.00001了，你觉得会有什么后果？</p>
+
+</blockquote>
+
+<p>使用0.000001这种行为说反人类完全没必要，这个问题只是一个小问题而已，完全可以以类似现在的分角元解决。</p>
+
+<p>我看现在这种加密货币最大的问题是当完全不产生新的货币时，如果能一直发展下去，这电子货币只能越来越贵，那些最早入局的人会掌握这绝大部分的权益，对新入局的人来说就是个大坑，这时又会有几个人入局？没有新鲜血液的加入，电子货币怎么发展？如果为了吸引后面新人进入，能够一直增加电子货币的话，又与政府发行的货币有什么区别？顶多是能够洗黑钱而已，这样的话又有什么发展前途可言？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  8, 2018 10:18 AM">2018年2月 8日 10:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385655">#</a>
+ | <a href="#comment-text" title="引用小前端的这条留言" onclick="return CommentQuote('comment-quote-385655','小前端');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385661" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">李保定</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385661">
+            <p>没有实际的金钱注入，他的涨幅和跌幅产生的中间利润，从哪里来</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  8, 2018  8:47 PM">2018年2月 8日 20:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385661">#</a>
+ | <a href="#comment-text" title="引用李保定的这条留言" onclick="return CommentQuote('comment-quote-385661','李保定');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385723" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">韩荣杰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385723">
+            <p>这其实正是最担心的地方，政府无法调控虚拟货币，怎么解决宏观经济问题啊。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 11, 2018 10:35 AM">2018年2月11日 10:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385723">#</a>
+ | <a href="#comment-text" title="引用韩荣杰的这条留言" onclick="return CommentQuote('comment-quote-385723','韩荣杰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385740" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">airomyas</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385740">
+            <p>阮大，其实我对这篇文章期待的过高，所以看完之后略有失望。</p>
+
+<p>期待过高时因为您是经济学博士同时有具有计算机专业技术背景，而我只有技术背景而对经济学所知甚少。所以我本来指望看到这两方面结合所能产生的一些不容易见到的见解。</p>
+
+<p>比如说，货币的本质是信用，有国家暴力机器来保证这种信用，那么去中心化的加密货币有信用么？</p>
+
+<p>在一般情况下，一个国家只会发行一种法定货币，而加密货币却可以无穷无尽地发行，这样最终是否会导致所有的去中心化的加密货币都不值钱？那么会不会有一种有国家信用背书的，法定的加密货币？</p>
+
+<p>即便是单一的比特币，也面临分叉问题，去中心化的比特币在面临分叉问题时也是去中心化决定么？</p>
+
+<p>硬分叉其实会形成两种新的加密货币？那么谁才是真正的比特币？</p>
+
+<p>从经济学角度来看，比特币这样币值大起大落的加密货币，适合作为一种独立的货币存在么？还是只能作为投机工具？</p>
+
+<p>。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 12, 2018 11:18 AM">2018年2月12日 11:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385740">#</a>
+ | <a href="#comment-text" title="引用airomyas的这条留言" onclick="return CommentQuote('comment-quote-385740','airomyas');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385779" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">哈哈0</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385779">
+            <p>文章写得不错，通俗易懂。不像某些写文章的狗肚子装不下二两香油，通篇废话。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 18, 2018 12:28 PM">2018年2月18日 12:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385779">#</a>
+ | <a href="#comment-text" title="引用哈哈0的这条留言" onclick="return CommentQuote('comment-quote-385779','哈哈0');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385784" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">路人甲</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385784">
+            <p>比特币之所以价格被炒的高，只是因为投资者看到了比特币作为“商品/货品”的投资价值，并不是认可比特币作为货币。这两点需要分清楚。上面不少留言已经说了，国家发行的货币有国家机器背书，而比特币有什么？法币在一定层面上代表了生产力，劳动报偿，简单说就是我工作我贡献了gdp，所以我得到劳动报偿（法币，钱）。目前的比特币只有挖矿可得，这并不是能给社会创造价值的获取途径，还非常耗能。这两点是不能等同的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 19, 2018 11:48 PM">2018年2月19日 23:48</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385784">#</a>
+ | <a href="#comment-text" title="引用路人甲的这条留言" onclick="return CommentQuote('comment-quote-385784','路人甲');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385790" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">路人乙</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385790">
+            <blockquote>
+<pre>引用路人甲的发言：</pre>
+
+<p>比特币之所以价格被炒的高，只是因为投资者看到了比特币作为“商品/货品”的投资价值，并不是认可比特币作为货币。这两点需要分清楚。上面不少留言已经说了，国家发行的货币有国家机器背书，而比特币有什么？法币在一定层面上代表了生产力，劳动报偿，简单说就是我工作我贡献了gdp，所以我得到劳动报偿（法币，钱）。目前的比特币只有挖矿可得，这并不是能给社会创造价值的获取途径，还非常耗能。这两点是不能等同的。</p>
+
+</blockquote>
+
+<p>先看看比特币或者排名前10数字币的白皮书，然后尝试小额购买，转账体验，你会发现这是一个全新世界。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 21, 2018 11:14 AM">2018年2月21日 11:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385790">#</a>
+ | <a href="#comment-text" title="引用路人乙的这条留言" onclick="return CommentQuote('comment-quote-385790','路人乙');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385792" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">路人乙</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385792">
+            <p>@airomyas：</p>
+
+<p>任何有编程基础的人都可以fork比特币源码来发布自己的数字币，但是有多少人信任？</p>
+
+<p>但是比特币的算力和用户基础，已经超过很多小国家的货币了。</p>
+
+<p>另外，可以参考哈耶克的货币非国家化或者郭建龙的中央帝国的财政密码，私人铸币或许是一种新思路。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 21, 2018 11:24 AM">2018年2月21日 11:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html#comment-385792">#</a>
+ | <a href="#comment-text" title="引用路人乙的这条留言" onclick="return CommentQuote('comment-quote-385792','路人乙');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="1972" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="" />  <span class="hint"> &laquo;-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="" />  <span class="hint"> &laquo;-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="" />  <span class="hint"> &laquo;-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r" /></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表" />  <span class="hint"> &laquo;- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="http://www.ruanyifeng.com/blog/js/prism.js"></script>
+            <div id="footer">
+<div id="footer-inner">
+   <div id="footer-content">
+   <p><a title="微博" href="http://weibo.com/ruanyf" target="_blank">微博</a> | <a title="Twitter" target="_blank" href="https://twitter.com/ruanyf">推特</a> | <a title="GitHub" target="_blank" href="https://github.com/ruanyf">GitHub</a></p>
+   <p>2018 © <a title="电子邮件" href="/contact.html">我的邮件</a> |</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46829782-1', 'ruanyifeng.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="/blog/stats.js"></script>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;">
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=15e016b4-0028-44f1-a40d-a3c9d9c13c28&style=10&bgcolor=#fff&bp=weixin,qqim,qzone,qqmb,sinaminiblog,fanfou,xueqiu,douban,facebook,twitter,gplus,instapaper&ssc=false"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+
+        </div>
+    </div>
+</body>
+</html>

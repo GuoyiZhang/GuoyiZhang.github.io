@@ -1,0 +1,5014 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="Movable Type  5.2.2" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="http://www.ruanyifeng.com/blog/styles.css" type="text/css" />
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home" />
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng" />
+<script type="text/javascript" src="http://www.ruanyifeng.com/blog/mt.js"></script>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html">
+<dc:title>持续集成服务 Travis CI 教程</dc:title>
+<dc:description>编写代码只是软件开发的一小部分，更多的时间往往花在构建（build）和测试（test）。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2017-12-19T20:09:02+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html" title="持续集成服务 Travis CI 教程" />
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程" />
+    
+    <title>区块链入门教程 - 阮一峰的网络日志</title>
+</head>
+<body id="scrapbook" class="mt-entry-archive one-column">
+<script>
+if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) document.body.classList.add('mobile');
+
+window.addEventListener('load', function(event) {
+  setTimeout(function () {
+    hab('#sup-post-2');
+    hab('#gd1-inner');
+  }, 1000);
+});
+</script>
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="https://www.baidu.com/s" target="_blank" method="get" id="cse-search-box">
+  <div>
+  <input type="text" size="20" name="origin" class="searchbox" id="sbi" value="" />
+  <input type="hidden" name="wd" value="" />
+  <!--input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' inurl:www.ruanyifeng.com/blog'" /-->
+  <input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' 阮一峰'" />
+</div>
+</form>
+
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;" />
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-1970" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html" title="持续集成服务 Travis CI 教程">持续集成服务&nbsp;Trav</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程">比特币入门教程&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+</ul>
+</div>
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/computer/" rel="tag">理解计算机</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+                                            
+<div class="entry-location-mobile" style="float: right;">
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html" title="持续集成服务 Travis CI 教程">⇐&nbsp;</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html" title="比特币入门教程">&nbsp;⇒</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+                          
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">区块链入门教程</h1>
+                                            <div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;"></div>
+
+<div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com">阮一峰</a></p>
+                                    <p>日期： <a href="http://www.ruanyifeng.com/blog/2017/12/"><abbr class="published" title="2017-12-26T20:40:00+08:00">2017年12月26日</abbr></a></p>
+
+
+                                    
+</div>
+
+                    
+<div class="entry-sponsor" style="border: 1px solid #c6c6c6;border-radius: 4px;background-color: #f5f2f0;">
+<p>
+<a title="珠峰培训" href="http://www.zhufengpeixun.cn/main/course/guide.html?ref=ruanyifeng.com" target="_blank">
+<img alt="珠峰培训" src="http://www.ruanyifeng.com/blog/images/sponsor_zhufeng5.png" style="border: none;windth: 90%;max-width: 90%;display: inline-block;margin-top: -0.5rem;margin-bottom: 0.5rem;"/>
+</a>
+</p>
+</div>
+
+
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p>区块链（blockchain）是眼下的大热门，新闻媒体大量报道，宣称它将创造未来。</p>
+
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>可是，简单易懂的入门文章却很少。区块链到底是什么，有何特别之处，很少有解释。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122701.jpg" alt="" title="" /></p>
+
+<p>下面，我就来尝试，写一篇最好懂的区块链教程。毕竟它也不是很难的东西，核心概念非常简单，几句话就能说清楚。我希望读完本文，你不仅可以理解区块链，还会明白什么是挖矿、为什么挖矿越来越难等问题。</p>
+
+<p>需要说明的是，我并非这方面的专家。虽然很早就关注，但是仔细地了解区块链，还是从今年初开始。文中的错误和不准确的地方，欢迎大家指正。</p>
+
+<h2>一、区块链的本质</h2>
+
+<p>区块链是什么？一句话，它是一种特殊的分布式数据库。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122702.png" alt="" title="" /></p>
+
+<p>首先，区块链的主要作用是储存信息。任何需要保存的信息，都可以写入区块链，也可以从里面读取，所以它是数据库。</p>
+
+<p>其次，任何人都可以架设服务器，加入区块链网络，成为一个节点。区块链的世界里面，没有中心节点，每个节点都是平等的，都保存着整个数据库。你可以向任何一个节点，写入/读取数据，因为所有节点最后都会同步，保证区块链一致。</p>
+
+<h2>二、区块链的最大特点</h2>
+
+<p>分布式数据库并非新发明，市场上早有此类产品。但是，区块链有一个革命性特点。</p>
+
+<p><strong>区块链没有管理员，它是彻底无中心的。</strong>其他的数据库都有管理员，但是区块链没有。如果有人想对区块链添加审核，也实现不了，因为它的设计目标就是防止出现居于中心地位的管理当局。</p>
+
+<p>正是因为无法管理，区块链才能做到无法被控制。否则一旦大公司大集团控制了管理权，他们就会控制整个平台，其他使用者就都必须听命于他们了。</p>
+
+<p>但是，没有了管理员，人人都可以往里面写入数据，怎么才能保证数据是可信的呢？被坏人改了怎么办？请接着往下读，这就是区块链奇妙的地方。</p>
+
+<h2>三、区块</h2>
+
+<p>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122703.png" alt="" title="" /></p>
+
+<p>每个区块包含两个部分。</p>
+
+<blockquote>
+  <ul>
+<li>区块头（Head）：记录当前区块的元信息</li>
+<li>区块体（Body）：实际数据</li>
+</ul>
+</blockquote>
+
+<p>区块头包含了当前区块的多项元信息。</p>
+
+<blockquote>
+  <ul>
+<li>生成时间</li>
+<li>实际数据（即区块体）的 Hash</li>
+<li>上一个区块的 Hash</li>
+<li>...</li>
+</ul>
+</blockquote>
+
+<p>这里，你需要理解什么叫 <a href="https://baike.baidu.com/item/%E5%93%88%E5%B8%8C%E5%80%BC">Hash</a>，这是理解区块链必需的。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122704.png" alt="" title="" /></p>
+
+<p>所谓 Hash 就是计算机可以对任意内容，计算出一个长度相同的特征值。区块链的 Hash 长度是256位，这就是说，不管原始内容是什么，最后都会计算出一个256位的二进制数字。而且可以保证，只要原始内容不同，对应的 Hash 一定是不同的。</p>
+
+<p>举例来说，字符串<code>123</code>的 Hash 是<code>a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0</code>（十六进制），转成二进制就是256位，而且只有<code>123</code>能得到这个 Hash。</p>
+
+<p>因此，就有两个重要的推论。</p>
+
+<blockquote>
+  <ul>
+<li>推论1：每个区块的 Hash 都是不一样的，可以通过 Hash 标识区块。</li>
+<li>推论2：如果区块的内容变了，它的 Hash 一定会改变。</li>
+</ul>
+</blockquote>
+
+<h2>四、 Hash 的不可修改性</h2>
+
+<p>区块与 Hash 是一一对应的，每个区块的 Hash 都是针对"区块头"（Head）计算的。</p>
+
+<blockquote>
+  <p>Hash = SHA256(区块头)</p>
+</blockquote>
+
+<p>上面就是区块 Hash 的计算公式，Hash 由区块头唯一决定，<code>SHA256</code>是区块链的 Hash 算法。</p>
+
+<p>前面说过，区块头包含很多内容，其中有当前区块体的 Hash（注意是"区块体"的 Hash，而不是整个区块），还有上一个区块的 Hash。这意味着，如果当前区块的内容变了，或者上一个区块的 Hash 变了，一定会引起当前区块的 Hash 改变。</p>
+
+<p>这一点对区块链有重大意义。如果有人修改了一个区块，该区块的 Hash 就变了。为了让后面的区块还能连到它，该人必须同时修改后面所有的区块，否则被改掉的区块就脱离区块链了。由于后面要提到的原因，Hash 的计算很耗时，同时修改多个区块几乎不可能发生，除非有人掌握了全网51%以上的计算能力。</p>
+
+<p>正是通过这种联动机制，区块链保证了自身的可靠性，数据一旦写入，就无法被篡改。这就像历史一样，发生了就是发生了，从此再无法改变。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122705.png" alt="" title="" /></p>
+
+<p>每个区块都连着上一个区块，这也是"区块链"这个名字的由来。</p>
+
+<h2>五、采矿</h2>
+
+<p>由于必须保证节点之间的同步，所以新区块的添加速度不能太快。试想一下，你刚刚同步了一个区块，准备基于它生成下一个区块，但这时别的节点又有新区块生成，你不得不放弃做了一半的计算，再次去同步。因为每个区块的后面，只能跟着一个区块，你永远只能在最新区块的后面，生成下一个区块。所以，你别无选择，一听到信号，就必须立刻同步。</p>
+
+<p>所以，区块链的发明者中本聪（这是假名，真实身份至今未知）故意让添加新区块，变得很困难。他的设计是，平均每10分钟，全网才能生成一个新区块，一小时也就六个。</p>
+
+<p>这种产出速度不是通过命令达成的，而是故意设置了海量的计算。也就是说，只有通过极其大量的计算，才能得到当前区块的有效 Hash，从而把新区块添加到区块链。由于计算量太大，所以快不起来。</p>
+
+<p>这个过程就叫做采矿（mining），因为计算有效 Hash 的难度，好比在全世界的沙子里面，找到一粒符合条件的沙子。计算 Hash 的机器就叫做矿机，操作矿机的人就叫做矿工。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122706.jpg" alt="" title="" /></p>
+
+<h2>六、难度系数</h2>
+
+<p>读到这里，你可能会有一个疑问，人们都说采矿很难，可是采矿不就是用计算机算出一个 Hash 吗，这正是计算机的强项啊，怎么会变得很难，迟迟算不出来呢？</p>
+
+<p>原来不是任意一个 Hash 都可以，只有满足条件的 Hash 才会被区块链接受。这个条件特别苛刻，使得绝大部分 Hash 都不满足要求，必须重算。</p>
+
+<p>原来，区块头包含一个<a href="http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html">难度系数</a>（difficulty），这个值决定了计算 Hash 的难度。举例来说，<a href="https://blockexplorer.com/block/000000000003ba27aa200b1cecaad478d2b00432346c3f1f3986da1afd33e506">第100000个区块</a>的难度系数是 14484.16236122。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122707.png" alt="" title="" /></p>
+
+<p>区块链协议规定，使用一个常量除以难度系数，可以得到目标值（target）。显然，难度系数越大，目标值就越小。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122708.png" alt="" title="" /></p>
+
+<p>Hash 的有效性跟目标值密切相关，只有小于目标值的 Hash 才是有效的，否则 Hash 无效，必须重算。由于目标值非常小，Hash 小于该值的机会极其渺茫，可能计算10亿次，才算中一次。这就是采矿如此之慢的根本原因。</p>
+
+<p>区块头里面还有一个 Nonce 值，记录了 Hash 重算的次数。第 100000 个区块的 Nonce 值是<code>274148111</code>，即计算了 2.74 亿次，才得到了一个有效的 Hash，该区块才能加入区块链。</p>
+
+<h2>七、难度系数的动态调节</h2>
+
+<p>就算采矿很难，但也没法保证，正好十分钟产出一个区块，有时一分钟就算出来了，有时几个小时可能也没结果。总体来看，随着硬件设备的提升，以及矿机的数量增长，计算速度一定会越来越快。</p>
+
+<p>为了将产出速率恒定在十分钟，中本聪还设计了难度系数的动态调节机制。他规定，难度系数每两周（2016个区块）调整一次。如果这两周里面，区块的平均生成速度是9分钟，就意味着比法定速度快了10%，因此难度系数就要调高10%；如果平均生成速度是11分钟，就意味着比法定速度慢了10%，因此难度系数就要调低10%。</p>
+
+<p>难度系数越调越高（目标值越来越小），导致了采矿越来越难。</p>
+
+<h2>八、区块链的分叉</h2>
+
+<p>即使区块链是可靠的，现在还有一个问题没有解决：如果两个人同时向区块链写入数据，也就是说，同时有两个区块加入，因为它们都连着前一个区块，就形成了分叉。这时应该采纳哪一个区块呢？</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122709.png" alt="" title="" /></p>
+
+<p>现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为"六次确认"）。按照10分钟一个区块计算，一小时就可以确认。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122710.png" alt="" title="" /></p>
+
+<p>由于新区块的生成速度由计算能力决定，所以这条规则就是说，拥有大多数计算能力的那条分支，就是正宗的比特链。</p>
+
+<h2>九、总结</h2>
+
+<p>区块链作为无人管理的分布式数据库，从2009年开始已经运行了8年，没有出现大的问题。这证明它是可行的。</p>
+
+<p>但是，为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p>
+
+<p>因此，区块链的适用场景，其实非常有限。</p>
+
+<blockquote>
+  <ol start='1'>
+<li>不存在所有成员都信任的管理当局</li>
+<li>写入的数据不要求实时使用</li>
+<li>挖矿的收益能够弥补本身的成本</li>
+</ol>
+</blockquote>
+
+<p>如果无法满足上述的条件，那么传统的数据库是更好的解决方案。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2017/bg2017122711.png" alt="" title="" /></p>
+
+<p>目前，区块链最大的应用场景（可能也是唯一的应用场景），就是以比特币为代表的加密货币。下一篇文章，我将会介绍<a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html">比特币的入门知识</a>。</p>
+
+<h2>十、参考链接</h2>
+
+<ul>
+<li><a href="https://medium.freecodecamp.org/how-does-blockchain-really-work-i-built-an-app-to-show-you-6b70cd4caf7d">How does blockchain really work?</a>, by Sean Han</li>
+<li><a href="http://www.righto.com/2014/02/bitcoin-mining-hard-way-algorithms.html">Bitcoin mining the hard way: the algorithms, protocols, and bytes</a>, by Ken Shirriff</li>
+</ul>
+
+<p>（完）</p>
+
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2017-12-26T20:40:00+08:00">2017年12月26日</abbr></li>
+<li>更多内容： <a href="http://www.ruanyifeng.com/blog/archives.html" target="_blank"> 档案</a>  » 
+<a href="http://www.ruanyifeng.com/blog/computer/"> 理解计算机</a> 
+</li>
+<li>文集：<a href="/road" target="_blank">《前方的路》</a>，<a href="/survivor" target="_blank">《未来世界的幸存者》</a></li>
+<li>社交媒体：<a href="https://twitter.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAk1JREFUeNqsVc9rE0EU/mZ3dhPNJl2bVIk/Km09aFBE8GLvnrwJXvwLxIsgCP4Fnit6E8Gb0IMHwUsL9SSNgiAoooJIpE1Joo1h82uT7IxvxmRN3Q32kAdvdrI773vfe+/bDTu9WioDcDAda3Ja8piepQ1avCkCeny0Y+R9KenKwOmHHLvPaKn7AtVOoO8dOWDCMpg+41gMQv5FNEJACgoE8MsPNLDBhgfoutMOsJDmWLmU037C4TApciljwQ/kHoohQxV06+wMXNvE7WINuaSpvdYVKLgWnl3O4zAxU3Z1IYVGT+B5qYWV9z2kbQaT/cOwTsxOUUYF+mB5Dkmi8HG3h2q9hxsFNwRTdvQgxxnXRrMvIdkEhllis/qtiWuLDm4WZnBlPoWnXz28LHdw0uGR7m9Wu3j0qYGEubfn4UlBfXO4gTZltRNMg9w9f0i7kNFxllsBlS0x75gYfxyWTBUjT2W5CSMSPBrQuG21+hiMDS8CeCzF8eSLp13uQ3Ab1IqMFZN8tFHPmgOBF99bYP8Be1Xp6t7OJszJgKpPSiZvaj7uf2hguz2IBQuozDvFH6RDBjuK9wdQDvt0nMpW+8efGyh5UcAeZb2+UcHbnz5Jx4wdlp4yJYU3kLiQtfBwOYeLc8nIwfXtNu69q2Oz4mMxbemYOOOjKarhvq51KUjg3GwiFPIuvcNF6pnSnWK0lOEabNLgQh1aJFAhlGB9rG110B2+oyRNPc0sZbRNFltmLKDKqj4Qrm1ojzOxDz2pyPQ0P7CK4c40/wJ+CzAAGYrXsvfFXR4AAAAASUVORK5CYII=" style="border:0;"> twitter</a>，<a href="http://weibo.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAABPZJREFUeNqMyXtM1WUcx/FnNTdreAVCEEThyEFUrM2kwkpS05qVl8rugVpRUelaJdZaWWktdZKHssImgV04osgBCbwAa2Whm6GWoXHxcD1wHiI4t9/z/H68+wO3av1R3+217/b+CFStsHq/W2V1HW+wOmq8VkeN/E+dR/7SUSOtrmOnLc93jxA6LsTw71XLrUsHsNwHsdxl/09HGVb7QawOF1bn4ZF26QDDsmqNsH7be9psKcJs+fy/tRZjXvwM//678BVdT6BsMarhxZHeug+reW+TMC84+s0LDv4tH7PZgdXqwGrLx7yYP9KaHISOvUCwYh3+4iUMOiIJVmSMbBfy+4X581Zp/ryVfzi/FfPXd1AntxNwvkvg6zfQZ7Zg/rIV8/x7qB9fJlT/JPrcm4SOPctg3ihCR5dhNu2QQjfmSt2Yi27MRf+Uiz67Ef1TLv7Ct5CPZtMzJ4N2243Ij7Kwmjdhnt+EUZeFr/BmhvYkoBqewl8yD9/eCejGTVLoUzlSn8pBn8xBn85B/fAcf7z6PJ7rl9KdNBdP6nwuJc2jL+9+jJrXGNr1On9seZHgkQ0ESq8l4EzBOLKMod1XoE6slUKfXCd1wxp0Qxb6RBYDLzxGz8xb8aSm05u2kL4bF9N902I89yzHe986PEseoGP2YjqfvpNQeTr+4rmEKucz6LgS9f1jUuiy+VIfvxvz1GoGN99Hz8wFeGan0zl3Ae4lK3A/vJb2x7PpWPEI3bevoHfJKtypt9H1UgbDZx5E//goofJF+AtmoasWSaG2jZE6P5zg9hQ8Nyyie1Y6rQ+vpafMhdHXx7BpgjWMr7sbT5kL9/IHcUck0X3LtfgLVqAP3YAumoHeHYvaPkYKlRcudf54Bh5KpjP5Fi69tplgIMCQabK/rIxtO3bgqqxkmJHzdXbRknYbrWIcrWEJ9D8RjXaMRe2ciNo5QQr1QYRUjnC8C1Nxr1pD0O/HFwyQmZmJ3W4nLS0Nm83G+vXrsSwLgP6vS2kWo/lNjKN57gTMTyJRH0Si8iZKoXZdI5Ujkt55SXRtfBuAffv2sXLlSpxOJ9nZ2SQkJBAWFobX6wVgoPooLWI0v4hxuFeFY30ahdoVhcqLkEJ9GCV1QRTehZNxZ9wPQNGXX5KZmUlbWxspKSkIIUhPT0dZFibQvSaHJjGKxujxBHZGoT+ehPpwEsoRIYUqmCR1YTTBd2NoGxtOz4Y3CPoDrNuwnuhpU7lq/HgW3LGU5l4P2h+g55XNnBOjORM/jsH3ozGLYlAFMag90ahPI6VQxZOlKo5BOyfjey+GliljaL0uA7l9D2f37uess5KBoyfwbvmIJnsajVePouXeCIKFsZglsajiyX8pvEYKoySm33DGYTjj0OVxhEri6N84kfalY2i/NRb3AhvNN0+i9Y4wPC+H4yuMxTocjzoYj7F/ymVxI/+ryH5huKaeMVzxGK54QuXT8B+y4atIZqB8Nt6SVDzFqXi+mIO39Dp+PziHwdIZDJVOJ3gogZArHsM1BcMVj1E+BcMVe1GY38auNqqnYdQkEKpOJPBNEv7DdnyVdnwVdoYqki+bge9wCv6qFAJVyQS/mU6oJhHjSCJG9VSM6kRUfXi2GK6fJYy6+CyjNrHRqLP1GbWJ0qizSfV39Tap6qdLVW+Xqt4ujfokadRdVpvgNWpt54y6qc8MV44Sfw4An+t+Gj1AKyYAAAAASUVORK5CYII=" style="border:0;" /> weibo</a></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+  <div id="sup-post-2" style="display: inline-block ! important;width: 100%;">
+    <p style="text-align:center;"><a title=”一灯学堂“ href="http://www.yidengxuetang.com/recruit?utm_source=ruanyifeng.com" target="_blank"><image alt="一灯学堂" src="http://www.ruanyifeng.com/blog/images/sup_yideng_201711a.jpg" style="border:none;display: block !important;" /></a></p>  
+    <p style="text-align:center;"><a title="优达学城"  href="https://cn.udacity.com/fend/?utm_source=ruanyfc&utm_medium=kol&utm_campaign=fend" target="_blank"><image alt="优达学城" src="http://www.ruanyifeng.com/blog/images/sup_udacity_201801.jpg" style="border:none;display: block !important;" /></a></p>
+  </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2018.01.21: <a href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a></strong>
+
+                           <div class="entry-body">
+                              学习编程其实就是学高级语言，即那些为人类设计的计算机语言。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2018.01.11: <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html">加密货币的本质</a></strong>
+
+                           <div class="entry-body">
+                              去年，比特币暴涨，其他币也像雨后春笋一样冒出来，已经有1000多种了。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2018.01.04: <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html">比特币入门教程</a></strong>
+
+                           <div class="entry-body">
+                              比特币（bitcoin）诞生于2008年的一篇论文。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2017.07.23: <a href="http://www.ruanyifeng.com/blog/2017/07/iaas-paas-saas.html">IaaS，PaaS，SaaS 的区别</a></strong>
+
+                           <div class="entry-body">
+                              越来越多的软件，开始采用云服务。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="gd1" style="display: block !important;">
+<h2>广告<a href="/support.html">（购买广告位）</a></h2>
+<div id="gd1-inner">
+<div id="gd1-left">
+<a href="https://2018.qconbeijing.com/?utm_source=ruanyf&utm_campaign=8&utm_medium=banner&utm_term=0212" title="InfoQ" target="_blank"><image alt="InfoQ" src="http://www.ruanyifeng.com/blog/images/sup_geekbang_20180212b.jpg" style="border:none;display: block !important;" /></a>
+</div>
+<div id="gd1-right">
+<a href="https://cn.udacity.com/course/react-nanodegree--nd019-cn/?utm_source=ruanyfb&utm_medium=kol&utm_campaign=react" title="优达学城" target="_blank"><image alt="优达学城" src="/blog/images/sup_udacity_b20180115.jpg" style="border:none;display: block !important;" /></a>
+
+</div>
+</div>
+</div>
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（126条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-383642" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://gongchuangsu.github.io/" href="http://gongchuangsu.github.io/" target="_blank" rel="nofollow">GongchuangSu</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383642">
+            <p>哈哈 沙发 期待下一篇关于比特币的介绍 </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017  9:04 PM">2017年12月26日 21:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383642">#</a>
+ | <a href="#comment-text" title="引用GongchuangSu的这条留言" onclick="return CommentQuote('comment-quote-383642','GongchuangSu');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383643" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://fanzhiyang.com" href="http://fanzhiyang.com" target="_blank" rel="nofollow">zhiyang</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383643">
+            <p>比特币的中心思想好像就是这个，去中心化，每进行一笔交易，周围所有的节点都会知道这笔交易</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017  9:26 PM">2017年12月26日 21:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383643">#</a>
+ | <a href="#comment-text" title="引用zhiyang的这条留言" onclick="return CommentQuote('comment-quote-383643','zhiyang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383645" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">逆寒</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383645">
+            <p>那辛辛苦苦挖出来的区块后面接着的未能达到6个，而是采用了另一条长的，是不是意味着白挖了。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017  9:50 PM">2017年12月26日 21:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383645">#</a>
+ | <a href="#comment-text" title="引用逆寒的这条留言" onclick="return CommentQuote('comment-quote-383645','逆寒');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383646" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">EricJin</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383646">
+            <p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017  9:58 PM">2017年12月26日 21:58</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383646">#</a>
+ | <a href="#comment-text" title="引用EricJin的这条留言" onclick="return CommentQuote('comment-quote-383646','EricJin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383647" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://nextzeus.github.io" href="http://nextzeus.github.io" target="_blank" rel="nofollow">nextzeus</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383647">
+            <p>传闻黑客攻击了比特币，很好奇是怎么做到的？ </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017 10:34 PM">2017年12月26日 22:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383647">#</a>
+ | <a href="#comment-text" title="引用nextzeus的这条留言" onclick="return CommentQuote('comment-quote-383647','nextzeus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383648" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">leon</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383648">
+            <p>期待阮先生精彩文章。尤其是现在以bitshare和steemit为代表的DPOS机制，在实时性能和处理能力方面已有很大进步。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 26, 2017 11:04 PM">2017年12月26日 23:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383648">#</a>
+ | <a href="#comment-text" title="引用leon的这条留言" onclick="return CommentQuote('comment-quote-383648','leon');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383651" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">why</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383651">
+            <p>分叉还是不大懂。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 12:05 AM">2017年12月27日 00:05</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383651">#</a>
+ | <a href="#comment-text" title="引用why的这条留言" onclick="return CommentQuote('comment-quote-383651','why');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383658" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">hpilan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383658">
+            <p>@EricJin：</p>
+
+<p>怎么理解他们之间的差异很大啊？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  5:23 AM">2017年12月27日 05:23</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383658">#</a>
+ | <a href="#comment-text" title="引用hpilan的这条留言" onclick="return CommentQuote('comment-quote-383658','hpilan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383661" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://imshuai.com" href="http://imshuai.com" target="_blank" rel="nofollow">顾唐散人</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383661">
+            <p>文中对hash值的描述有误，不同的字符串存在hash碰撞的可能性。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  7:10 AM">2017年12月27日 07:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383661">#</a>
+ | <a href="#comment-text" title="引用顾唐散人的这条留言" onclick="return CommentQuote('comment-quote-383661','顾唐散人');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383665" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.refeng.net" href="http://www.refeng.net" target="_blank" rel="nofollow">朴素</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383665">
+            <p>真正潜心搞区块链技术研究的没多少，都去炒币了。几乎零投入今年赚了十几万。可想而知币圈暴富了多少人吧。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  8:50 AM">2017年12月27日 08:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383665">#</a>
+ | <a href="#comment-text" title="引用朴素的这条留言" onclick="return CommentQuote('comment-quote-383665','朴素');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383689" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.130928.net" href="http://www.130928.net" target="_blank" rel="nofollow">Ryan</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383689">
+            <p>确实目前来说使用区域链非常有限</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:01 AM">2017年12月27日 10:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383689">#</a>
+ | <a href="#comment-text" title="引用Ryan的这条留言" onclick="return CommentQuote('comment-quote-383689','Ryan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383694" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Nameless</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383694">
+            <blockquote>
+<pre>引用EricJin的发言：</pre>
+
+<p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+
+</blockquote>
+
+<p>你这个很多字符串说得真是张口就来。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:09 AM">2017年12月27日 10:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383694">#</a>
+ | <a href="#comment-text" title="引用Nameless的这条留言" onclick="return CommentQuote('comment-quote-383694','Nameless');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383697" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">John Shen</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383697">
+            <p>阮老师说“只有123能得到这个Hash”确实不准确。<br />
+理论上任何哈希函数都不能避免哈希碰撞（冲突），设计较好的哈希函数只是将碰撞（冲突）的概率降到了很低，所以并不能说“只有”。<br />
+而所谓的“很多字符串”，其实也没那么多啦，只是理论上样本无穷大的时候必然存在碰撞（冲突）。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:29 AM">2017年12月27日 10:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383697">#</a>
+ | <a href="#comment-text" title="引用John Shen的这条留言" onclick="return CommentQuote('comment-quote-383697','John Shen');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383700" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">aaa</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383700">
+            <blockquote>
+<pre>引用EricJin的发言：</pre>
+
+<p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+
+</blockquote>
+
+<p>别咬文嚼字了。谁还不知道hash 有冲突。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:45 AM">2017年12月27日 10:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383700">#</a>
+ | <a href="#comment-text" title="引用aaa的这条留言" onclick="return CommentQuote('comment-quote-383700','aaa');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383702" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zyg</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383702">
+            <p>期待下篇</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:56 AM">2017年12月27日 10:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383702">#</a>
+ | <a href="#comment-text" title="引用zyg的这条留言" onclick="return CommentQuote('comment-quote-383702','zyg');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383703" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">dudulang1998</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383703">
+            <p>言简意赅，把复杂的道理说到本质而通俗，抽象总结能力大赞~</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 11:25 AM">2017年12月27日 11:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383703">#</a>
+ | <a href="#comment-text" title="引用dudulang1998的这条留言" onclick="return CommentQuote('comment-quote-383703','dudulang1998');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383704" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">RobinKill</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383704">
+            <p>区块链的应用可以渗透到非常多的行业，合同，税收，财产公示(可以含私隐的公示)，防伪，交易，选举，信用体系…等等，这些都只是本人想到的，其实也还有更多地方可以去应用，而比特币(泛指去中心加密数字货币)主要应用了财产公示，交易…<br />
+Hash那有个说法是错误的，不过可以忽略不计，改一下也好…</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 11:32 AM">2017年12月27日 11:32</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383704">#</a>
+ | <a href="#comment-text" title="引用RobinKill的这条留言" onclick="return CommentQuote('comment-quote-383704','RobinKill');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383705" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">fd</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383705">
+            <blockquote>
+<pre>引用nextzeus的发言：</pre>
+
+<p>传闻黑客攻击了比特币，很好奇是怎么做到的？ </p>
+
+</blockquote>
+
+<p>是因为攻击了著名的一些bitcoin钱包，很多bitcoin是存在这些网上钱包里的<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 11:56 AM">2017年12月27日 11:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383705">#</a>
+ | <a href="#comment-text" title="引用fd的这条留言" onclick="return CommentQuote('comment-quote-383705','fd');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383707" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">一地风飞</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383707">
+            <p>还有不少疑问，希望懂的人给解释一下：</p>
+
+<p>1. </p>
+
+<p>区块头里有两个hash，一个是指向上一块的hash(应该是上一区块体的hash?)，这个应该是已确定的。</p>
+
+<p>另一个是即将要加入的区块自身的hash，这个hash从本身的内容计算得出（采矿）</p>
+
+<p>既然“同一内容，hash出来的值”是一样的，那就意味着，区域在加入链之前，内容是不确定的？</p>
+
+<p>不知道这样理解对不对： 区块先生成必要的数据（比如 A转帐给B多少），然后加上会变化的"随机数"，来算hash,算出来满足后，就加到链上。如果是这样，这个“随机数”一般是什么？</p>
+
+<p>2. 区块的数据格式有约定吗<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 12:12 PM">2017年12月27日 12:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383707">#</a>
+ | <a href="#comment-text" title="引用一地风飞的这条留言" onclick="return CommentQuote('comment-quote-383707','一地风飞');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383708" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">frank-young</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383708">
+            <p>阮老师怎么看矿工在这个生态里的作用</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 12:14 PM">2017年12月27日 12:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383708">#</a>
+ | <a href="#comment-text" title="引用frank-young的这条留言" onclick="return CommentQuote('comment-quote-383708','frank-young');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383710" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://ehlxr.me" href="https://ehlxr.me" target="_blank" rel="nofollow">ehlxr</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383710">
+            <p>还是看阮老师的文章能够理解，哈哈</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  1:38 PM">2017年12月27日 13:38</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383710">#</a>
+ | <a href="#comment-text" title="引用ehlxr的这条留言" onclick="return CommentQuote('comment-quote-383710','ehlxr');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383714" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">shooter</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383714">
+            <p>具体如何计算Block Hash  <a href="https://www.jianshu.com/p/4187a7352769" rel="nofollow">https://www.jianshu.com/p/4187a7352769</a><br />
+阮老师要入坑了么</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  2:53 PM">2017年12月27日 14:53</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383714">#</a>
+ | <a href="#comment-text" title="引用shooter的这条留言" onclick="return CommentQuote('comment-quote-383714','shooter');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383719" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">hc</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383719">
+            <p>阮老师，你好，关于文章的第七点，难度系数的动态调节这个章节里面的难度系数越调越高这句话怎么理解？请详细的解释一下，感谢。其中的动态调节我是理解，不理解的是为什么难度系数会越调越高。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  3:49 PM">2017年12月27日 15:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383719">#</a>
+ | <a href="#comment-text" title="引用hc的这条留言" onclick="return CommentQuote('comment-quote-383719','hc');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383731" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">biykb</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383731">
+            <p>区块包含上一个区块的哈希(即上一个区块的哈希)，本区块的哈希。这样理解正确吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  5:18 PM">2017年12月27日 17:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383731">#</a>
+ | <a href="#comment-text" title="引用biykb的这条留言" onclick="return CommentQuote('comment-quote-383731','biykb');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383733" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">一地风飞</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383733">
+            <p>搜了一下网上的其它文章，加深了了解：</p>
+
+<p>1.本区块的hash，是用区块头来计算，然后区块头会有一个随机数(nouce)来难度值来证明工作量</p>
+
+<p>2.比特币的区块头里有个32字节的Merkle的Root hash来验证区块体里数据<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  5:33 PM">2017年12月27日 17:33</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383733">#</a>
+ | <a href="#comment-text" title="引用一地风飞的这条留言" onclick="return CommentQuote('comment-quote-383733','一地风飞');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383734" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Kalay</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383734">
+            <blockquote>
+<pre>引用EricJin的发言：</pre>
+
+<p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+
+</blockquote>
+
+<p>您说的"很多字符串都能得到这个hash，但是他们之间差异很大。"怎么理解,<br />
+是这个hash值被123占有之后, 所有字符串都能知道这个hash被占有了?还是123有了这个hash的同时,其他字符串比如234也能申请一个同样的hash?</p>
+
+<p>这两个问题后者应该是不对的吧, 如果是前者,这不正是作者表达的吗?还是有更深层次的意义我没有领悟到,小白,望解答.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  5:51 PM">2017年12月27日 17:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383734">#</a>
+ | <a href="#comment-text" title="引用Kalay的这条留言" onclick="return CommentQuote('comment-quote-383734','Kalay');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383735" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">googya</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383735">
+            <p>牵一发而动全身， 真的动了的话， 确实需要巨大的能量</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017  6:13 PM">2017年12月27日 18:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383735">#</a>
+ | <a href="#comment-text" title="引用googya的这条留言" onclick="return CommentQuote('comment-quote-383735','googya');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383739" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.okuer.com" href="http://blog.okuer.com" target="_blank" rel="nofollow">星辰</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383739">
+            <p>实际上，有无限多的字符串能得到同一个hash，但是，碰撞的概率相当低。<br />
+区块链的应用场景除了密码学货币，更重要的，还有以太坊的智能合约。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:00 PM">2017年12月27日 22:00</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383739">#</a>
+ | <a href="#comment-text" title="引用星辰的这条留言" onclick="return CommentQuote('comment-quote-383739','星辰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383741" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jojoyoung</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383741">
+            <p>最好懂的区块链教程</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 10:35 PM">2017年12月27日 22:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383741">#</a>
+ | <a href="#comment-text" title="引用jojoyoung的这条留言" onclick="return CommentQuote('comment-quote-383741','jojoyoung');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383743" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kevinliu.lj </span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383743">
+            <p>在有限长度的字符串中，hash可以认为不会碰撞。</p>
+
+<p>要碰撞的字符串会长到现有的存储空间无法存放，所以暂时可以认为不会碰撞</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 27, 2017 11:15 PM">2017年12月27日 23:15</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383743">#</a>
+ | <a href="#comment-text" title="引用kevinliu.lj 的这条留言" onclick="return CommentQuote('comment-quote-383743','kevinliu.lj ');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383751" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.baidu.com" href="http://www.baidu.com" target="_blank" rel="nofollow">aaa@bbb.ccc</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383751">
+            <blockquote>
+<pre>引用顾唐散人的发言：</pre>
+
+<p>文中对hash值的描述有误，不同的字符串存在hash碰撞的可能性。</p>
+
+</blockquote>
+
+<p>hash碰撞那是sha1和md5，sha256你碰一个给我试试</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  9:01 AM">2017年12月28日 09:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383751">#</a>
+ | <a href="#comment-text" title="引用aaa@bbb.ccc的这条留言" onclick="return CommentQuote('comment-quote-383751','aaa@bbb.ccc');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383755" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"> wZi</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383755">
+            <p>一张添加下一级速度很慢的链表</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 10:05 AM">2017年12月28日 10:05</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383755">#</a>
+ | <a href="#comment-text" title="引用 wZi的这条留言" onclick="return CommentQuote('comment-quote-383755',' wZi');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383758" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://songke.online" href="http://songke.online" target="_blank" rel="nofollow">songke.online</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383758">
+            <p>nonce值不一定是HASH重算的次数啊，因为矿工不一定从1开始递增去碰nonce值。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 10:34 AM">2017年12月28日 10:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383758">#</a>
+ | <a href="#comment-text" title="引用songke.online的这条留言" onclick="return CommentQuote('comment-quote-383758','songke.online');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383759" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Leo Liu</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383759">
+            <p>针对最后的总结部分。<br />
+老师说的主要是关于公有链的一些特点和需要。事实上现在区块链的商业应用上主要是同盟链与私有链。适应的场景与公有链区别非常大。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 10:43 AM">2017年12月28日 10:43</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383759">#</a>
+ | <a href="#comment-text" title="引用Leo Liu的这条留言" onclick="return CommentQuote('comment-quote-383759','Leo Liu');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383762" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">soul</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383762">
+            <p>有几个问题想问一下。<br />
+1.第四点中说到一个区块改变自己的内容后面的区块会丢失这个区块的指针，结合"六次确认"的理论，所以区块链的结构我理解很有可能是这样的：<br />
+  a        b  c<br />
+  |        |  |<br />
+  1--2--3--4--5--6--7--8--9--10--。。。<br />
+  |  |  |<br />
+  d  e  g<br />
+  对吗？<br />
+2.全文都没有怎么提区块的内容是什么，但还是很在意，看本文所引用图片好像是数据交换记录，也就是比特币交易记录，那么没有交易发生时内容存的是什么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 11:14 AM">2017年12月28日 11:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383762">#</a>
+ | <a href="#comment-text" title="引用soul的这条留言" onclick="return CommentQuote('comment-quote-383762','soul');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383763" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">章鱼哥</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383763">
+            <p>可以看看这篇文章，精通比特币，很详细！<br />
+<a href="http://zhibimo.com/read/wang-miao/mastering-bitcoin/index.html" rel="nofollow">http://zhibimo.com/read/wang-miao/mastering-bitcoin/index.html</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 11:27 AM">2017年12月28日 11:27</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383763">#</a>
+ | <a href="#comment-text" title="引用章鱼哥的这条留言" onclick="return CommentQuote('comment-quote-383763','章鱼哥');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383765" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.jianpage.com" href="http://blog.jianpage.com" target="_blank" rel="nofollow">ixx</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383765">
+            <blockquote>
+<pre>引用Kalay的发言：</pre>
+
+<p></p>
+
+<p>您说的"很多字符串都能得到这个hash，但是他们之间差异很大。"怎么理解,<br />
+是这个hash值被123占有之后, 所有字符串都能知道这个hash被占有了?还是123有了这个hash的同时,其他字符串比如234也能申请一个同样的hash?</p>
+
+<p>这两个问题后者应该是不对的吧, 如果是前者,这不正是作者表达的吗?还是有更深层次的意义我没有领悟到,小白,望解答.</p>
+
+</blockquote>
+
+<p>hash是一种算法，根据你的输入计算出定长的输出，他说的意思是除了“123”能计算出“ a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0”，还有可能存在其它的字符串能计算得出“ a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0”的值，这叫"HASH碰撞"，具体是哪个值或者说有没有都是不确定的，只是一种理论上的可能存在</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017 11:58 AM">2017年12月28日 11:58</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383765">#</a>
+ | <a href="#comment-text" title="引用ixx的这条留言" onclick="return CommentQuote('comment-quote-383765','ixx');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383772" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://calmzeal.cnblogs.com" href="http://calmzeal.cnblogs.com" target="_blank" rel="nofollow">calmzeal</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383772">
+            <blockquote>
+<pre>引用shooter的发言：</pre>
+
+<p>具体如何计算Block Hashhttps://www.jianshu.com/p/4187a7352769<br />
+阮老师要入坑了么</p>
+
+</blockquote>
+
+<p>这个很清楚，谢谢。<br />
+我理解是不是，区块体的内容是已经确定了。<br />
+然后大家来找一个 随机数，把已确定的区块体加上随机数之后，进行连续两次hash操作。<br />
+然后算出来的 hash值，前N位为0 才满足要求。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  3:24 PM">2017年12月28日 15:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383772">#</a>
+ | <a href="#comment-text" title="引用calmzeal的这条留言" onclick="return CommentQuote('comment-quote-383772','calmzeal');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383773" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">memory</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383773">
+            <p>不错，期待下一篇关于比特币的介绍 </p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  3:57 PM">2017年12月28日 15:57</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383773">#</a>
+ | <a href="#comment-text" title="引用memory的这条留言" onclick="return CommentQuote('comment-quote-383773','memory');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383777" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Foli</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383777">
+            <p>有个地方想不明白：<br />
+如果挖矿就相当于找到一个新的满足条件的区块，那么一个区块就相当于一个比特币，那比特币赏金又是什么意思哦？（2009年比特币诞生的时候，每笔赏金是50个比特币；当总量达到1050万时，赏金减半为25个；当总量达到1575万，赏金再减半为12.5个）</p>
+
+<p>找到一个新区块（序列）到底可以拿到多少个比特币？如果可以拿到多个，这多个又是怎么来的？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  4:31 PM">2017年12月28日 16:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383777">#</a>
+ | <a href="#comment-text" title="引用Foli的这条留言" onclick="return CommentQuote('comment-quote-383777','Foli');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383778" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">理想三旬</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383778">
+            我是一个前端新手，现在的我很迷茫，想要强化自己，但是又不知道该学些什么，总感觉在一些做JAVA之类比较强的语言人面前很弱，现在人工智能什么的很火，我也想慢慢了解是什么，总之就是想学一个强语言，感觉现在过得很颓废，比较向往那种很积极向上的工作环境，例如创业公司那种拼搏氛围，现在年轻不想过得那么平庸，望各位大神给我点亮一站指明灯，万分感谢
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  4:31 PM">2017年12月28日 16:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383778">#</a>
+ | <a href="#comment-text" title="引用理想三旬的这条留言" onclick="return CommentQuote('comment-quote-383778','理想三旬');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383781" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://nautilus.org.cn/" href="http://nautilus.org.cn/" target="_blank" rel="nofollow">热心的路人甲</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383781">
+            <p>@理想三旬：</p>
+
+<p>习惯就好，不用去纠结什么强语言，没人知道<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  5:22 PM">2017年12月28日 17:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383781">#</a>
+ | <a href="#comment-text" title="引用热心的路人甲的这条留言" onclick="return CommentQuote('comment-quote-383781','热心的路人甲');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383790" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">千帆万桅</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383790">
+            <p>区块头中包含区块体的 Hash，如果一个区块的实际数据发生了改变，那么区块体的 Hash 就会发生改变，这一改变会导致当前区块的区块头发生改变，从而使得区块的 Hash 发生改变，当前区块的 Hash 发生改变又会引起下一个区块的区块头发生改变。如此一来，产生了骨牌效应。</p>
+
+<p>修改一个区块时，如果不能同时修改后面所有的区块，就会导致当前区块与后面的区块失去连接。所以合适的做法就是不去修改区块。可是万一就有人非要去修改区块该怎么办呢？上面提到的这种联动机制看起来只会使得修改区块后果严重，并不能阻止修改区块的行为。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 28, 2017  6:00 PM">2017年12月28日 18:00</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383790">#</a>
+ | <a href="#comment-text" title="引用千帆万桅的这条留言" onclick="return CommentQuote('comment-quote-383790','千帆万桅');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383801" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Jigsaw</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383801">
+            <p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。<br />
+'a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0'.length<br />
+40<br />
+40位16进制转换成2进制是160位吧<br />
+40位对应的是SHA1的算法</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 29, 2017  9:39 AM">2017年12月29日 09:39</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383801">#</a>
+ | <a href="#comment-text" title="引用Jigsaw的这条留言" onclick="return CommentQuote('comment-quote-383801','Jigsaw');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383815" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">东</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383815">
+            <p>是不是有了量子计算机后就无视了，所以。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 29, 2017  2:26 PM">2017年12月29日 14:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383815">#</a>
+ | <a href="#comment-text" title="引用东的这条留言" onclick="return CommentQuote('comment-quote-383815','东');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383826" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zzz</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383826">
+            <p>到底是区块头hash还是区块体hash，一会区块体一会区块头</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 29, 2017  9:06 PM">2017年12月29日 21:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383826">#</a>
+ | <a href="#comment-text" title="引用zzz的这条留言" onclick="return CommentQuote('comment-quote-383826','zzz');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383890" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://izualzhy.cn" href="http://izualzhy.cn" target="_blank" rel="nofollow">ying</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383890">
+            <p>hash是针对原始内容吧，值应该是固定的？为啥还能有满足条件的某个hash值？只是内容可以随便指定？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 31, 2017  9:59 PM">2017年12月31日 21:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383890">#</a>
+ | <a href="#comment-text" title="引用ying的这条留言" onclick="return CommentQuote('comment-quote-383890','ying');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383891" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">fadeer</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383891">
+            <p>感兴趣可以去听听这两集中文博客：</p>
+
+<p>82.聊聊比特币背后的技术和Blockchain<br />
+<a href="http://teahour.fm/2015/12/27/talk-with-jan-about-bitcoin-and-blockchain.html" rel="nofollow">http://teahour.fm/2015/12/27/talk-with-jan-about-bitcoin-and-blockchain.html</a></p>
+
+<p>83.这次我们聊聊超酷的Ethereum<br />
+<a href="http://teahour.fm/2016/01/19/talk-with-jan-about-ehtereum.html" rel="nofollow">http://teahour.fm/2016/01/19/talk-with-jan-about-ehtereum.html</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="December 31, 2017 11:10 PM">2017年12月31日 23:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383891">#</a>
+ | <a href="#comment-text" title="引用fadeer的这条留言" onclick="return CommentQuote('comment-quote-383891','fadeer');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383908" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">你家卢哥哥</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383908">
+            <p>虽然现在的趋势是公有链，但对于很多项目来说，其实私有链和联盟链更适合。所以个人拙见，并不能说区块链的应用场景只有加密货币，而且，去中心化和中心化可以互补的，这样应用场景就更广了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  1, 2018 10:37 AM">2018年1月 1日 10:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383908">#</a>
+ | <a href="#comment-text" title="引用你家卢哥哥的这条留言" onclick="return CommentQuote('comment-quote-383908','你家卢哥哥');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383924" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://bitcoincash.best/" href="https://bitcoincash.best/" target="_blank" rel="nofollow">aaron67</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383924">
+            <p>我自己整理了一部分区块链的好文和工具，分享给大家   <a href="https://bitcoincash.best/wiki" rel="nofollow">https://bitcoincash.best/wiki</a><br />
+里面有区块链的基础知识 比特币的基础知识科普和误解 区块链现在的应用情况 分叉币的讨论<br />
+当然也有部分技术讨论<br />
+欢迎大家阅读 更欢迎大家的分享</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  1, 2018  7:01 PM">2018年1月 1日 19:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383924">#</a>
+ | <a href="#comment-text" title="引用aaron67的这条留言" onclick="return CommentQuote('comment-quote-383924','aaron67');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383963" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://www.baidu.com" href="https://www.baidu.com" target="_blank" rel="nofollow">天王盖地虎</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383963">
+            <p>作者似乎把区块链和比特币混为一谈了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  2, 2018 10:13 AM">2018年1月 2日 10:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383963">#</a>
+ | <a href="#comment-text" title="引用天王盖地虎的这条留言" onclick="return CommentQuote('comment-quote-383963','天王盖地虎');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383965" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://xiaofeng.io" href="https://xiaofeng.io" target="_blank" rel="nofollow">晓峰</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383965">
+            <blockquote>
+<pre>引用nextzeus的发言：</pre>
+
+<p>传闻黑客攻击了比特币，很好奇是怎么做到的？ </p>
+
+</blockquote>
+
+<p>你指的应该是攻击了比特币的交易所，就相当于抢银行吧。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  2, 2018 10:51 AM">2018年1月 2日 10:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383965">#</a>
+ | <a href="#comment-text" title="引用晓峰的这条留言" onclick="return CommentQuote('comment-quote-383965','晓峰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383966" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://xiaofeng.io" href="https://xiaofeng.io" target="_blank" rel="nofollow">晓峰</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383966">
+            <p>@soul：</p>
+
+<p>区块内存的是比特币的交易记录。如果没有发生交易，区块内容可以为空。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  2, 2018 10:55 AM">2018年1月 2日 10:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383966">#</a>
+ | <a href="#comment-text" title="引用晓峰的这条留言" onclick="return CommentQuote('comment-quote-383966','晓峰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383969" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">吕浩</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383969">
+            <p>阮老师，您好，我是一名高中生，由于研究课需要，我在网上查到了贝叶斯算法，并且看到了您的日志。可能由于网的问题，您的日志中的部分图片加载不出，我想如果您有空的话，是否可以直接发给我一份？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  2, 2018 12:39 PM">2018年1月 2日 12:39</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383969">#</a>
+ | <a href="#comment-text" title="引用吕浩的这条留言" onclick="return CommentQuote('comment-quote-383969','吕浩');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-383981" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://xavierskip.com" href="http://xavierskip.com" target="_blank" rel="nofollow">skip</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-383981">
+            <p>有人做个了区块链的Demo <a href="https://anders.com/blockchain/" rel="nofollow">https://anders.com/blockchain/</a> 形象直接</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  2, 2018  5:59 PM">2018年1月 2日 17:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-383981">#</a>
+ | <a href="#comment-text" title="引用skip的这条留言" onclick="return CommentQuote('comment-quote-383981','skip');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384010" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ghosts</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384010">
+            <p>我比较好奇的是，分支之后那个区块会被怎么操作？丢弃么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  3, 2018 11:44 AM">2018年1月 3日 11:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384010">#</a>
+ | <a href="#comment-text" title="引用ghosts的这条留言" onclick="return CommentQuote('comment-quote-384010','ghosts');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384020" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">v5</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384020">
+            <p>新的区块是如何同步的呢？如果同步的过程中是无法产生新的区块吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  3, 2018  5:26 PM">2018年1月 3日 17:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384020">#</a>
+ | <a href="#comment-text" title="引用v5的这条留言" onclick="return CommentQuote('comment-quote-384020','v5');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384025" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">July</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384025">
+            <p>反对《熵：宇宙的终极规则》中的世界观。<br />
+热力学第二定律是一个观察的结果，是一个热力学适用的定律。<br />
+宇宙中太多太多违背人们逻辑的存在，没有任何定律能够完全在宇宙的尺度下经历了严格的考验。量子力学越来越被验证不过是时间短而已，一如当初的牛顿力学，电磁学。<br />
+更何况有 刘维尔极力反对，导致了庞加莱回归定理的诞生。<br />
+庞加莱回归：<br />
+孤立的、有限的保守动力学系统在有限的时间内回复到任意接近初始组态的组态。<br />
+如果宇宙是有限的离散动力系统，那就不是“任意接近”，而是完全回到初始状态了。<br />
+就是一切都是轮回。</p>
+
+<p>还有这些研究都不适用于智慧生命。人类目前的研究连自行车为啥不倒都搞不明白，离弄清楚智慧差太多太多。</p>
+
+<p>感谢作者的电子书《未来世界的幸存者》看的真过瘾。一口气读完。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  3, 2018  6:54 PM">2018年1月 3日 18:54</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384025">#</a>
+ | <a href="#comment-text" title="引用July的这条留言" onclick="return CommentQuote('comment-quote-384025','July');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384053" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">strickland</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384053">
+            <blockquote>
+<pre>引用Nameless的发言：</pre>
+
+<p><br />
+你这个很多字符串说得真是张口就来。</p>
+
+</blockquote>
+
+<p>不是很多，准确的说应该是无数。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:22 AM">2018年1月 4日 10:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384053">#</a>
+ | <a href="#comment-text" title="引用strickland的这条留言" onclick="return CommentQuote('comment-quote-384053','strickland');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384058" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">he</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384058">
+            <p>       而且可以保证，只要原始内容不同，对应的 Hash 一定是不同的。</p>
+
+<p>这句话就不对，任何hash都不能保证，因为原始内容是无穷的，hash是有限的字符串。所以原始内容和hash必定是多对1的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:42 AM">2018年1月 4日 10:42</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384058">#</a>
+ | <a href="#comment-text" title="引用he的这条留言" onclick="return CommentQuote('comment-quote-384058','he');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384062" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.okevin.me" href="http://www.okevin.me" target="_blank" rel="nofollow">okevin</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384062">
+            <p>Hash 的有效性跟目标值密切相关，只有小于目标值的 Hash 才是有效的，否则 Hash 无效，必须重算。由于目标值非常小，Hash 小于该值的机会极其渺茫，可能计算10亿次，才算中一次。</p>
+
+<p>——————————前面不是说，Hash是唯一的吗？为什么会算出来那么多？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 11:08 AM">2018年1月 4日 11:08</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384062">#</a>
+ | <a href="#comment-text" title="引用okevin的这条留言" onclick="return CommentQuote('comment-quote-384062','okevin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384064" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.cnblogs.com/tiantiandas.com" href="http://www.cnblogs.com/tiantiandas.com" target="_blank" rel="nofollow">gaozhe</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384064">
+            <blockquote>
+<pre>引用EricJin的发言：</pre>
+
+<p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+
+</blockquote>
+
+<p>是这样. 可以这么说: 123 的 hash 值肯定是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0, 如果数据的 hash 值不是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0,那它一定不是123. 这样就可以知道数据是否被修改.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 11:36 AM">2018年1月 4日 11:36</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384064">#</a>
+ | <a href="#comment-text" title="引用gaozhe的这条留言" onclick="return CommentQuote('comment-quote-384064','gaozhe');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384092" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.zlfdj.com.cn" href="http://www.zlfdj.com.cn" target="_blank" rel="nofollow">问天玄铁</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384092">
+            <p>等到比特币将中本聪快要变成世界首富的时候，比尔盖茨控制windows系统在同一时间检测每台机有没有比特币区块，有的话就写入一个假账。其实一个全球都在用的软件就能够摧毁这个分布式账本。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  4:13 PM">2018年1月 4日 16:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384092">#</a>
+ | <a href="#comment-text" title="引用问天玄铁的这条留言" onclick="return CommentQuote('comment-quote-384092','问天玄铁');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384137" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">唐晓宁</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384137">
+            <p>写的很好。一点建议：可否考虑把「四、 Hash 的不可修改性」里的「历史」换成「事实」。<br />
+历史：不唯一。 <br />
+事实：唯一。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018 11:43 AM">2018年1月 5日 11:43</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384137">#</a>
+ | <a href="#comment-text" title="引用唐晓宁的这条留言" onclick="return CommentQuote('comment-quote-384137','唐晓宁');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384144" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">冯超</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384144">
+            <p>Nonce并光是记录次数，每次重新计算 Hash 之所以会变就是因为 Nonce 不一样。所以计算的过程就是从1递增Nonce 找到合适的 Nonce 算出 Hash 能够满足条件。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  3:59 PM">2018年1月 5日 15:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384144">#</a>
+ | <a href="#comment-text" title="引用冯超的这条留言" onclick="return CommentQuote('comment-quote-384144','冯超');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384145" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">沈七</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384145">
+            <p>如果故意修改某个区块，是否这个区块和他后面的区块链都脱离了？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  4:06 PM">2018年1月 5日 16:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384145">#</a>
+ | <a href="#comment-text" title="引用沈七的这条留言" onclick="return CommentQuote('comment-quote-384145','沈七');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384152" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">dusthand</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384152">
+            <blockquote>
+<pre>引用hc的发言：</pre>
+
+<p>阮老师，你好，关于文章的第七点，难度系数的动态调节这个章节里面的难度系数越调越高这句话怎么理解？请详细的解释一下，感谢。其中的动态调节我是理解，不理解的是为什么难度系数会越调越高。</p>
+
+</blockquote>
+
+<p>可以这样理解，假设矿机越来越多，如果难度系数不变，那挖到一个矿的时间会变短，那么2016个矿之后，难度系数就会由于平均时间变短（小于10分钟）而提升。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018 11:28 PM">2018年1月 5日 23:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384152">#</a>
+ | <a href="#comment-text" title="引用dusthand的这条留言" onclick="return CommentQuote('comment-quote-384152','dusthand');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384181" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jackcai</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384181">
+            <p>这个难度系统是系统设计时就已经集成了这个功能？会动态调整？ 还是说现在中本聪会监控干预调整？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  7, 2018 11:16 AM">2018年1月 7日 11:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384181">#</a>
+ | <a href="#comment-text" title="引用jackcai的这条留言" onclick="return CommentQuote('comment-quote-384181','jackcai');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384183" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">finit</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384183">
+            <p>比特币的价值何在</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  7, 2018 11:41 AM">2018年1月 7日 11:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384183">#</a>
+ | <a href="#comment-text" title="引用finit的这条留言" onclick="return CommentQuote('comment-quote-384183','finit');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384204" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">0x5e</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384204">
+            <p>看了好多区块链的介绍、入门、教程，感觉阮老师的文章是（从技术角度）讲的最清晰易懂的，别的好多文章要么虚无缥缈要么莫名其妙，让人看着摸不着头脑，哈哈：）</p>
+
+<p>第五章有个疑问，除了用大量的计算能减缓新区块的添加速度，真的没有其他方案了吗？从成本的角度考虑，这种几乎绝对能让人可信的“数据库”代价是不是太大了点。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  7, 2018 11:29 PM">2018年1月 7日 23:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384204">#</a>
+ | <a href="#comment-text" title="引用0x5e的这条留言" onclick="return CommentQuote('comment-quote-384204','0x5e');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384252" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Tidus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384252">
+            <blockquote>
+<pre>引用okevin的发言：</pre>
+
+<p>Hash 的有效性跟目标值密切相关，只有小于目标值的 Hash 才是有效的，否则 Hash 无效，必须重算。由于目标值非常小，Hash 小于该值的机会极其渺茫，可能计算10亿次，才算中一次。</p>
+
+<p>——————————前面不是说，Hash是唯一的吗？为什么会算出来那么多？</p>
+
+</blockquote>
+
+<p>因为，比特币的挖矿，其实是在猜数字， （上一区块的信息）+ 随机数  生成的 hash， 符合前面连续出现N个0才算成功。所以，每个矿机都在猜什么样的随机数，才能达到要求</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:07 AM">2018年1月 9日 00:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384252">#</a>
+ | <a href="#comment-text" title="引用Tidus的这条留言" onclick="return CommentQuote('comment-quote-384252','Tidus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384253" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Tidus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384253">
+            <p>顺便说一下，hash有很多种算法，作者举例的hash，其实是 hash 中的一种算法，叫做 sha1  <br />
+在 linux 控制台运行  echo  "123" | sha1sum<br />
+就可以得到  a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0</p>
+
+<p>但实际上，计算的是  "123\n" 的值，因为echo 输出包含了换行符的。<br />
+单纯 "123" 的 sha1 值应该是<br />
+202CB962AC59075B964B07152D234B70</p>
+
+<p>我也是奇怪为啥会出现不一致去搜索了一下，才找到别人的这个解答</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:12 AM">2018年1月 9日 00:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384253">#</a>
+ | <a href="#comment-text" title="引用Tidus的这条留言" onclick="return CommentQuote('comment-quote-384253','Tidus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384254" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Tidus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384254">
+            <blockquote>
+<pre>引用千帆万桅的发言：</pre>
+
+<p>修改一个区块时，如果不能同时修改后面所有的区块，就会导致当前区块与后面的区块失去连接。所以合适的做法就是不去修改区块。可是万一就有人非要去修改区块该怎么办呢？上面提到的这种联动机制看起来只会使得修改区块后果严重，并不能阻止修改区块的行为。</p>
+
+</blockquote>
+
+<p>所以，比特币白皮书的方案，是从成本上避免这个的。</p>
+
+<p>1.他要去改某个时刻开始，到后面所有的区块，那么后面的区块越多，他要算的就越多。 这要求他有十分强大的算力。<br />
+大约是需要全比特币网中 51% 以上的算力。</p>
+
+<p>2.他要得到如此大的算力，需要付出很大的成本。 如果他改区块链账本得不到这么多收益，那么做这件事他得不偿失。</p>
+
+<p>3.就算他无论如何也要给作假，改出假账本，让自己活得巨量比特币。 但这件事本身会导致比特币的信任度降低，使比特币失去价值</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:29 AM">2018年1月 9日 00:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384254">#</a>
+ | <a href="#comment-text" title="引用Tidus的这条留言" onclick="return CommentQuote('comment-quote-384254','Tidus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384255" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Tidus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384255">
+            <blockquote>
+<pre>引用问天玄铁的发言：</pre>
+
+<p>等到比特币将中本聪快要变成世界首富的时候，比尔盖茨控制windows系统在同一时间检测每台机有没有比特币区块，有的话就写入一个假账。其实一个全球都在用的软件就能够摧毁这个分布式账本。</p>
+
+</blockquote>
+
+<p>做假账，也要计算的啊。而且因为主链是一条完整的，前后可以验证的。所以，没法去改很久之前的记录。这意味着，你要把全世界算几年的所有东西，瞬间全部算出来？</p>
+
+<p>你去改最新的数据，给某个账户加钱，那么，钱从哪来？ 每个挖矿的都可以查所有账单记录，钱不可能凭空转给你。<br />
+你在不知道别人密钥的情况下， 也不能伪造 别人给你转钱的数据</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:35 AM">2018年1月 9日 00:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384255">#</a>
+ | <a href="#comment-text" title="引用Tidus的这条留言" onclick="return CommentQuote('comment-quote-384255','Tidus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384256" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Tidus</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384256">
+            <blockquote>
+<pre>引用jackcai的发言：</pre>
+
+<p>这个难度系统是系统设计时就已经集成了这个功能？会动态调整？ 还是说现在中本聪会监控干预调整？</p>
+
+</blockquote>
+
+<p>系统设计时就已经集成了这个功能。比特币现在基本全靠开始就设计好的思路在运行。 而现在出现比特币交易拥堵，确认越来越慢，这也是当初没有意料到的。 为了解决这问题，所以大家全体（矿工和核心代码维护者等）经过反复权衡和分裂，才分叉出比特币现金 BCH。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:40 AM">2018年1月 9日 00:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384256">#</a>
+ | <a href="#comment-text" title="引用Tidus的这条留言" onclick="return CommentQuote('comment-quote-384256','Tidus');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384281" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.imyxiao.com" href="http://blog.imyxiao.com" target="_blank" rel="nofollow">肖哥</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384281">
+            <p>文章中出现错误：<br />
+`a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0`换成2进制是160,明显是sha1算法算出来的<br />
+而且123的sha1值为`40bd001563085fc35165329ea1ff5c5ecbdbbeef`<br />
+根据上面留言的提示，`123\n`的sha1值为a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0</p>
+
+<p>123的sha256值为181210f8f9c779c26da1d9b2075bde0127302ee0e3fca38c9a83f5b1dd8e5d3b<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 12:51 PM">2018年1月 9日 12:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384281">#</a>
+ | <a href="#comment-text" title="引用肖哥的这条留言" onclick="return CommentQuote('comment-quote-384281','肖哥');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384335" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sdfasdg</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384335">
+            <blockquote>
+<pre>引用nextzeus的发言：</pre>
+
+<p>传闻黑客攻击了比特币，很好奇是怎么做到的？ </p>
+
+</blockquote>
+
+<p>攻击比特币本身没做到，只是攻击比特币平台，就像一个保险箱里放着美金，黑客攻击的是保险箱，美金本身还安全，攻击成功也就是从保险箱的美金拿出来而已，目前还做不到印假钞</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  3:40 PM">2018年1月10日 15:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384335">#</a>
+ | <a href="#comment-text" title="引用sdfasdg的这条留言" onclick="return CommentQuote('comment-quote-384335','sdfasdg');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384336" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">fogin</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384336">
+            <p>我想知道中本聪是怎么做到动态调整难度系数的， 没有中心，他是怎么做到要求大家都遵守他动态调节难度系数这个规则的？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  3:50 PM">2018年1月10日 15:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384336">#</a>
+ | <a href="#comment-text" title="引用fogin的这条留言" onclick="return CommentQuote('comment-quote-384336','fogin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384341" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">张鹏</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384341">
+            <p>@一地风飞：</p>
+
+<p>同样的疑惑， 相同的区块体，计算出来的hash值不是唯一的么？ 为什么可以重算很多次？</p>
+
+<p>另外一个问题， 每一笔交易，都独占一个区块么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  5:16 PM">2018年1月10日 17:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384341">#</a>
+ | <a href="#comment-text" title="引用张鹏的这条留言" onclick="return CommentQuote('comment-quote-384341','张鹏');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384352" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">John</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384352">
+            <p>@张鹏 有变量 就是 nonce 这个随机数 因为生成的 hash 要达到一定标准才被承认 所以要不断变化 nonce 去碰出一个符合要求的随机数 一个区块上的交易数大于等于一 具体多少由矿工决定 因为每笔交易是带交易费的 交易费根据交易发起人自己设定有多有少 矿工有权选择交易费多的 因此交易费多的更早被打包到区块链</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  8:31 AM">2018年1月11日 08:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384352">#</a>
+ | <a href="#comment-text" title="引用John的这条留言" onclick="return CommentQuote('comment-quote-384352','John');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384375" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">张鹏</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384375">
+            <blockquote>
+<pre>引用John的发言：</pre>
+
+<p>@张鹏 有变量 就是 nonce 这个随机数 因为生成的 hash 要达到一定标准才被承认 所以要不断变化 nonce 去碰出一个符合要求的随机数 一个区块上的交易数大于等于一 具体多少由矿工决定 因为每笔交易是带交易费的 交易费根据交易发起人自己设定有多有少 矿工有权选择交易费多的 因此交易费多的更早被打包到区块链</p>
+
+</blockquote>
+
+<p>这个讲的通，谢谢</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  9:59 AM">2018年1月11日 09:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384375">#</a>
+ | <a href="#comment-text" title="引用张鹏的这条留言" onclick="return CommentQuote('comment-quote-384375','张鹏');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384425" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Sean</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384425">
+            <p>看了一圈都是英文文字，很難得有國人寫出來。期待著這個系列不斷更新！！加油</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  5:20 PM">2018年1月11日 17:20</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384425">#</a>
+ | <a href="#comment-text" title="引用Sean的这条留言" onclick="return CommentQuote('comment-quote-384425','Sean');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384435" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">天空</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384435">
+            <p>感谢博主的无私分享。文章写的非常好，我反复看了好几遍，以下是我的一些疑问向您请教一下：<br />
+1、区块的计算是持续的，无论网络上面是否有交易都会计算并产生新的区块。因此第一个区块内应该是没有包含任何交易信息的，第一枚比特币是生产第一个区块是奖励给矿工产生的？</p>
+
+<p>2、比特币网络中的节点指的是矿工，而不是在网络上交易比特币的普通用户？</p>
+
+<p>3、需要消耗大量的算力才能产生一个新的区块，目的是为了保证比特币的安全，因此比特币区块链这个算力的设计即是它的优点也是它的硬伤？</p>
+
+<p>4、目前是每产生一个新的区块奖励12.5个比特币，当前市价100多万人民币，如果这个区块包含的所有交易总量只有1个比特币，那么这个奖励和这个交易本身相比是否太高了？这个交易费用和大量消耗的算力是否会成为制约比特币的致命问题？</p>
+
+<p>5、比特币算力日益集中，有没有可能几个矿场联合起来拥有超过51%的算力？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 11:27 PM">2018年1月11日 23:27</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384435">#</a>
+ | <a href="#comment-text" title="引用天空的这条留言" onclick="return CommentQuote('comment-quote-384435','天空');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384444" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">test</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384444">
+            <p>通俗易懂</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018  8:52 AM">2018年1月12日 08:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384444">#</a>
+ | <a href="#comment-text" title="引用test的这条留言" onclick="return CommentQuote('comment-quote-384444','test');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384527" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">bboxhe</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384527">
+            <p>这矿场配图不会是宝二爷吧。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  3:42 PM">2018年1月13日 15:42</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384527">#</a>
+ | <a href="#comment-text" title="引用bboxhe的这条留言" onclick="return CommentQuote('comment-quote-384527','bboxhe');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384579" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">foxpsd</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384579">
+            <p>「这意味着，如果当前区块的内容变了，或者上一个区块的 Hash 变了，一定会引起当前区块的 Hash 改变。」<br />
+这句话怎么理解呢？上一个区块的hash为什么会变呢？不是写入区块链就固定了么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018  2:49 PM">2018年1月15日 14:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384579">#</a>
+ | <a href="#comment-text" title="引用foxpsd的这条留言" onclick="return CommentQuote('comment-quote-384579','foxpsd');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384590" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://taozh.net.cn" href="http://taozh.net.cn" target="_blank" rel="nofollow">eton</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384590">
+            <p>我觉得区块链的设计，还不是很完美，怎么说，就是感觉不是特别靠谱的那种。当然，也可能是我眼界窄<br />
+以这个为例<br />
+“现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为"六次确认"）。按照10分钟一个区块计算，一小时就可以确认”<br />
+林子大了，什么鸟都有，万一不止一个人同时达到6个呢，该取谁？继续？那又万一有两个人同时计算出12个，怎么办呢？<br />
+有点想不通，求解</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 10:06 PM">2018年1月15日 22:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384590">#</a>
+ | <a href="#comment-text" title="引用eton的这条留言" onclick="return CommentQuote('comment-quote-384590','eton');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384602" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">C.Jay</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384602">
+            <p>不是说区块链使用非常有限，而是靠POW工作量证明的共识体系的应用场景特别有限。工作量证明浪费资源，这一点不言而喻。所以才出现了如POS,BFT等其他的共识机制。只是目前POW在比特币上得到了很好的应用。要应用与其他场景,特别是非币圈的POW就不合适了，但还没有设计出其他完美的共识算法（规则），这也是区块链在除了数字货币都还在初期阶段的原因</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018 11:20 AM">2018年1月16日 11:20</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384602">#</a>
+ | <a href="#comment-text" title="引用C.Jay的这条留言" onclick="return CommentQuote('comment-quote-384602','C.Jay');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384619" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">xxxx</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384619">
+            <p>又来误人子弟了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  3:15 PM">2018年1月16日 15:15</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384619">#</a>
+ | <a href="#comment-text" title="引用xxxx的这条留言" onclick="return CommentQuote('comment-quote-384619','xxxx');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384648" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">达达尼黑</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384648">
+            <p>区块链和Git有什么相似的地方吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  9:28 AM">2018年1月17日 09:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384648">#</a>
+ | <a href="#comment-text" title="引用达达尼黑的这条留言" onclick="return CommentQuote('comment-quote-384648','达达尼黑');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384662" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">修行者</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384662">
+            <p>区块链的应用场景还是很多的，各种公链便是例证。区块链的应用其实包含币和链两方面。<br />
+结合智能合约技术，区块链更是可以产生无穷的想象空间。资产管理、国际支付、版权保护、防伪溯源，数不胜数。<br />
+互联网降低了信息传输的成本，而区块链将会降低信任的成本。个人还是比较看好区块链的。<br />
+只是区块链的不可控性，倒是对其发展有一定的限制，毕竟官方也不知道怎么来管理它。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  1:17 PM">2018年1月17日 13:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384662">#</a>
+ | <a href="#comment-text" title="引用修行者的这条留言" onclick="return CommentQuote('comment-quote-384662','修行者');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384665" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">风一样的男子</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384665">
+            <p>文中提到的123的Hash值转化成二进制并不是236位呀，好像是140位？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  1:46 PM">2018年1月17日 13:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384665">#</a>
+ | <a href="#comment-text" title="引用风一样的男子的这条留言" onclick="return CommentQuote('comment-quote-384665','风一样的男子');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384714" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.rescup.com" href="http://www.rescup.com" target="_blank" rel="nofollow">DeanFeng</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384714">
+            <p>我又一个问题，如果比较靠前的区块链发生了改变，后面的所有都要重新计算。<br />
+是不是交易记录写入后，就不会在改变了？新的交易记录只会在新的区块链被写入。<br />
+这也就是所谓历史发生了了就发生了，不能再被更改的意思。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  9:54 AM">2018年1月19日 09:54</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384714">#</a>
+ | <a href="#comment-text" title="引用DeanFeng的这条留言" onclick="return CommentQuote('comment-quote-384714','DeanFeng');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384716" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">老姚</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384716">
+            <p>文中说“举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位”</p>
+
+<p>这个hash才40位啊，转换为2进制后才160位。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018 10:02 AM">2018年1月19日 10:02</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384716">#</a>
+ | <a href="#comment-text" title="引用老姚的这条留言" onclick="return CommentQuote('comment-quote-384716','老姚');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384738" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">MarvinHoo</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384738">
+            <blockquote>
+<pre>引用hc的发言：</pre>
+
+<p>阮老师，你好，关于文章的第七点，难度系数的动态调节这个章节里面的难度系数越调越高这句话怎么理解？请详细的解释一下，感谢。其中的动态调节我是理解，不理解的是为什么难度系数会越调越高。</p>
+
+</blockquote>
+
+<p>由于技术以及硬件的提升，算出区块的时间相应缩短了。根据动态调节规则，相应的难度系数会越调越高</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:03 PM">2018年1月19日 16:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384738">#</a>
+ | <a href="#comment-text" title="引用MarvinHoo的这条留言" onclick="return CommentQuote('comment-quote-384738','MarvinHoo');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384880" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sedic</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384880">
+            <p>`a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0`换成2进制是160,明显是sha1算法算出来的<br />
+而且123的sha1值为`40bd001563085fc35165329ea1ff5c5ecbdbbeef`<br />
+根据上面留言的提示，`123\n`的sha1值为a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0</p>
+
+<p>这个留言是不对的，这个123的hash值并没有包括换行符在里面，是sha1本来就是160位的，等效为40位16进制数，而且以你自己的计算机算出来的123对应的sha1值，一定会跟文章中的一样，肯定是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0，因为是处于同一个有限的数值空间中</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018 10:15 PM">2018年1月22日 22:15</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384880">#</a>
+ | <a href="#comment-text" title="引用sedic的这条留言" onclick="return CommentQuote('comment-quote-384880','sedic');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384881" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sedic</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384881">
+            <p>我觉得区块链的设计，还不是很完美，怎么说，就是感觉不是特别靠谱的那种。当然，也可能是我眼界窄<br />
+以这个为例<br />
+“现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为"六次确认"）。按照10分钟一个区块计算，一小时就可以确认”<br />
+林子大了，什么鸟都有，万一不止一个人同时达到6个呢，该取谁？继续？那又万一有两个人同时计算出12个，怎么办呢？<br />
+有点想不通，求解</p>
+
+<p>时间的精度可以达到10E-18以上，这意味着基本不可能同时达到</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018 10:24 PM">2018年1月22日 22:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384881">#</a>
+ | <a href="#comment-text" title="引用sedic的这条留言" onclick="return CommentQuote('comment-quote-384881','sedic');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384882" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sedic</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384882">
+            <p>@一地风飞：</p>
+
+<p>同样的疑惑， 相同的区块体，计算出来的hash值不是唯一的么？ 为什么可以重算很多次？</p>
+
+<p><br />
+注意hash值是基于区块头算出来的，而每个区块头里有一个独一无二的值，生成时间.....<br />
+所以每个区块的hash值肯定不一样</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018 10:28 PM">2018年1月22日 22:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384882">#</a>
+ | <a href="#comment-text" title="引用sedic的这条留言" onclick="return CommentQuote('comment-quote-384882','sedic');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384884" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sedic</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384884">
+            <p>这个留言是不对的，这个123的hash值并没有包括换行符在里面，是sha1本来就是160位的，等效为40位16进制数，而且以你自己的计算机算出来的123对应的sha1值，一定会跟文章中的一样，肯定是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0，因为是处于同一个有限的数值空间中</p>
+
+<p>修正一下错误，echo的确默认会有换行符在里面，可以使用echo -n '123' | sha1sum得到123真正的hash值，40bd001563085fc35165329ea1ff5c5ecbdbbeef，跟之前几位讲的一样</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 22, 2018 10:46 PM">2018年1月22日 22:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384884">#</a>
+ | <a href="#comment-text" title="引用sedic的这条留言" onclick="return CommentQuote('comment-quote-384884','sedic');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384917" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://ghoulich.xninja.org" href="http://ghoulich.xninja.org" target="_blank" rel="nofollow">ghoulich</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384917">
+            <blockquote>
+<pre>引用fogin的发言：</pre>
+
+<p>我想知道中本聪是怎么做到动态调整难度系数的， 没有中心，他是怎么做到要求大家都遵守他动态调节难度系数这个规则的？</p>
+
+</blockquote>
+
+<p>你的这个提问真是提到关键点上了，在去中心化的环境中，到底是哪个角色负责调整这个动态难度系数，这个问题竟然没有大牛回答，我也想知道。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 23, 2018  4:17 PM">2018年1月23日 16:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384917">#</a>
+ | <a href="#comment-text" title="引用ghoulich的这条留言" onclick="return CommentQuote('comment-quote-384917','ghoulich');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384919" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">spademan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384919">
+            <p>大大，我想问下为啥算出来的hash小于目标值就算是正确的</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 23, 2018  4:30 PM">2018年1月23日 16:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384919">#</a>
+ | <a href="#comment-text" title="引用spademan的这条留言" onclick="return CommentQuote('comment-quote-384919','spademan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384940" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Caliven</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384940">
+            <blockquote>
+<pre>引用nextzeus的发言：</pre>
+
+<p>传闻黑客攻击了比特币，很好奇是怎么做到的？ </p>
+
+</blockquote>
+
+<p>攻击的是托管比特币钱包的平台，用户的私钥也是存储的那些平台的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 24, 2018  1:12 PM">2018年1月24日 13:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384940">#</a>
+ | <a href="#comment-text" title="引用Caliven的这条留言" onclick="return CommentQuote('comment-quote-384940','Caliven');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384977" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.csdn.net/github_38851471" href="http://blog.csdn.net/github_38851471" target="_blank" rel="nofollow">lenhart</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384977">
+            <p>个人总结的一些前端数据结构预算法 <a href="http://blog.csdn.net/github_38851471/article/details/79159392" rel="nofollow">http://blog.csdn.net/github_38851471/article/details/79159392</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 25, 2018 11:25 AM">2018年1月25日 11:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-384977">#</a>
+ | <a href="#comment-text" title="引用lenhart的这条留言" onclick="return CommentQuote('comment-quote-384977','lenhart');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385044" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://github.com/bulasuo" href="https://github.com/bulasuo" target="_blank" rel="nofollow">阿布</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385044">
+            <p>"而且可以保证，只要原始内容不同，对应的 Hash 一定是不同的。"</p>
+
+<p>这句话会不会有问题? 哈希值相等,原内容可能不相等,可能出现哈希碰撞.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 26, 2018  9:30 AM">2018年1月26日 09:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385044">#</a>
+ | <a href="#comment-text" title="引用阿布的这条留言" onclick="return CommentQuote('comment-quote-385044','阿布');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385204" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">tony</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385204">
+            <blockquote>
+<pre>引用why的发言：</pre>
+
+<p>分叉还是不大懂。</p>
+
+</blockquote>
+
+<p>就是在限定的时间里分叉的两个链条哪个最长就用哪条</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 29, 2018  2:52 PM">2018年1月29日 14:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385204">#</a>
+ | <a href="#comment-text" title="引用tony的这条留言" onclick="return CommentQuote('comment-quote-385204','tony');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385246" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">APPLE46</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385246">
+            <p>如果hash是256位二进制值，那在257位任意组合的二进制值中就肯定存在hash相同的吧。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 30, 2018  3:02 PM">2018年1月30日 15:02</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385246">#</a>
+ | <a href="#comment-text" title="引用APPLE46的这条留言" onclick="return CommentQuote('comment-quote-385246','APPLE46');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385252" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">无名</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385252">
+            <p>有时间是否可以讲讲DAG？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 30, 2018  5:21 PM">2018年1月30日 17:21</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385252">#</a>
+ | <a href="#comment-text" title="引用无名的这条留言" onclick="return CommentQuote('comment-quote-385252','无名');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385269" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://xcoderliu@github.io" href="http://xcoderliu@github.io" target="_blank" rel="nofollow">xcoderliu</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385269">
+            <p>如果github这么搞 估计网络要瘫痪了 呵呵哒</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 31, 2018  9:49 AM">2018年1月31日 09:49</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385269">#</a>
+ | <a href="#comment-text" title="引用xcoderliu的这条留言" onclick="return CommentQuote('comment-quote-385269','xcoderliu');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385295" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.yekki.me" href="http://www.yekki.me" target="_blank" rel="nofollow">yekki</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385295">
+            <p>一直没想明白，如果挖出块时并没有交易可写，那么这个块体就是空吧，这样，如果再挖出一个，这个新块是不是接上一个空块，那么空块中以后也不能写入新内容了吧？交易在不停产生，块不够写怎么办？块的产生与交易本质上是异步的，怎么保证交易一定有块可写？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 31, 2018  4:37 PM">2018年1月31日 16:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385295">#</a>
+ | <a href="#comment-text" title="引用yekki的这条留言" onclick="return CommentQuote('comment-quote-385295','yekki');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385364" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">阿照</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385364">
+            <p>做运营的it小白路过，看了多天的区块链，这个真的是最好懂的。<br />
+ps：居然有自己的网页，崇拜ing~</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  1, 2018  5:45 PM">2018年2月 1日 17:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385364">#</a>
+ | <a href="#comment-text" title="引用阿照的这条留言" onclick="return CommentQuote('comment-quote-385364','阿照');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385419" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">S</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385419">
+            <blockquote>
+<pre>引用Nameless的发言：</pre>
+
+<p>你这个很多字符串说得真是张口就来。</p>
+
+</blockquote>
+
+<p>他说的没错，理论上讲，有无穷多</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018  8:59 PM">2018年2月 2日 20:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385419">#</a>
+ | <a href="#comment-text" title="引用S的这条留言" onclick="return CommentQuote('comment-quote-385419','S');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385423" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">R4y</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385423">
+            <blockquote>
+<pre>引用一地风飞的发言：</pre>
+
+<p>还有不少疑问，希望懂的人给解释一下：</p>
+
+<p>1. </p>
+
+<p>不知道这样理解对不对： 区块先生成必要的数据（比如 A转帐给B多少），然后加上会变化的"随机数"，来算hash,算出来满足后，就加到链上。如果是这样，这个“随机数”一般是什么？</p>
+
+<p>2. 区块的数据格式有约定吗</p>
+
+<p><br />
+</p></blockquote>
+
+<p>以自己的理解一个个回答吧</p>
+
+<p>1. 一个chunk 的确有两个hash, 第一个是上个区块的hash , 第二个是经过挖矿计算得到的.</p>
+
+<p>那么挖矿 的过程, 实际上是把当前区块的内容(有上个hash), 和一个随机数一起, 进行hash.</p>
+
+<p>当然可以很轻松的得到一个值, 所以这里存在一个难度, 比如规定, 得到的hash 必须以000000(六个零开头)那么难度就会大大的增大(具体的要求和这个类似,所以存在难度系数).</p>
+
+<p>一旦这行hash满足了要求, 那么立马全网广播 mined!</p>
+
+<p>2是有固定格式的, 是json和十六进制数 <a href="https://webbtc.com" rel="nofollow">https://webbtc.com</a> , 用区块浏览器可以很轻松的看到</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018 11:52 PM">2018年2月 2日 23:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385423">#</a>
+ | <a href="#comment-text" title="引用R4y的这条留言" onclick="return CommentQuote('comment-quote-385423','R4y');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385518" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">papaya</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385518">
+            <p>大约是人类历史上第一次出现了一个拖慢效率、浪费能源、99%以上的努力都只为努力本身的新技术大规模运用的实例了。。。是不是可以看做现有秩序体系在崩溃的一种象征？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  4, 2018  6:25 PM">2018年2月 4日 18:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385518">#</a>
+ | <a href="#comment-text" title="引用papaya的这条留言" onclick="return CommentQuote('comment-quote-385518','papaya');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385524" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">as</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385524">
+            <p>区块链同步是什么意思？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  2:19 AM">2018年2月 5日 02:19</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385524">#</a>
+ | <a href="#comment-text" title="引用as的这条留言" onclick="return CommentQuote('comment-quote-385524','as');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385553" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://rgb-24bit.github.io" href="https://rgb-24bit.github.io" target="_blank" rel="nofollow">rgb-24bit</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385553">
+            <p>看了那么多教程，最后还是这篇最清晰</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  6:44 PM">2018年2月 5日 18:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385553">#</a>
+ | <a href="#comment-text" title="引用rgb-24bit的这条留言" onclick="return CommentQuote('comment-quote-385553','rgb-24bit');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385556" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://log4think.com" href="http://log4think.com" target="_blank" rel="nofollow">Jinyu LIU</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385556">
+            <p>"区块链作为无人管理的分布式数据库，从2009年开始已经运行了8年，没有出现大的问题。"</p>
+
+<p>这其实应该是“比特币”，而不是区块链。这是两回事。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  8:34 PM">2018年2月 5日 20:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385556">#</a>
+ | <a href="#comment-text" title="引用Jinyu LIU的这条留言" onclick="return CommentQuote('comment-quote-385556','Jinyu LIU');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385557" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://log4think.com" href="http://log4think.com" target="_blank" rel="nofollow">Jinyu LIU</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385557">
+            <p>"区块链是一种特殊的分布式数据库 ... ... 主要作用是储存信息。任何需要保存的信息，都可以写入区块链，也可以从里面读取，所以它是数据库。"</p>
+
+<p>这个表述我认为是有问题的，区块链不能称之为“数据库”，并不是可以存储数据就可以叫“数据库”的。</p>
+
+<p>关于数据库的定义，在中文维基百科中如下定义，https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93，“数据库 ... ...<br />
+ 用户可以对文件中的数据运行新增、截取、更新、删除等操作”。</p>
+
+<p>在 webster 词典中定义如下，https://www.merriam-webster.com/dictionary/database，“数据库是一系列有组织的数据，特别用于快速查询和存取”。</p>
+
+<p>首先，区块链可以新增数据，但是不具备“更新”和“删除”功能。其次，区块链可以存储数据，但是不具备“快速查询和存取“的功能。第三，广义上的区块链是可以存储任意数据，但是目前区块链实际应用最广泛的两个应用，比特币和以太坊，一个只能记录一系列输入和输出的数字，一个只能记录 token，最多是以附言的方式记录简短的一段信息，并不具备数据存储的实用性。</p>
+
+<p>进一步的，考虑到区块链每个节点的都是存储了所有历史信息的这个特点，利用区块链来存储大量数据也是非常不切实际的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  8:44 PM">2018年2月 5日 20:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385557">#</a>
+ | <a href="#comment-text" title="引用Jinyu LIU的这条留言" onclick="return CommentQuote('comment-quote-385557','Jinyu LIU');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385558" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://log4think.com" href="http://log4think.com" target="_blank" rel="nofollow">Jinyu LIU</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385558">
+            <blockquote>
+<pre>引用strickland的发言：</pre>
+
+<p>不是很多，准确的说应该是无数。</p>
+
+</blockquote>
+
+<p>但是你在有生之年就是找不到</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018  8:50 PM">2018年2月 5日 20:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385558">#</a>
+ | <a href="#comment-text" title="引用Jinyu LIU的这条留言" onclick="return CommentQuote('comment-quote-385558','Jinyu LIU');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385657" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://wenchain.com" href="http://wenchain.com" target="_blank" rel="nofollow">LeoLiao</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385657">
+            <blockquote>
+<pre>引用ghoulich的发言：</pre>
+
+<p></p>
+
+<p>你的这个提问真是提到关键点上了，在去中心化的环境中，到底是哪个角色负责调整这个动态难度系数，这个问题竟然没有大牛回答，我也想知道。。。</p>
+
+</blockquote>
+
+<p>动态难度系数的调整就是代码里面的逻辑，因为所有节点运行的客户端程序都一样，所以没有那个角色负责调整难度系数。当然调整难度系数也是可以做到的，首先要通过比特币社区的提案，然后开发出新的版本就可以。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  8, 2018  3:19 PM">2018年2月 8日 15:19</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385657">#</a>
+ | <a href="#comment-text" title="引用LeoLiao的这条留言" onclick="return CommentQuote('comment-quote-385657','LeoLiao');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385659" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">uuy</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385659">
+            <p>您好，我有一个疑问，如果有人恶意修改当前区块的内容，然后区块失效，这个区块丢失之后，会不会导致当前区块的内容丢失呢？这个内容已经备份到所有的区块里面了吗？</p>
+
+<p>还有一个问题就是后面链接的所有区块都得修改，否则以后所有的区块都断掉了，这个区块里面的内容究竟是全量的，所有区块都相同的，还是只保存当前操作的</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  8, 2018  5:40 PM">2018年2月 8日 17:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385659">#</a>
+ | <a href="#comment-text" title="引用uuy的这条留言" onclick="return CommentQuote('comment-quote-385659','uuy');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385664" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">rty</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385664">
+            <p>“每个区块的 Hash 都是针对"区头"（Head）计算的”</p>
+
+<p><br />
+跟下文联系 表达不清楚. 所谓上一block的hash究竟是仅用上一block head生成的， 还是上一block整体直接生成的？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  9, 2018  2:32 AM">2018年2月 9日 02:32</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385664">#</a>
+ | <a href="#comment-text" title="引用rty的这条留言" onclick="return CommentQuote('comment-quote-385664','rty');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385665" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ryt</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385665">
+            <p>没讲清楚为什么采矿时会不断算出来不同的hash，什么是变量。对已经确定的上一个block求hash 结果是唯一的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  9, 2018  2:43 AM">2018年2月 9日 02:43</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385665">#</a>
+ | <a href="#comment-text" title="引用ryt的这条留言" onclick="return CommentQuote('comment-quote-385665','ryt');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385726" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Simon</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385726">
+            <blockquote>
+<pre>引用EricJin的发言：</pre>
+
+<p>举例来说，字符串123的 Hash 是a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0（十六进制），转成二进制就是256位，而且只有123能得到这个 Hash。</p>
+
+<p>而且只有123能得到这个 Hash。</p>
+
+<p>这句话是错的。很多字符串都能得到这个hash，但是他们之间差异很大。</p>
+
+</blockquote>
+
+<p>--这个是hash碰撞对吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 11, 2018  3:25 PM">2018年2月11日 15:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385726">#</a>
+ | <a href="#comment-text" title="引用Simon的这条留言" onclick="return CommentQuote('comment-quote-385726','Simon');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385760" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">baiyi</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385760">
+            <p>@一地风飞：</p>
+
+<p>随机数就是区块数据中的Nonce值</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 13, 2018  8:11 PM">2018年2月13日 20:11</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385760">#</a>
+ | <a href="#comment-text" title="引用baiyi的这条留言" onclick="return CommentQuote('comment-quote-385760','baiyi');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385774" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://null" href="http://null" target="_blank" rel="nofollow">回忆i</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385774">
+            <p>这个区块链让我看见了神经元的运作，怕是区块链可以加速人工智能的发展甚至直接衍生AI</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 17, 2018  9:17 PM">2018年2月17日 21:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385774">#</a>
+ | <a href="#comment-text" title="引用回忆i的这条留言" onclick="return CommentQuote('comment-quote-385774','回忆i');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385794" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">nslam</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385794">
+            <blockquote>
+<pre>引用Nameless的发言：</pre>
+
+<p></p>
+
+<p>你这个很多字符串说得真是张口就来。</p>
+
+</blockquote>
+
+<p>他说的还真没错，确实有很多字符串，或者说这个数字是无穷大。从任意位数到这个256位的有限映射，要说和“123”这个冲突的字符串，不是很多是什么呢？只是很难找到，差异很大罢了，这点他也提到了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 21, 2018  3:19 PM">2018年2月21日 15:19</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html#comment-385794">#</a>
+ | <a href="#comment-text" title="引用nslam的这条留言" onclick="return CommentQuote('comment-quote-385794','nslam');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="1970" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="" />  <span class="hint"> &laquo;-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="" />  <span class="hint"> &laquo;-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="" />  <span class="hint"> &laquo;-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r" /></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表" />  <span class="hint"> &laquo;- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="http://www.ruanyifeng.com/blog/js/prism.js"></script>
+            <div id="footer">
+<div id="footer-inner">
+   <div id="footer-content">
+   <p><a title="微博" href="http://weibo.com/ruanyf" target="_blank">微博</a> | <a title="Twitter" target="_blank" href="https://twitter.com/ruanyf">推特</a> | <a title="GitHub" target="_blank" href="https://github.com/ruanyf">GitHub</a></p>
+   <p>2018 © <a title="电子邮件" href="/contact.html">我的邮件</a> |</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46829782-1', 'ruanyifeng.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="/blog/stats.js"></script>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;">
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=15e016b4-0028-44f1-a40d-a3c9d9c13c28&style=10&bgcolor=#fff&bp=weixin,qqim,qzone,qqmb,sinaminiblog,fanfou,xueqiu,douban,facebook,twitter,gplus,instapaper&ssc=false"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+
+        </div>
+    </div>
+</body>
+</html>

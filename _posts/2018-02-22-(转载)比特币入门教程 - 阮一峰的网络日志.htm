@@ -1,0 +1,4580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="Movable Type  5.2.2" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="http://www.ruanyifeng.com/blog/styles.css" type="text/css" />
+<link rel="start" href="http://www.ruanyifeng.com/blog/" title="Home" />
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://feeds.feedburner.com/ruanyifeng" />
+<script type="text/javascript" src="http://www.ruanyifeng.com/blog/mt.js"></script>
+<!--
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html">
+<dc:title>持续集成服务 Travis CI 教程</dc:title>
+<dc:description>编写代码只是软件开发的一小部分，更多的时间往往花在构建（build）和测试（test）。...</dc:description>
+<dc:creator>阮一峰</dc:creator>
+<dc:date>2017-12-19T20:09:02+08:00</dc:date>
+<license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/3.0/" />
+</Work>
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/3.0/">
+</License>
+</rdf:RDF>
+-->
+
+
+    
+    <link rel="prev" href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" title="区块链入门教程" />
+    <link rel="next" href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html" title="加密货币的本质" />
+    
+    <title>比特币入门教程 - 阮一峰的网络日志</title>
+</head>
+<body id="scrapbook" class="mt-entry-archive one-column">
+<script>
+if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) document.body.classList.add('mobile');
+
+window.addEventListener('load', function(event) {
+  setTimeout(function () {
+    hab('#sup-post-2');
+    hab('#gd1-inner');
+  }, 1000);
+});
+</script>
+    <div id="container">
+        <div id="container-inner">
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name">阮一峰的网络日志 <span id="site_location"> » <a href="http://www.ruanyifeng.com/blog/" accesskey="1">首页</a></span><span id="site_archive"> » <a href="http://www.ruanyifeng.com/blog/archives.html">档案</a></span>
+</div>
+
+<div id="google_search">
+<!-- SiteSearch Google -->
+<form action="https://www.baidu.com/s" target="_blank" method="get" id="cse-search-box">
+  <div>
+  <input type="text" size="20" name="origin" class="searchbox" id="sbi" value="" />
+  <input type="hidden" name="wd" value="" />
+  <!--input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' inurl:www.ruanyifeng.com/blog'" /-->
+  <input type="image" src="/static/themes/theme_scrapbook/images/top_search_submit.gif" class="searchbox_submit" value="" alt="搜索" name="sa" onclick="this.form.wd.value = this.form.origin.value + ' 阮一峰'" />
+</div>
+</form>
+
+<!-- SiteSearch Google -->
+</div>
+<div id="feed_icon">
+<a href="/feed.html" title="订阅Feed">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAUzSURBVHjavFdbbFRVFF3nPjoz7dTWTittaW0jUDRAUqaNojyqREnEQKgfUj9MqqAmhqRt/OCD4CuY+Kckoh+aiGKC+gMJbdHoRysJ8dkhhmJLNdDKtJU+6GMK87j3Hs85d2Z6HzNtMYWb3Dn3NWftvfba+5xNYDl+e6Fkj6yqb/oDRbWq14vlPBLRKCITkxf0ROLt+hNjp1PPSRK4kA3vF1dXNRcWlyA2OQU9eos9opAkAiKxD+XkKO6t15aRWO7J/MgmAZU8MEgexgZHMX518Dh72sYMmVKShnxWuWHdHtxKIDIYTgMuDzgfmSOIQkYMpdUF8OY92Hytt4/jvkg47czzU16iQovM3QFwmNck+Yyduu7D6NA0Z6JR4THntFs9V4tWQg6Ui3s6MwKDncsFTnXKLJhDSeUK3AgPtyhccDzmVs999buRt/1Vm4i0od+hX7+MRG87jPGB/w1u8FPj9xEw7McVrnYuOCvtpjTth3J/nTg99c8LRhKhr6D3dTB5R24bXFwbMXBsyZzeoXaycEpJ95TB09AGX/NpqLVNtw8urnVzLvHjFNxiFqRy2OOHuqUVnue+ACkoWzo4O6lGzTmuHq6nPvY2m9rVqjrIK2rMEKxqyG5NPAKt+wjo0LklgfNxJkZMA3KJvqRUk3z5UFY3QH14P0h+WUY79HPvgv7VuSg4ZRGY1YgZgqXmORccF17sy2ehnf9AeO085K2HQFbtXBScj0LcpgF2cN+WV+DZ/LJQu6gD4R7oV7pBJwbSgtMvfiPoVp56DySwxm7EtkMs1WdAB7qzggsDJKQYsHucSkOudrkiCPWR/fA2nYCn8SNIK4NptSMyAu3sAdDRkIsJdfth0LzSrODUoPNZ4KI9SxJI5UHk7D4GdQfz2us31c7CoHMjRkKuDPHseCMrONVhNcDJwMJpKFVvg9L4OaTiNWm1x789KCqkrXhVBiEz0WYCT2nAzQAD1/vaETv1GrRfP4Vx5cfMNcDPwvP0h0DhanPym7OIf/+O67vcJ1/PCJ4KgdzaUP6Wz+dU+5yIL6fV+PsHGAOdwlPpvvUOyeeAVGyCdqkDNB6DPjsBSrnndfOGevOh3RhGItxvA+fX1CtbGFhgYUFkFMZPR6F1HnClHq8HyubWtJexX06CRmdt33hrd7nA7SFY4qoGpnYuOKcRykPPgDCBcsHx9Iv+fNL2PueBehCWUfYQIIMGLOCcOmXDXsh1+yCt35tUPfvzGFuSvzvoinXOxqa02qOhM6733nVP2MAdaej2XN11DPKjLZCD+yBvahGCo7JfTKAN9UD7s8Oe9zUNIhz8fWI8DG2k38WCFdxugANcXrvTVd1IEbuv3Jour7Hzn7jLMBNfKs7R3i67gRVrbeCOEDhinmWhAatsqdquM2XzHZINhK2cqTjHr/XZdVJUbgN3MWAVXKbSyg9jesRW2xP9di+lwrL5ojM3m2H/kG9hwcIA37c71W6wJdW2J2S5nrjYbq/t1AHAhJsKQeyfPvf6IMJgghPJhFZ4x0KlfLFvt22du45Au/A1SOlGc0P672XXwhLtOcM0kTTEMMd0qkVmMNXxMd/tsedUjInr4SQDgOfeXMSiN0FCL5WHah4L1qqYXPJOJlttd+a5M+YpcG5poLYKQ5f+6JJ4r8bbJYP47hq4r7QAs9PjYNhHJd4o8l5taiwuOpa7AS4XKqI/5NjJbTnaWK92nLdLuhQAJayRNMiygXPBeQN+Qbvu0zDc3y+aUzhbkGR73sI7ljvUnndx2q3t+X8CDAD66FtrIL864AAAAABJRU5ErkJggg==" alt="" style="border: 0pt none;" />
+</a></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-1971" class="entry-asset asset hentry">
+                                <div class="asset-header">
+<div class="asset-nav entry-nav">
+
+<div class="entry-location">
+<ul>
+<li>上一篇：<a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" title="区块链入门教程">区块链入门教程&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+<li>下一篇：<a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html" title="加密货币的本质">加密货币的本质&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+</ul>
+</div>
+
+
+    
+                                    <div class="entry-categories">
+                                        <p>分类<span class="delimiter">：</span></p>
+                                        <ul>
+                                            <li><a href="http://www.ruanyifeng.com/blog/computer/" rel="tag">理解计算机</a></li>
+                                        </ul>
+                                    </div>
+    
+
+
+                                            
+<div class="entry-location-mobile" style="float: right;">
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" title="区块链入门教程">⇐&nbsp;</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html" title="加密货币的本质">&nbsp;⇒</a></li>
+</ul>
+</div>
+
+</div>
+</div>
+
+                          
+<article class="hentry">
+                                    <h1 id="page-title" class="asset-name entry-title">比特币入门教程</h1>
+                                            <div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;"></div>
+
+<div class="asset-meta">
+                                        
+
+                                            <p class="vcard author">作者： <a class="fn url" href="http://www.ruanyifeng.com">阮一峰</a></p>
+                                    <p>日期： <a href="http://www.ruanyifeng.com/blog/2018/01/"><abbr class="published" title="2018-01-04T08:07:10+08:00">2018年1月 4日</abbr></a></p>
+
+
+                                    
+</div>
+
+                    
+<div class="entry-sponsor" style="border: 1px solid #c6c6c6;border-radius: 4px;background-color: #f5f2f0;">
+<p>
+<a title="珠峰培训" href="http://www.zhufengpeixun.cn/main/course/guide.html?ref=ruanyifeng.com" target="_blank">
+<img alt="珠峰培训" src="http://www.ruanyifeng.com/blog/images/sponsor_zhufeng5.png" style="border: none;windth: 90%;max-width: 90%;display: inline-block;margin-top: -0.5rem;margin-bottom: 0.5rem;"/>
+</a>
+</p>
+</div>
+
+
+                                
+                                <div class="asset-content entry-content" id="main-content">
+
+                                    <!-- div class="asset-body" -->
+                                        <p>比特币（bitcoin）诞生于2008年的一篇<a href="https://bitcoin.org/en/bitcoin-paper">论文</a>。</p>
+
+                                    <!-- /div -->
+
+
+                                    <!-- div id="more" class="asset-more" -->
+                                        <p>一个署名为中本聪的人，提出了革命性的构想：让我们创造一种不受政府或其他任何人控制的货币！这个想法堪称疯狂：一串数字，背后没有任何资产支持，也没有任何人负责，你把它当作钱付给对方，怎么会有人愿意接受？</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010401.jpg" alt="" title="" /></p>
+
+<p>但是，狂想居然变成了现实。随后的几年，在全世界无数爱好者的支持下，比特币网络运行起来了，越来越多的人和资本参与，星星之火，终成燎原。刚刚过去的2017年，比特币迎来了爆发式的增长，从年初的1000美元，最高涨到了2万美元，全世界都为之震动，上到政府，下到普通百姓都在关注。事实就是比特币已经并将继续改变世界。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010402.png" alt="" title="" /></p>
+
+<p>新闻媒体往往只关注它的火爆表现，忽视或者无法回答一些基本的问题。</p>
+
+<blockquote>
+  <ul>
+<li>比特币的原理是什么？</li>
+<li>为什么这个无人管理的体系可以成功运作？</li>
+<li>比特币交易的流程是怎么回事？</li>
+<li>它与区块链又是什么关系？</li>
+</ul>
+</blockquote>
+
+<p>下面，我尝试回答这些问题，希望帮助大家理解比特币。抛开技术细节，还是很容易解释的。</p>
+
+<p>有一点说明，本文只讨论技术问题，不涉及如何投资比特币，更不会预测价格走势。事实上，我也不知道，如果我知道怎么发财，可能就不会在这里写博客了。</p>
+
+<h2>一、非对称加密</h2>
+
+<p>首先，理解比特币，必须理解<a href="http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html">非对称加密</a>。</p>
+
+<p>你可能听说过这个词，所谓非对称加密，其实很简单，就是加密和解密需要两把钥匙：一把公钥和一把私钥。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010403.png" alt="" title="" /></p>
+
+<p>公钥是公开的，任何人都可以获取。私钥是保密的，只有拥有者才能使用。他人使用你的公钥加密信息，然后发送给你，你用私钥解密，取出信息。反过来，你也可以用私钥加密信息，别人用你的公钥解开，从而证明这个信息确实是你发出的，且未被篡改，这叫做数字签名（更详细的介绍请看<a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html">《什么是数字签名》</a>）。</p>
+
+<p>现在请设想，<strong>如果公钥加密的不是普通的信息，而是加密了一笔钱，发送给你，这会怎样？</strong></p>
+
+<p>首先，你能解开加密包，取出里面的钱，因为私钥在你手里。其次，别人偷不走这笔钱，因为他们没有你的私钥。因此，支付可以成功。</p>
+
+<p>这就是比特币（以及其他数字货币）的原理：非对称加密保证了支付的可靠性。</p>
+
+<p>由于支付的钱必须通过私钥取出，所以你是谁并不重要，重要的是谁拥有私钥。只有拥有了私钥，才能取出支付给你的钱。（事实上，真实的交易流程稍有不同，私钥保证的不是取出支付给你的钱，而是保证只有你能把这些属于你的钱支付出去，详见后文。）</p>
+
+<h2>二、比特币钱包</h2>
+
+<p>对于比特币来说，钱不是支付给个人的，而是支付给某一把私钥。这就是交易匿名性的根本原因，因为没有人知道，那些私钥背后的主人是谁。</p>
+
+<p>所以，<strong>比特币交易的第一件事，就是你必须拥有自己的公钥和私钥。</strong></p>
+
+<p>你去网上那些比特币交易所开户，它们会让你首先生成一个比特币钱包（wallet）。<strong>这个钱包不是用来存放比特币，而是存放你的公钥和私钥。</strong>软件会帮你生成这两把钥匙，然后放在钱包里面。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010404.png" alt="" title="" /></p>
+
+<p>根据协议，公钥的长度是512位。这个长度不太方便传播，因此协议又规定，要为公钥生成一个160位的指纹。所谓指纹，就是一个比较短的、易于传播的哈希值。160位是二进制，写成十六进制，大约是26到35个字符，比如 1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2。这个字符串就叫做钱包的地址，它是唯一的，即每个钱包的地址肯定都是不一样的。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010405.png" alt="" title="" /></p>
+
+<p>你向别人收钱时，只要告诉对方你的钱包地址即可，对方向这个地址付款。由于你是这个地址的拥有者，所以你会收到这笔钱。</p>
+
+<p>由于你是否拥有某个钱包地址，是由私钥证明的（具体的证明方法稍后介绍），所以一定要保护好私钥。这是极其重要的，如果你的私钥被偷了，你的比特币也就等于没了，因为他人可以冒用你的身份了，把钱包里面的钱都转走。</p>
+
+<p>同样的，你向他人支付比特币，千万不能写错他人的钱包地址，否则你的比特币就支付到了另一个不同的人了。</p>
+
+<h2>三、交易过程</h2>
+
+<p>下面，我把整个流程串起来，看看比特币如何完成一笔交易。</p>
+
+<p><strong>一笔交易就是一个地址的比特币，转移到另一个地址。</strong>由于比特币的交易记录全部都是公开的，哪个地址拥有多少比特币，都是可以查到的。因此，支付方是否拥有足够的比特币，完成这笔交易，这是可以轻易验证的。</p>
+
+<p>问题出在怎么防止其他人，冒用你的名义申报交易。举例来说，有人申报了一笔交易：地址 A 向地址 B 支付10个比特币。我怎么知道这个申报是真的，申报人就是地址 A 的主人？</p>
+
+<p>比特币协议规定，申报交易的时候，除了交易金额，转出比特币的一方还必须提供以下数据。</p>
+
+<blockquote>
+  <ul>
+<li>上一笔交易的 Hash（你从哪里得到这些比特币）</li>
+<li>本次交易双方的地址</li>
+<li>支付方的公钥</li>
+<li>支付方的私钥生成的数字签名</li>
+</ul>
+</blockquote>
+
+<p>验证这笔交易是否属实，需要三步。</p>
+
+<blockquote>
+  <p>第一步，找到上一笔交易，确认支付方的比特币来源。</p>
+
+<p>第二步，算出支付方公钥的指纹，确认与支付方的地址一致，从而保证公钥属实。</p>
+
+<p>第三步，使用公钥去解开数字签名，保证私钥属实。</p>
+</blockquote>
+
+<p>经过上面三步，就可以认定这笔交易是真实的。</p>
+
+<h2>四、交易确认与区块链</h2>
+
+<p>确认交易的真实性以后，交易还不算完成。<strong>交易数据必须写入数据库，才算成立，对方才能真正收到钱。</strong></p>
+
+<p>比特币使用的是一种特殊的数据库，叫做区块链（blockchain），详细的介绍请看<a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">《区块链入门教程》</a>。本文只讨论交易如何写入区块链。</p>
+
+<p>首先，所有的交易数据都会传送到矿工那里。矿工负责把这些交易写入区块链。</p>
+
+<p>根据比特币协议，一个区块的大小最大是 1MB，而一笔交易大概是500字节左右，因此一个区块最多可以包含2000多笔交易。矿工负责把这2000多笔交易打包在一起，组成一个区块，然后计算这个区块的 Hash。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010406.jpg" alt="" title="" /></p>
+
+<p>计算 Hash 的过程叫做采矿，这需要大量的计算。矿工之间也在竞争，谁先算出 Hash，谁就能第一个添加新区块进入区块链，从而享受这个区块的全部收益，而其他矿工将一无所获。</p>
+
+<p>一笔交易一旦写入了区块链，就无法反悔了。这里需要建立一个观念：<strong>比特币不存放在钱包或其他别的地方，而是只存在于区块链上面。</strong>区块链记载了你参与的每一笔交易，你得到过多少比特币，你又支付了多少比特币，因此可以算出来你拥有多少资产。</p>
+
+<h2>五、矿工的收益</h2>
+
+<p>交易的确认离不开矿工。为什么有人愿意做矿工呢？</p>
+
+<p>比特币协议规定，挖到新区块的矿工将获得奖励，一开始（2008年）是50个比特币，然后每4年减半，目前（2018年）是12.5个比特币。这也是比特币的供给增加机制，流通中新增的比特币都是这样诞生的。</p>
+
+<p>你可能看出来了，每4年奖励减半，那么到了2140年，矿工将得不到任何奖励，比特币的数量也将停止增加。这时，矿工的收益就完全依靠交易手续费了。</p>
+
+<p>所谓交易手续费，就是矿工可以从每笔交易抽成，具体的金额由支付方自愿决定。你完全可以一毛不拔，一分钱也不给矿工，但是那样的话，你的交易就会没人处理，迟迟无法写入区块链，得到确认。矿工们总是优先处理手续费最高的交易。</p>
+
+<p>目前由于交易数量猛增，手续费已经水涨船高，一个区块2000多笔交易的手续费总额可以达到3～10个比特币。如果你的手续费给低了，很可能过了一个星期，交易还没确认。</p>
+
+<p>一个区块的奖励金12.5个比特币，再加上手续费，收益是相当可观的。按照目前的价格，可以达到100万～200万人民币。想想看，运气好的话，几分钟就能挖到一个区块，拿到这样一大笔钱，怪不得人们对挖矿趋之若鹜。</p>
+
+<h2>六、区块的扩容</h2>
+
+<p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">《区块链入门教程》</a>说过，比特币协议规定，平均10分钟诞生一个区块。区块的大小只有 1MB，最多只能包含2000多笔交易。也就是说，比特币网络每10分钟，最多只能处理2000多笔交易，换算一下，就是处理速度为3～5笔/秒。</p>
+
+<p>全世界的比特币交易这么多，可是区块链每秒最多只能处理5笔，这已经成为制约比特币发展的一个瓶颈。</p>
+
+<p>很早就有人呼吁，改革比特币协议，提升处理速度。这件事在2017年8月有了一点眉目，当时区块链发生了一次分叉，诞生了一个新协议，称为 <a href="https://en.wikipedia.org/wiki/Bitcoin_Cash">Bitcoin Cash</a>（简称 BCH）。这种新货币其他方面都与比特币一致，就是每个区块的大小从 1MB 增加到了 8MB，因此处理速度提升了8倍，手续费也低得多。该协议是对原有区块链的分叉，因此当时持有比特币的人，等于一人获赠了一份同样数量的 BCH。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010407.png" alt="" title="" /></p>
+
+<p>BCH 等于创造了一种新货币，还有人提议，原始比特币的区块大小提升到 2MB，这称为 <a href="https://en.wikipedia.org/wiki/SegWit2x">SegWit2x</a> 。这个建议原定于2017年11月实施，但是最后一刻由于缺乏共识，就被取消了，目前还在讨论中。</p>
+
+<h2>七、点对点网络</h2>
+
+<p>比特币是一个全世界的开放网络，只要你有服务器，就能加入这个网络，成为一个节点。每个节点都包含了整个区块链（目前大概 100多 GB），并且节点之间时刻不停地在同步信息。</p>
+
+<p><img src="http://www.ruanyifeng.com/blogimg/asset/2018/bg2018010408.png" alt="" title="" /></p>
+
+<p>当你发生了一笔支付，你所在的节点就会把这笔交易告诉另一个节点，直至传遍整个网络。矿工从网上收集各种新发生的交易，将它们打包写入区块链。一旦写入成功，
+矿工所在节点的区块链，就成为最新版本，其他节点都会来复制新增的区块，保证全网的区块链都是一致的。</p>
+
+<p>最后，你所在的节点也拿到了最新的区块链，从而得知你早先的那笔交易，已经写在里面了，至此交易确认成功。</p>
+
+<h2>八、还有一个问题</h2>
+
+<p>写到这里，我就介绍完了比特币的基本知识，希望你已经明白了比特币是怎么回事。但是还有一个根本的问题，我没有回答：比特币的本质到底是什么？</p>
+
+<p>说到底，比特币只是区块链的一条记录，是凭空生成的，为什么可以当钱用？举例来说，矿工获得12.5个比特币的奖励，其实就是区块链有一个记录："xxx地址获得12.5个比特币"。正是这行记录，导致该矿工获得了大笔金钱。如果区块链突然增加了一条记录，记载你的地址获得了1000个比特币，你就真的会有1000个比特币。这到底是为什么？</p>
+
+<p>这篇文章已经够长了，这个问题就留到下次再谈，欢迎关注本系列的最后一篇文章<a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html">《加密货币的本质》</a>。</p>
+
+<h2>九、参考链接</h2>
+
+<ul>
+<li><a href="https://arstechnica.com/tech-policy/2017/12/how-bitcoin-works/">How Bitcoin works</a> , by Timothy B. Lee</li>
+<li><a href="http://www.righto.com/2014/02/bitcoins-hard-way-using-raw-bitcoin.html">Bitcoins the hard way: Using the raw Bitcoin protocol</a>, by Ken Shirriff</li>
+</ul>
+
+<p>（完）</p>
+
+                                    <!-- /div -->
+
+                                </div>
+    <script type="text/javascript" src="/newwindow.js"></script>
+                                <div class="asset-footer">
+
+<h3>文档信息</h3>
+<ul>
+<li>版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+<li>发表日期： <abbr class="published" title="2018-01-04T08:07:10+08:00">2018年1月 4日</abbr></li>
+<li>更多内容： <a href="http://www.ruanyifeng.com/blog/archives.html" target="_blank"> 档案</a>  » 
+<a href="http://www.ruanyifeng.com/blog/computer/"> 理解计算机</a> 
+</li>
+<li>文集：<a href="/road" target="_blank">《前方的路》</a>，<a href="/survivor" target="_blank">《未来世界的幸存者》</a></li>
+<li>社交媒体：<a href="https://twitter.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAk1JREFUeNqsVc9rE0EU/mZ3dhPNJl2bVIk/Km09aFBE8GLvnrwJXvwLxIsgCP4Fnit6E8Gb0IMHwUsL9SSNgiAoooJIpE1Joo1h82uT7IxvxmRN3Q32kAdvdrI773vfe+/bDTu9WioDcDAda3Ja8piepQ1avCkCeny0Y+R9KenKwOmHHLvPaKn7AtVOoO8dOWDCMpg+41gMQv5FNEJACgoE8MsPNLDBhgfoutMOsJDmWLmU037C4TApciljwQ/kHoohQxV06+wMXNvE7WINuaSpvdYVKLgWnl3O4zAxU3Z1IYVGT+B5qYWV9z2kbQaT/cOwTsxOUUYF+mB5Dkmi8HG3h2q9hxsFNwRTdvQgxxnXRrMvIdkEhllis/qtiWuLDm4WZnBlPoWnXz28LHdw0uGR7m9Wu3j0qYGEubfn4UlBfXO4gTZltRNMg9w9f0i7kNFxllsBlS0x75gYfxyWTBUjT2W5CSMSPBrQuG21+hiMDS8CeCzF8eSLp13uQ3Ab1IqMFZN8tFHPmgOBF99bYP8Be1Xp6t7OJszJgKpPSiZvaj7uf2hguz2IBQuozDvFH6RDBjuK9wdQDvt0nMpW+8efGyh5UcAeZb2+UcHbnz5Jx4wdlp4yJYU3kLiQtfBwOYeLc8nIwfXtNu69q2Oz4mMxbemYOOOjKarhvq51KUjg3GwiFPIuvcNF6pnSnWK0lOEabNLgQh1aJFAhlGB9rG110B2+oyRNPc0sZbRNFltmLKDKqj4Qrm1ojzOxDz2pyPQ0P7CK4c40/wJ+CzAAGYrXsvfFXR4AAAAASUVORK5CYII=" style="border:0;"> twitter</a>，<a href="http://weibo.com/ruanyf" target="_blank"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAABPZJREFUeNqMyXtM1WUcx/FnNTdreAVCEEThyEFUrM2kwkpS05qVl8rugVpRUelaJdZaWWktdZKHssImgV04osgBCbwAa2Whm6GWoXHxcD1wHiI4t9/z/H68+wO3av1R3+217/b+CFStsHq/W2V1HW+wOmq8VkeN/E+dR/7SUSOtrmOnLc93jxA6LsTw71XLrUsHsNwHsdxl/09HGVb7QawOF1bn4ZF26QDDsmqNsH7be9psKcJs+fy/tRZjXvwM//678BVdT6BsMarhxZHeug+reW+TMC84+s0LDv4tH7PZgdXqwGrLx7yYP9KaHISOvUCwYh3+4iUMOiIJVmSMbBfy+4X581Zp/ryVfzi/FfPXd1AntxNwvkvg6zfQZ7Zg/rIV8/x7qB9fJlT/JPrcm4SOPctg3ihCR5dhNu2QQjfmSt2Yi27MRf+Uiz67Ef1TLv7Ct5CPZtMzJ4N2243Ij7Kwmjdhnt+EUZeFr/BmhvYkoBqewl8yD9/eCejGTVLoUzlSn8pBn8xBn85B/fAcf7z6PJ7rl9KdNBdP6nwuJc2jL+9+jJrXGNr1On9seZHgkQ0ESq8l4EzBOLKMod1XoE6slUKfXCd1wxp0Qxb6RBYDLzxGz8xb8aSm05u2kL4bF9N902I89yzHe986PEseoGP2YjqfvpNQeTr+4rmEKucz6LgS9f1jUuiy+VIfvxvz1GoGN99Hz8wFeGan0zl3Ae4lK3A/vJb2x7PpWPEI3bevoHfJKtypt9H1UgbDZx5E//goofJF+AtmoasWSaG2jZE6P5zg9hQ8Nyyie1Y6rQ+vpafMhdHXx7BpgjWMr7sbT5kL9/IHcUck0X3LtfgLVqAP3YAumoHeHYvaPkYKlRcudf54Bh5KpjP5Fi69tplgIMCQabK/rIxtO3bgqqxkmJHzdXbRknYbrWIcrWEJ9D8RjXaMRe2ciNo5QQr1QYRUjnC8C1Nxr1pD0O/HFwyQmZmJ3W4nLS0Nm83G+vXrsSwLgP6vS2kWo/lNjKN57gTMTyJRH0Si8iZKoXZdI5Ujkt55SXRtfBuAffv2sXLlSpxOJ9nZ2SQkJBAWFobX6wVgoPooLWI0v4hxuFeFY30ahdoVhcqLkEJ9GCV1QRTehZNxZ9wPQNGXX5KZmUlbWxspKSkIIUhPT0dZFibQvSaHJjGKxujxBHZGoT+ehPpwEsoRIYUqmCR1YTTBd2NoGxtOz4Y3CPoDrNuwnuhpU7lq/HgW3LGU5l4P2h+g55XNnBOjORM/jsH3ozGLYlAFMag90ahPI6VQxZOlKo5BOyfjey+GliljaL0uA7l9D2f37uess5KBoyfwbvmIJnsajVePouXeCIKFsZglsajiyX8pvEYKoySm33DGYTjj0OVxhEri6N84kfalY2i/NRb3AhvNN0+i9Y4wPC+H4yuMxTocjzoYj7F/ymVxI/+ryH5huKaeMVzxGK54QuXT8B+y4atIZqB8Nt6SVDzFqXi+mIO39Dp+PziHwdIZDJVOJ3gogZArHsM1BcMVj1E+BcMVe1GY38auNqqnYdQkEKpOJPBNEv7DdnyVdnwVdoYqki+bge9wCv6qFAJVyQS/mU6oJhHjSCJG9VSM6kRUfXi2GK6fJYy6+CyjNrHRqLP1GbWJ0qizSfV39Tap6qdLVW+Xqt4ujfokadRdVpvgNWpt54y6qc8MV44Sfw4An+t+Gj1AKyYAAAAASUVORK5CYII=" style="border:0;" /> weibo</a></li>
+
+</ul>
+                                </div>
+</article>
+                            </div>
+
+  <div id="sup-post-2" style="display: inline-block ! important;width: 100%;">
+    <p style="text-align:center;"><a title=”一灯学堂“ href="http://www.yidengxuetang.com/recruit?utm_source=ruanyifeng.com" target="_blank"><image alt="一灯学堂" src="http://www.ruanyifeng.com/blog/images/sup_yideng_201711a.jpg" style="border:none;display: block !important;" /></a></p>  
+    <p style="text-align:center;"><a title="优达学城"  href="https://cn.udacity.com/fend/?utm_source=ruanyfc&utm_medium=kol&utm_campaign=fend" target="_blank"><image alt="优达学城" src="http://www.ruanyifeng.com/blog/images/sup_udacity_201801.jpg" style="border:none;display: block !important;" /></a></p>
+  </div>
+
+<div id="related_entries">
+<h2>相关文章</h2>
+<ul>
+
+<li><strong>2018.01.21: <a href="http://www.ruanyifeng.com/blog/2018/01/assembly-language-primer.html">汇编语言入门教程</a></strong>
+
+                           <div class="entry-body">
+                              学习编程其实就是学高级语言，即那些为人类设计的计算机语言。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2018.01.11: <a href="http://www.ruanyifeng.com/blog/2018/01/cryptocurrency-tutorial.html">加密货币的本质</a></strong>
+
+                           <div class="entry-body">
+                              去年，比特币暴涨，其他币也像雨后春笋一样冒出来，已经有1000多种了。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2017.12.26: <a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html">区块链入门教程</a></strong>
+
+                           <div class="entry-body">
+                              区块链（blockchain）是眼下的大热门，新闻媒体大量报道，宣称它将创造未来。
+
+                           </div>
+
+</li>
+
+ 
+<li><strong>2017.07.23: <a href="http://www.ruanyifeng.com/blog/2017/07/iaas-paas-saas.html">IaaS，PaaS，SaaS 的区别</a></strong>
+
+                           <div class="entry-body">
+                              越来越多的软件，开始采用云服务。
+
+                           </div>
+
+</li>
+
+ 
+</ul>
+</div>
+
+
+<div id="gd1" style="display: block !important;">
+<h2>广告<a href="/support.html">（购买广告位）</a></h2>
+<div id="gd1-inner">
+<div id="gd1-left">
+<a href="https://2018.qconbeijing.com/?utm_source=ruanyf&utm_campaign=8&utm_medium=banner&utm_term=0212" title="InfoQ" target="_blank"><image alt="InfoQ" src="http://www.ruanyifeng.com/blog/images/sup_geekbang_20180212b.jpg" style="border:none;display: block !important;" /></a>
+</div>
+<div id="gd1-right">
+<a href="https://cn.udacity.com/course/react-nanodegree--nd019-cn/?utm_source=ruanyfb&utm_medium=kol&utm_campaign=react" title="优达学城" target="_blank"><image alt="优达学城" src="/blog/images/sup_udacity_b20180115.jpg" style="border:none;display: block !important;" /></a>
+
+</div>
+</div>
+</div>
+                    
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">留言（106条）</h2>
+
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-384038" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Jaxure</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384038">
+            <p>哈哈 最近阮老师集中研究这一块</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  8:59 AM">2018年1月 4日 08:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384038">#</a>
+ | <a href="#comment-text" title="引用Jaxure的这条留言" onclick="return CommentQuote('comment-quote-384038','Jaxure');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384042" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">L.Rain</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384042">
+            <blockquote>
+<pre>引用Jaxure的发言：</pre>
+
+<p>哈哈 最近阮老师集中研究这一块</p>
+
+</blockquote>
+
+<p>阮老师要出手了，哈哈</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  9:25 AM">2018年1月 4日 09:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384042">#</a>
+ | <a href="#comment-text" title="引用L.Rain的这条留言" onclick="return CommentQuote('comment-quote-384042','L.Rain');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384043" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">binary</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384043">
+            <p>"这个钱包不是用来存放比特币，而是存放你的公钥和私钥。软件会帮你生成这两把私钥，然后放在钱包里面。"<br />
+应该是生成这两把密钥</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  9:34 AM">2018年1月 4日 09:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384043">#</a>
+ | <a href="#comment-text" title="引用binary的这条留言" onclick="return CommentQuote('comment-quote-384043','binary');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384047" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zyg</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384047">
+            <p>传说的去中心化呢～  到头来还是矿工中心化～ 算力决定一切 哈哈～</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:01 AM">2018年1月 4日 10:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384047">#</a>
+ | <a href="#comment-text" title="引用zyg的这条留言" onclick="return CommentQuote('comment-quote-384047','zyg');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384048" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://dbarobin.com" href="https://dbarobin.com" target="_blank" rel="nofollow">温国兵</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384048">
+            <p>纠正一个错误</p>
+
+<p>“你可能看出来了，每 4 年奖励减半，那么到了 2140 年，矿工将得不到任何奖励，比特币的数量也将停止增加。这时，矿工的收益就完全依靠交易手续费了。”</p>
+
+<p>这里应该是 2040 年。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:07 AM">2018年1月 4日 10:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384048">#</a>
+ | <a href="#comment-text" title="引用温国兵的这条留言" onclick="return CommentQuote('comment-quote-384048','温国兵');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384052" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">机器猫电路改造</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384052">
+            <p>关于第八个问题,不知道阮老师后续文章会不会谈到"比特币的伦理"问题;<br />
+比如比特币的出现对现阶段资源分配方式的影响?<br />
+如何面对和传统货币一样会带来犯罪问题? 对资源分配方式的处理问题?</p>
+
+<p>另外,不知道阮老师,有没有机会谈一谈 World Community Grid,BOIN 等等这些分布计算? 很好奇,数字货币有没有可能和这些分布计算实现更科学的结合? 而不是像矿工们那样浪费资源.</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:21 AM">2018年1月 4日 10:21</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384052">#</a>
+ | <a href="#comment-text" title="引用机器猫电路改造的这条留言" onclick="return CommentQuote('comment-quote-384052','机器猫电路改造');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384054" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">HiTimor</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384054">
+            <p>好好好，入门篇。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:27 AM">2018年1月 4日 10:27</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384054">#</a>
+ | <a href="#comment-text" title="引用HiTimor的这条留言" onclick="return CommentQuote('comment-quote-384054','HiTimor');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384055" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Mike</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384055">
+            <p>比特币技术复杂、普通人不能很好的理解。比特币没有金融监管、容易产生金融犯罪。前段时间的黑客勒索无不采用比特币技术。所以个人并不看好这一块的技术。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:29 AM">2018年1月 4日 10:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384055">#</a>
+ | <a href="#comment-text" title="引用Mike的这条留言" onclick="return CommentQuote('comment-quote-384055','Mike');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384056" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">bravist</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384056">
+            <p>写的真是通俗易懂，读了好多比特币的文章，这个原理解释地道</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 10:35 AM">2018年1月 4日 10:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384056">#</a>
+ | <a href="#comment-text" title="引用bravist的这条留言" onclick="return CommentQuote('comment-quote-384056','bravist');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384065" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">小白</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384065">
+            <p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 11:37 AM">2018年1月 4日 11:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384065">#</a>
+ | <a href="#comment-text" title="引用小白的这条留言" onclick="return CommentQuote('comment-quote-384065','小白');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384066" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://www.tonyhead.com/" href="https://www.tonyhead.com/" target="_blank" rel="nofollow">TONYHEAD</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384066">
+            <p>有若干疑问:</p>
+
+<p>一个100GB的数据库就可以记录到比特币创立至今的所有交易往来?<br />
+"2000笔交易的区块手续费是3-10个比特币",这个交易成本太高了,2000笔流水,大一点的小卖部都不止这个数,难不成按目前的交易成本, 比特币只适合做大额资金的交易?<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018 11:59 AM">2018年1月 4日 11:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384066">#</a>
+ | <a href="#comment-text" title="引用TONYHEAD的这条留言" onclick="return CommentQuote('comment-quote-384066','TONYHEAD');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384069" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.zlfdj.com.cn" href="http://www.zlfdj.com.cn" target="_blank" rel="nofollow">问天玄铁</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384069">
+            <p>比特币目前的很多问题（交易慢，账本大，算力集中）导致比特币一定不是数字货币的最终形态。我们不妨来想想更接近未来形态的数字货币协议和算法，就能让比特币变得不值钱，而且能让自己再次站在财富大门口。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  2:13 PM">2018年1月 4日 14:13</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384069">#</a>
+ | <a href="#comment-text" title="引用问天玄铁的这条留言" onclick="return CommentQuote('comment-quote-384069','问天玄铁');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384070" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">tc</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384070">
+            <p>感谢科普了，通俗易懂。<br />
+不过有个疑问，“当矿工将得不到任何奖励，比特币的数量也将停止增加。这时，矿工的收益就完全依靠交易手续费了。”<br />
+这样感觉货币流通会很受影响啊，不知道在后面当数字货币的文章中会不会说明</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  2:47 PM">2018年1月 4日 14:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384070">#</a>
+ | <a href="#comment-text" title="引用tc的这条留言" onclick="return CommentQuote('comment-quote-384070','tc');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384071" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="https://www.h5tube.com" href="https://www.h5tube.com" target="_blank" rel="nofollow">张庆华</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384071">
+            <p>最近也在看这块，感觉非常有前途</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  2:56 PM">2018年1月 4日 14:56</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384071">#</a>
+ | <a href="#comment-text" title="引用张庆华的这条留言" onclick="return CommentQuote('comment-quote-384071','张庆华');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384073" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">陈辉</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384073">
+            <p>还是阮老师写的通俗易懂，能否一直同步到微信公众号里面。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  3:27 PM">2018年1月 4日 15:27</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384073">#</a>
+ | <a href="#comment-text" title="引用陈辉的这条留言" onclick="return CommentQuote('comment-quote-384073','陈辉');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384074" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">杨高超</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384074">
+            <p>@TONYHEAD：</p>
+
+<p>这个应该这么理解，比特币的交易不是以一个比特币为最小单位的，他可以无穷分割下去，例如一次交易交易了0.000001个比特币。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  3:31 PM">2018年1月 4日 15:31</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384074">#</a>
+ | <a href="#comment-text" title="引用杨高超的这条留言" onclick="return CommentQuote('comment-quote-384074','杨高超');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384084" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">leter</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384084">
+            <p>如果我知道怎么发财，可能就不会在这里写博客了。说的很接地气。。哈哈</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  3:39 PM">2018年1月 4日 15:39</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384084">#</a>
+ | <a href="#comment-text" title="引用leter的这条留言" onclick="return CommentQuote('comment-quote-384084','leter');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384091" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">没事扯扯蛋</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384091">
+            <p>谁能说明比特币怎样和实际金钱或实物挂钩的？？？<br />
+如果不能挂钩，比特币就是个数字游戏，没有价值。<br />
+如果挂钩了，那说明比特币背后还是有势力（中心）支持的，否则怎么可能风生水起？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  4:08 PM">2018年1月 4日 16:08</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384091">#</a>
+ | <a href="#comment-text" title="引用没事扯扯蛋的这条留言" onclick="return CommentQuote('comment-quote-384091','没事扯扯蛋');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384095" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384095">
+            <p>您最近有关注币圈么？感觉遗漏了很重要的东西：<br />
+1.挖矿赚币只是为了激励矿工，这个不是关键。挖矿的本质是达到分布式共识的手段，或者说，就是随机选一个人来记账，防止作弊，这个才是关键。<br />
+比特币安全的一个假设就是没有单个的人/组织能掌控50%以上的算力。<br />
+比特币的共识规则规定，大家都认最长链，更准确地说，是积累工作量最多的链。<br />
+矿工必须积极地接收别人挖到的新区块、在上面追加自己挖出的区块，并把自己挖出的区块积极广播出去，否则，他的链会被孤立，他就白干了。（可想而知，超过50%的算力，就不用鸟这些了）<br />
+2.扩容之争吵了几年了，现在BTC的开发者不愿意提高这个1MB的限制，是因为区块扩大后，会加剧比特币的中心化，这样的话，最后我们还不如直接用支付宝、VISA这样的中心化服务。<br />
+有人甚至认为比特币已经失去去中心化的本质，因为中国的大矿池已经垄断了算力，也就垄断了记账权。<br />
+有了SegWit之后，支撑交易量堪比VISA的闪电网络，还有其他技术能减少区块占用。而且，还有RSK等侧链技术可以期待。<br />
+Bitcoin Cash主要是中国矿工群体支持的，虽说未来扩大区块大小是不可避免的，但是Bitcoin Cash除了扩大区块大小，技术上并没有什么优势，它的宣传者还四处混淆视听，宣称只有自己才是真正的比特币。<br />
+闪电网络比较复杂，软件开发了几年，最近才基本成型，还在测试中。不过，也确实不能指望它能解决所有问题，因为闪电网络是为微支付设计的，支付通道的容量是有限的，大额交易可能还是直接走主链交易比较方便。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  4:37 PM">2018年1月 4日 16:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384095">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384095','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384096" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384096">
+            <blockquote>
+<pre>引用tc的发言：</pre>
+
+<p>感谢科普了，通俗易懂。<br />
+不过有个疑问，“当矿工将得不到任何奖励，比特币的数量也将停止增加。这时，矿工的收益就完全依靠交易手续费了。”<br />
+这样感觉货币流通会很受影响啊，不知道在后面当数字货币的文章中会不会说明</p>
+
+</blockquote>
+
+<p>有人说最后手续费会占到交易额的5%，也有人认为用户花钱养矿工是不值得的，既浪费电，又不能消除被矿工攻击的风险。不如直接换共识机制，把工作证明（PoW）换掉，换成权益证明（PoS），大体上是谁持币多谁更有记账权，相信持币人不会做伤害体系利益的事情，否则他自己的利益会大大受损。</p>
+
+<p>Peercoin算PoS的始祖，不过有学者指出它有漏洞，受到nothing at stake攻击的威胁；以太坊已经在测试PoS机制；还有Cardano，使用的是Ouroboros这个经过学术界同行评议的PoS机制。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  4:46 PM">2018年1月 4日 16:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384096">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384096','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384098" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384098">
+            <blockquote>
+<pre>引用TONYHEAD的发言：</pre>
+
+<p>有若干疑问:</p>
+
+<p>一个100GB的数据库就可以记录到比特币创立至今的所有交易往来?<br />
+"2000笔交易的区块手续费是3-10个比特币",这个交易成本太高了,2000笔流水,大一点的小卖部都不止这个数,难不成按目前的交易成本, 比特币只适合做大额资金的交易?</p>
+
+<p><br />
+</p></blockquote>
+
+<p>现在已经有170GB了。</p>
+
+<p>您怀疑比特币的交易量极为有限——确实是这样！比特币的交易容量小到“可笑”的程度。按照10分钟1MB来算，其实只相当于每秒7笔交易。<br />
+虽说可以把多笔交易拼成一个来节省空间，但这么做的效果是有限的。</p>
+
+<p>对于交易所从1个地址提币给N个人这种情况，把多笔交易拼起来确实可以显著地节省空间，但是，这些币最终还是要再被它们的主人花出去，这个时候仍然需要消耗主链空间。</p>
+
+<p>要理解具体情况，您可以去查一查比特币的交易格式，包括UTXO是什么。</p>
+
+<p>我也可以大概给您描述一下：比特币的交易，由“输入”和“输出”两部分组成。</p>
+
+<p>每一笔交易，都相当于把“输入”的币熔毁，重新铸造成“输出”中指定的金额。（其中输出金额需要小于等于输入，少的那部分作为付给矿工的手续费，计入coinbase交易）</p>
+
+<p>所以，每个比特币地址上的余额都可以看作是通过从2009年“创世”开始的所有交易记录推算出来的。</p>
+
+<p>“输入”部分包括数字签名（也就是“见证”部分），数据量一般比较大。</p>
+
+<p>虽然扩大区块大小就可以提高交易量，但这样只是线性扩容，不能指数级地提升容量。</p>
+
+<p>中国矿工群体和少数开发者认为，扩大区块容量并不会让比特币中心化，但是多数人（尤其是国外的社区）都不认同这种说法，目前排前几名的矿池已经把全网算力差不多都垄断了：https://btc.com/stats/pool。</p>
+
+<p>多数开发者认为小额交易不能用宝贵的主链空间完成，需要放在主链之外，比如闪电网络，还有RSK等侧链。</p>
+
+<p>还可以看看Bitcoin Core官方写的FAQ：https://bitcoincore.org/zh_CN/2015/12/21/%E7%B3%BB%E7%BB%9F%E6%89%A9%E5%B1%95%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94/</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  5:04 PM">2018年1月 4日 17:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384098">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384098','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384101" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.jianpage.com" href="http://blog.jianpage.com" target="_blank" rel="nofollow">ixx</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384101">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>交易平台提供一个钱包地址 你往里充钱并提供交易记录就可以了  跟你用银行转账类似  </p>
+
+<p>平台不会要所有人的钱包（要你也不会给的。。。）需要提币的时候 提供给平台你的钱包地址 就可以转到你的钱包里了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  6:01 PM">2018年1月 4日 18:01</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384101">#</a>
+ | <a href="#comment-text" title="引用ixx的这条留言" onclick="return CommentQuote('comment-quote-384101','ixx');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384102" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://blog.jianpage.com" href="http://blog.jianpage.com" target="_blank" rel="nofollow">ixx</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384102">
+            <blockquote>
+<pre>引用没事扯扯蛋的发言：</pre>
+
+<p>谁能说明比特币怎样和实际金钱或实物挂钩的？？？<br />
+如果不能挂钩，比特币就是个数字游戏，没有价值。<br />
+如果挂钩了，那说明比特币背后还是有势力（中心）支持的，否则怎么可能风生水起？</p>
+
+</blockquote>
+
+<p>最开始有一部分人出于各种目的（收藏，或是炒作），允许你买他们的东西使用比特币支付（最开始买个比萨要50比特币。。。。现在想想。。。）慢慢的，越来越多的人接受了他，才发展到现在，这东西不可做假且数量固定，就像限量版的乐高一样，越多的人支持，“收藏”越值钱</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  6:10 PM">2018年1月 4日 18:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384102">#</a>
+ | <a href="#comment-text" title="引用ixx的这条留言" onclick="return CommentQuote('comment-quote-384102','ixx');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384103" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://linhai1990.com" href="http://linhai1990.com" target="_blank" rel="nofollow">林海草原</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384103">
+            <p>关于比特币，之前我还真没有了解过。前两天，一位博友的博客被挂马，被挂的是一个在线挖矿代码，每次打开博客都会被执行。我当时简单了解了一下，但是网上的文章晦涩。当今天看到阮老师的博文，我才真正知道挖矿是什么。挖矿能拿到如此高的奖励，难怪有些人会通过程序漏洞给别人的网站挂马来挖矿。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  6:12 PM">2018年1月 4日 18:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384103">#</a>
+ | <a href="#comment-text" title="引用林海草原的这条留言" onclick="return CommentQuote('comment-quote-384103','林海草原');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384104" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">jg</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384104">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>交易平台是知道的，有的平台还实名认证的。<br />
+不放心，可以把从平台转移到自己的钱包就好了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  6:50 PM">2018年1月 4日 18:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384104">#</a>
+ | <a href="#comment-text" title="引用jg的这条留言" onclick="return CommentQuote('comment-quote-384104','jg');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384105" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384105">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>交易平台相当于你把比特币转给他们，然后他们给你一个欠条。</p>
+
+<p>可以说中心化的交易所和比特币的理念是完全背道而驰的。</p>
+
+<p>交易所也确实是各种不靠谱，宣称“被盗”之类事情发生过好多次了，还有结合期货杠杆交易操纵价格、虚发假币之类黑历史。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  7:21 PM">2018年1月 4日 19:21</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384105">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384105','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384106" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384106">
+            <blockquote>
+<pre>引用林海草原的发言：</pre>
+
+<p>关于比特币，之前我还真没有了解过。前两天，一位博友的博客被挂马，被挂的是一个在线挖矿代码，每次打开博客都会被执行。我当时简单了解了一下，但是网上的文章晦涩。当今天看到阮老师的博文，我才真正知道挖矿是什么。挖矿能拿到如此高的奖励，难怪有些人会通过程序漏洞给别人的网站挂马来挖矿。</p>
+
+</blockquote>
+
+<p>比特币早就不能用电脑（CPU或GPU）挖了，连FPGA都不行了，现在都是ASIC专用芯片挖矿。详细数据可以看这个：</p>
+
+<p><a href="https://en.bitcoin.it/wiki/Mining_Hardware_Comparison" rel="nofollow">https://en.bitcoin.it/wiki/Mining_Hardware_Comparison</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  7:23 PM">2018年1月 4日 19:23</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384106">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384106','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384107" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384107">
+            <blockquote>
+<pre>引用jg的发言：</pre>
+
+<p>交易平台是知道的，有的平台还实名认证的。<br />
+不放心，可以把从平台转移到自己的钱包就好了</p>
+
+</blockquote>
+
+<p>比特币的交易记录是一环扣一环，可以追溯的，而且完全公开（随便找个区块浏览器就可以方便地查，开一个比特币全节点也可以直接下载区块链数据）。如果不用混币之类的手段来切断追踪，从实名制交易所转出去还是可以被跟踪的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  7:26 PM">2018年1月 4日 19:26</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384107">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384107','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384108" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384108">
+            <blockquote>
+<pre>引用林海草原的发言：</pre>
+
+<p>关于比特币，之前我还真没有了解过。前两天，一位博友的博客被挂马，被挂的是一个在线挖矿代码，每次打开博客都会被执行。我当时简单了解了一下，但是网上的文章晦涩。当今天看到阮老师的博文，我才真正知道挖矿是什么。挖矿能拿到如此高的奖励，难怪有些人会通过程序漏洞给别人的网站挂马来挖矿。</p>
+
+</blockquote>
+
+<p>现在这些“挖矿木马”挖的都是Monero之类山寨币，它们换掉了比特币的双SHA256工作证明算法，换成对ASIC极不友好的CryptoNight等，这样CPU或GPU挖矿才有可能，否则就被ASIC的能效虐翻了，直接亏本出局。<br />
+山寨币一般也都在技术上有创新和改进，比如Monero，已经全网启用RingCT，交易都是机密的，不像比特币那样全部公开透明、可追踪。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  4, 2018  7:29 PM">2018年1月 4日 19:29</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384108">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384108','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384139" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.a2kindle.com" href="http://www.a2kindle.com" target="_blank" rel="nofollow">ljt2k</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384139">
+            <p>对于比特币来说，钱不是支付给个人的，而是支付给某一把私钥。<br />
+这里应该是支付给某一把公钥</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  2:07 PM">2018年1月 5日 14:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384139">#</a>
+ | <a href="#comment-text" title="引用ljt2k的这条留言" onclick="return CommentQuote('comment-quote-384139','ljt2k');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384140" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">两只羊</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384140">
+            <p>货币的由来是人民生产出来充当流通的东西。</p>
+
+<p>这个是怎么来的，炒作来的。为什么能存在，值得思量的事情。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  2:55 PM">2018年1月 5日 14:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384140">#</a>
+ | <a href="#comment-text" title="引用两只羊的这条留言" onclick="return CommentQuote('comment-quote-384140','两只羊');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384143" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">麻三</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384143">
+            <p>老师，下一篇啥时候来啊</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  3:45 PM">2018年1月 5日 15:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384143">#</a>
+ | <a href="#comment-text" title="引用麻三的这条留言" onclick="return CommentQuote('comment-quote-384143','麻三');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384147" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">区块链小白</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384147">
+            <p>如果因为战争，切断了所有出口网络，是不是就变成两条比特链了？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  5, 2018  5:54 PM">2018年1月 5日 17:54</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384147">#</a>
+ | <a href="#comment-text" title="引用区块链小白的这条留言" onclick="return CommentQuote('comment-quote-384147','区块链小白');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384162" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">H-u-a-n</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384162">
+            <p>写的确实简单易懂，阮老师，受教了，Thanks♪(･ω･)ﾉ</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018 11:38 AM">2018年1月 6日 11:38</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384162">#</a>
+ | <a href="#comment-text" title="引用H-u-a-n的这条留言" onclick="return CommentQuote('comment-quote-384162','H-u-a-n');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384163" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Dong</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384163">
+            <p>有个疑问求解答：</p>
+
+<p>一块区块链只能存2000笔交易，2040年就挖不到新的区块链，但交易是继续增加的，那么区块链用完了怎么办呢？<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018 11:47 AM">2018年1月 6日 11:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384163">#</a>
+ | <a href="#comment-text" title="引用Dong的这条留言" onclick="return CommentQuote('comment-quote-384163','Dong');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384164" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Ellie Ren</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384164">
+            <p>赞 以后可以follow 看你的博客了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018 11:55 AM">2018年1月 6日 11:55</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384164">#</a>
+ | <a href="#comment-text" title="引用Ellie Ren的这条留言" onclick="return CommentQuote('comment-quote-384164','Ellie Ren');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384168" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://xunzhangthu.org" href="http://xunzhangthu.org" target="_blank" rel="nofollow">xunzhang</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384168">
+            <p>如果10分钟内写不满1MB记录，如何处理</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018  3:12 PM">2018年1月 6日 15:12</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384168">#</a>
+ | <a href="#comment-text" title="引用xunzhang的这条留言" onclick="return CommentQuote('comment-quote-384168','xunzhang');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384169" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Asid</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384169">
+            <p>有那个比特币钱包能用的？搜了几个网让，还有ANDORID/IOS的APP，不敢用啊。怕有后门。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018  5:09 PM">2018年1月 6日 17:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384169">#</a>
+ | <a href="#comment-text" title="引用Asid的这条留言" onclick="return CommentQuote('comment-quote-384169','Asid');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384171" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">方减</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384171">
+            <p>浅显易懂，非常好的科普入门文章！期待下一篇</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  6, 2018  8:30 PM">2018年1月 6日 20:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384171">#</a>
+ | <a href="#comment-text" title="引用方减的这条留言" onclick="return CommentQuote('comment-quote-384171','方减');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384172" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">zero</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384172">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>交易所才是真正密钥的掌控者，用户实际上是不掌控密钥的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  7, 2018  2:09 AM">2018年1月 7日 02:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384172">#</a>
+ | <a href="#comment-text" title="引用zero的这条留言" onclick="return CommentQuote('comment-quote-384172','zero');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384228" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">哈哈</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384228">
+            <blockquote>
+<pre>引用jg的发言：</pre>
+
+<p></p>
+
+<p>交易平台是知道的，有的平台还实名认证的。<br />
+不放心，可以把从平台转移到自己的钱包就好了</p>
+
+</blockquote>
+这点倒是真的,哈哈哈,我做个这样的平台
+
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  9:58 AM">2018年1月 8日 09:58</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384228">#</a>
+ | <a href="#comment-text" title="引用哈哈的这条留言" onclick="return CommentQuote('comment-quote-384228','哈哈');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384232" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">max210</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384232">
+            <p>期待下一篇</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018 11:16 AM">2018年1月 8日 11:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384232">#</a>
+ | <a href="#comment-text" title="引用max210的这条留言" onclick="return CommentQuote('comment-quote-384232','max210');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384235" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">吕海超</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384235">
+            <p>连着看完区块链和比特币，特别期待你写《数字货币的本质》，这几天每天都会登上来看一下有没有更新。。。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  2:20 PM">2018年1月 8日 14:20</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384235">#</a>
+ | <a href="#comment-text" title="引用吕海超的这条留言" onclick="return CommentQuote('comment-quote-384235','吕海超');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384237" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">杨峰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384237">
+            <p>很好奇，比特币是怎么开始的？有这个想法是因为，采矿是产生比特币的“造血系统”，而造血的过程是写入交易记录，而最初是没有交易记录给人来写的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  3:50 PM">2018年1月 8日 15:50</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384237">#</a>
+ | <a href="#comment-text" title="引用杨峰的这条留言" onclick="return CommentQuote('comment-quote-384237','杨峰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384244" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384244">
+            <blockquote>
+<pre>引用Dong的发言：</pre>
+
+<p>有个疑问求解答：</p>
+
+<p>一块区块链只能存2000笔交易，2040年就挖不到新的区块链，但交易是继续增加的，那么区块链用完了怎么办呢？</p>
+
+<p><br />
+</p></blockquote>
+
+<p>你混淆了比特币发行和挖矿机制。<br />
+比特币发行是以区块补贴的形式发放，四年一减半，2140年区块补贴才会归零，但十几年后区块补贴就接近归零了。<br />
+但是，矿工还能收到手续费收入。只要矿工有收入，他们就会继续挖。<br />
+而且，比特币的难度调整机制让它保持大约10分钟挖出一个区块，无论挖矿的算力是多还是少都是这样。挖矿的算力多了，难度就上升、出块（先加快再）放缓，反之难度下降、出块（先放缓再）加快。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  7:05 PM">2018年1月 8日 19:05</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384244">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384244','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384245" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384245">
+            <blockquote>
+<pre>引用xunzhang的发言：</pre>
+
+<p>如果10分钟内写不满1MB记录，如何处理</p>
+
+</blockquote>
+
+<p>以前一直是写不满的，写满了才有拥堵问题。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  7:06 PM">2018年1月 8日 19:06</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384245">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384245','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384246" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384246">
+            <blockquote>
+<pre>引用杨峰的发言：</pre>
+
+<p>很好奇，比特币是怎么开始的？有这个想法是因为，采矿是产生比特币的“造血系统”，而造血的过程是写入交易记录，而最初是没有交易记录给人来写的。</p>
+
+</blockquote>
+
+<p>没人用，矿工可以打空块。</p>
+
+<p>比特币最初就是中本聪一个人在那里挖。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  9:15 PM">2018年1月 8日 21:15</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384246">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384246','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384247" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384247">
+            <blockquote>
+<pre>引用Asid的发言：</pre>
+
+<p>有那个比特币钱包能用的？搜了几个网让，还有ANDORID/IOS的APP，不敢用啊。怕有后门。</p>
+
+</blockquote>
+
+<p>比特币官网：https://bitcoin.org/zh_CN/</p>
+
+<p>按照去中心化的精神，比特币是没有官网的，这个网站的管理员是Cobra。</p>
+
+<p>一般用户推荐Electrum，最好结合硬件钱包，防止木马偷币。</p>
+
+<p>比太钱包也不错，有方便的冷热钱包选择。</p>
+
+<p>想折腾技术就装Bitcoin Core，不过这个是全节点，要下载一百多GB的区块链数据。</p>
+
+<p>顺便说一下，现在1M区块空间已经满了，手续费比较高，转账时最好启用RBF（勾选Replacable），这样万一转账卡着了，可以直接加手续费加速确认。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  8, 2018  9:18 PM">2018年1月 8日 21:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384247">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384247','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384261" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384261">
+            <p>SegWit2x的目的其实是把Core踢出去，而不是扩容。但实际上支持Core的人还是不少的，Core不愿意被“打脸”，这个2x还能有多少支持率呢……<br />
+而且，实际上2x这个项目搞出来的btc1软件（从Core fork出来的）很挫，最后还爆出off-by-one这种低级bug，参与者大概本来就是同床异梦吧。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018  7:30 AM">2018年1月 9日 07:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384261">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384261','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384275" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Mark</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384275">
+            <blockquote>
+<pre>引用BitcoinFan的发言：</pre>
+
+<p>您最近有关注币圈么？感觉遗漏了很重要的东西：<br />
+1.挖矿赚币只是为了激励矿工，这个不是关键。挖矿的本质是达到分布式共识的手段，或者说，就是随机选一个人来记账，防止作弊，这个才是关键。<br />
+比特币安全的一个假设就是没有单个的人/组织能掌控50%以上的算力。<br />
+比特币的共识规则规定，大家都认最长链，更准确地说，是积累工作量最多的链。<br />
+矿工必须积极地接收别人挖到的新区块、在上面追加自己挖出的区块，并把自己挖出的区块积极广播出去，否则，他的链会被孤立，他就白干了。（可想而知，超过50%的算力，就不用鸟这些了）<br />
+2.扩容之争吵了几年了，现在BTC的开发者不愿意提高这个1MB的限制，是因为区块扩大后，会加剧比特币的中心化，这样的话，最后我们还不如直接用支付宝、VISA这样的中心化服务。<br />
+有人甚至认为比特币已经失去去中心化的本质，因为中国的大矿池已经垄断了算力，也就垄断了记账权。<br />
+有了SegWit之后，支撑交易量堪比VISA的闪电网络，还有其他技术能减少区块占用。而且，还有RSK等侧链技术可以期待。<br />
+Bitcoin Cash主要是中国矿工群体支持的，虽说未来扩大区块大小是不可避免的，但是Bitcoin Cash除了扩大区块大小，技术上并没有什么优势，它的宣传者还四处混淆视听，宣称只有自己才是真正的比特币。<br />
+闪电网络比较复杂，软件开发了几年，最近才基本成型，还在测试中。不过，也确实不能指望它能解决所有问题，因为闪电网络是为微支付设计的，支付通道的容量是有限的，大额交易可能还是直接走主链交易比较方便。</p>
+
+</blockquote>
+
+<p>想问 BitcoinFan  一个问题，挖矿的成功与否是不是取决于计算机计算力的大小，假设有人的或者某个组织的计算机计算力非常强，那不代表每次的挖矿都是他们成功了？这不就有可能超过50%以上的算力了吗</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 11:35 AM">2018年1月 9日 11:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384275">#</a>
+ | <a href="#comment-text" title="引用Mark的这条留言" onclick="return CommentQuote('comment-quote-384275','Mark');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384276" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">henry</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384276">
+            <p>交易所才是中心化的东西！我猜你在交易所买卖比特币，真正的比特币有可能是交易所帮你代持！就像互联网彩票一样！</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 11:42 AM">2018年1月 9日 11:42</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384276">#</a>
+ | <a href="#comment-text" title="引用henry的这条留言" onclick="return CommentQuote('comment-quote-384276','henry');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384277" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">重本聪</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384277">
+            <p>看了一片文章 都是深入浅出的讲这个技术 能看懂一半吧 可是作为货币 货币啊 它的基础在哪 目前看就是谁的矿机多谁厉害啊 比特币个数是定的 所谓涨跌 都是炒出来的 这不是货币的基本价值啊 还有 这玩意不唯一 现在有起码数十种 加密货币 这肯定不算那些传销用货币  这些货币号称都是更牛逼的 更合理的 发明的人更吊的 说道发明人  这些中本聪就是因为聪明发明了这么一套理论？ 他定的各种协议 规矩大家就 必须遵守 就是因为互联网精神就是公平公正？这是不是太乌托邦了 那以后有没有大本聪 巨本聪 利用这些干坏事呢</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 11:48 AM">2018年1月 9日 11:48</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384277">#</a>
+ | <a href="#comment-text" title="引用重本聪的这条留言" onclick="return CommentQuote('comment-quote-384277','重本聪');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384278" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">重本聪</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384278">
+            <blockquote>
+<pre>引用Mark的发言：</pre>
+
+<p></p>
+
+<p>想问 BitcoinFan一个问题，挖矿的成功与否是不是取决于计算机计算力的大小，假设有人的或者某个组织的计算机计算力非常强，那不代表每次的挖矿都是他们成功了？这不就有可能超过50%以上的算力了吗</p>
+
+</blockquote>
+
+<p>有个机制 算出来的时间并不固定 如果一段时间内太多了 就会增加难度 太少了 就会减小 大概这么个意思  算力是基础 但不是一定就最先算出来  但矿机多 肯定没错 你看看网上那些一片矿机的照片</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018 11:52 AM">2018年1月 9日 11:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384278">#</a>
+ | <a href="#comment-text" title="引用重本聪的这条留言" onclick="return CommentQuote('comment-quote-384278','重本聪');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384285" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">sms</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384285">
+            <p>所以说，下个钱包app就分了一对key和一个地址？没有交易的话这个地址有效么？不怎么懂</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018  2:47 PM">2018年1月 9日 14:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384285">#</a>
+ | <a href="#comment-text" title="引用sms的这条留言" onclick="return CommentQuote('comment-quote-384285','sms');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384287" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">凡浩浩</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384287">
+            <p>关注的博客很久了，看了你很多文章，佩服您的才华，敬佩您的坚持，感谢您的分享，很想问您一个问题，您最初热爱文学，后来获得经济学博士学历，成为大学教授，现在又是计算机工程师，在每一次选择的时候，您迷茫过吗？什么才您的热爱，您未来还会选择做别的吗？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018  3:35 PM">2018年1月 9日 15:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384287">#</a>
+ | <a href="#comment-text" title="引用凡浩浩的这条留言" onclick="return CommentQuote('comment-quote-384287','凡浩浩');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384290" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">小米</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384290">
+            <p>有一个地方不明白，需要请教博主。</p>
+
+<p>如果我是矿工，挖矿时在当前交易记录中擅自增加一条“我获得1000比特币”的记录，然后很幸运这块矿被我挖到，交易记录被记录和通报全网了。</p>
+
+<p>那是不是就能作弊了？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018  4:30 PM">2018年1月 9日 16:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384290">#</a>
+ | <a href="#comment-text" title="引用小米的这条留言" onclick="return CommentQuote('comment-quote-384290','小米');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384293" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">王挺</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384293">
+            <blockquote>
+<pre>引用BitcoinFan的发言：</pre>
+
+<p></p>
+
+<p>你混淆了比特币发行和挖矿机制。<br />
+比特币发行是以区块补贴的形式发放，四年一减半，2140年区块补贴才会归零，但十几年后区块补贴就接近归零了。<br />
+但是，矿工还能收到手续费收入。只要矿工有收入，他们就会继续挖。<br />
+而且，比特币的难度调整机制让它保持大约10分钟挖出一个区块，无论挖矿的算力是多还是少都是这样。挖矿的算力多了，难度就上升、出块（先加快再）放缓，反之难度下降、出块（先放缓再）加快。</p>
+
+</blockquote>
+
+<p>我也有此疑问，但感觉这个回答没答到点上。<br />
+交易记录是必须要附在新的区块里，再写入主区块链才能生效的。而2040年之后，已经没机会“算出”新的区块了，还怎么附加交易记录呢?<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January  9, 2018  8:00 PM">2018年1月 9日 20:00</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384293">#</a>
+ | <a href="#comment-text" title="引用王挺的这条留言" onclick="return CommentQuote('comment-quote-384293','王挺');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384333" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">小米</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384333">
+            <blockquote>
+<pre>引用王挺的发言：</pre>
+
+<p></p>
+
+<p>我也有此疑问，但感觉这个回答没答到点上。<br />
+交易记录是必须要附在新的区块里，再写入主区块链才能生效的。而2040年之后，已经没机会“算出”新的区块了，还怎么附加交易记录呢?</p>
+
+<p><br />
+</p></blockquote>
+
+<p><br />
+你没有分清楚生成区块与取得比特币之间的区别。区块是永远可以生成的，只要对上一区块的头文件进行hash运算并符合难度要求即可。但生成区块后，能否得到比特币奖励，是不一定的，固定收益是逐年递减的。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  2:24 PM">2018年1月10日 14:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384333">#</a>
+ | <a href="#comment-text" title="引用小米的这条留言" onclick="return CommentQuote('comment-quote-384333','小米');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384337" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">davino</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384337">
+            <p>有几个疑问：</p>
+
+<p>1. 交易平台是不是本身自己就是矿工？</p>
+
+<p>2. 如果交易平台是矿工，在上面平台上用户的交易是实时的，但交易平台如果成功把记录放到链上，是不是等于你和用户没有进行任何操作？</p>
+
+<p>3. 火币现在能进行P2P的交易。如果火币没有挖到矿，不是等于买方白给钱了？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  4:10 PM">2018年1月10日 16:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384337">#</a>
+ | <a href="#comment-text" title="引用davino的这条留言" onclick="return CommentQuote('comment-quote-384337','davino');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384340" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://ningq.com" href="http://ningq.com" target="_blank" rel="nofollow">齐宁</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384340">
+            <p>我在想，中本聪拥有多少比特币，现在财富有多少了...</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 10, 2018  4:54 PM">2018年1月10日 16:54</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384340">#</a>
+ | <a href="#comment-text" title="引用齐宁的这条留言" onclick="return CommentQuote('comment-quote-384340','齐宁');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384396" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">YANG</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384396">
+            <p>如果我说这东西是骗人的，会不会有人来教育我？<br />
+区块链本质不谈，就说普通用户层面。<br />
+1. 普通人使用比特币的最大理由是什么？<br />
+2. 为什么要去挖矿？货币不是拿来用的么，为啥大部分人不去使用它。<br />
+3. 根据文中所写，在极端情况下一笔交易可能不会被确认，或者很长时间才能被记录下来。人们使用这种东西图了个啥？<br />
+4. 为什么要相信比特币组织，而不相信现有的货币发行组织？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 10:47 AM">2018年1月11日 10:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384396">#</a>
+ | <a href="#comment-text" title="引用YANG的这条留言" onclick="return CommentQuote('comment-quote-384396','YANG');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384404" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">FTY</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384404">
+            <p>个人认知太浅，无非是浪费世界资源。与权贵争，成王败寇而已。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018 11:16 AM">2018年1月11日 11:16</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384404">#</a>
+ | <a href="#comment-text" title="引用FTY的这条留言" onclick="return CommentQuote('comment-quote-384404','FTY');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384420" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">张鹏</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384420">
+            <p>1，打包是谁做的？ 旷工如何判断打包没有造假？<br />
+2，一个打包要2000条交易记录，如果当前一直不足2000条，打包会一直等待？<br />
+3，全网同步区矿链，这个效率会不会很低？ 这很容易发生不一致问题。新的区块如何保证链到了最新的区块后面？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  3:44 PM">2018年1月11日 15:44</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384420">#</a>
+ | <a href="#comment-text" title="引用张鹏的这条留言" onclick="return CommentQuote('comment-quote-384420','张鹏');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384424" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">fogin</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384424">
+            <blockquote>
+<pre>引用TONYHEAD的发言：</pre>
+
+<p>有若干疑问:</p>
+
+<p>一个100GB的数据库就可以记录到比特币创立至今的所有交易往来?<br />
+"2000笔交易的区块手续费是3-10个比特币",这个交易成本太高了,2000笔流水,大一点的小卖部都不止这个数,难不成按目前的交易成本, 比特币只适合做大额资金的交易?</p>
+
+<p><br />
+</p></blockquote>
+
+<p>连大额资金交易这个场景也做不了， 你知道这个世界上每秒发生着多少笔大额交易么。。。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 11, 2018  4:59 PM">2018年1月11日 16:59</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384424">#</a>
+ | <a href="#comment-text" title="引用fogin的这条留言" onclick="return CommentQuote('comment-quote-384424','fogin');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384452" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">forget</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384452">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>可以这样理解：比特币是在全世界网络中交易的，而公钥和私钥是用比特币底层了一组加密算法产生的。我们想要参与其中就需要得到这组秘钥。这个交易平台（比如：比特币中国）就是帮我们来用这个加密算法产生这组秘钥的。谁都可以去要，然后平台就给你生成这对秘钥。中间应该不会记录你的任何信息。就好比：我是大街上的一个小贩，你是路人，你想买了东西了，我卖给你就是了，不需要你的任何信息。<br />
+</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 12, 2018 11:22 AM">2018年1月12日 11:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384452">#</a>
+ | <a href="#comment-text" title="引用forget的这条留言" onclick="return CommentQuote('comment-quote-384452','forget');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384483" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384483">
+            <blockquote>
+<pre>引用王挺的发言：</pre>
+
+<p></p>
+
+<p>我也有此疑问，但感觉这个回答没答到点上。<br />
+交易记录是必须要附在新的区块里，再写入主区块链才能生效的。而2040年之后，已经没机会“算出”新的区块了，还怎么附加交易记录呢?</p>
+
+<p><br />
+</p></blockquote>
+
+<p>新的比特币目前是通过每区块12.5BTC、四年一减半的区块补贴形式发放的（也就是从coinbase交易里“凭空生成”）。</p>
+
+<p>但是，挖新区块在技术上并不需要生成新的比特币。</p>
+
+<p>实际上，就在现在，矿工就可以选择不拿区块补贴（目前是每区块12.5BTC）——最近就有矿池出了Bug，涉事矿工不慎“弄丢”了12.5BTC：<br />
+<a href="http://8btc.com/thread-121250-1-1.html" rel="nofollow">http://8btc.com/thread-121250-1-1.html</a></p>
+
+<p>对于矿工来说，有利益驱动，他们才会去挖矿。没了区块奖励，他们还可以收交易手续费，这个可以成为驱动他们挖矿的激励。</p>
+
+<p>但是，其实很多人都觉得这个设计不好，他们认为手续费必须占交易额的一个比例才能维持系统安全，这个比例低了，矿工作为“保安”就可能反过来“监守自盗”。而且，维持这个体系运转还要白白烧电。</p>
+
+<p>所以，现在还有人在研究PoS等新共识机制，比如以太坊的Casper、Cardano的Ouroboros，试图取代目前被比特币和以太坊使用的PoW共识机制（这个我也是拾人牙慧，各位感兴趣可以去知乎关注maxdeath这位大神）</p>
+
+<blockquote>
+<pre>引用davino的发言：</pre>
+
+<p>有几个疑问：</p>
+
+<p>1. 交易平台是不是本身自己就是矿工？</p>
+
+<p>2. 如果交易平台是矿工，在上面平台上用户的交易是实时的，但交易平台如果成功把记录放到链上，是不是等于你和用户没有进行任何操作？</p>
+
+<p>3. 火币现在能进行P2P的交易。如果火币没有挖到矿，不是等于买方白给钱了？</p>
+
+</blockquote>
+
+<p>1.交易平台相当于一个比特币用户。平台不需要是矿工，但也有矿业兼职开交易平台，比如ViaBTC，是个矿池，他们就开过交易所。</p>
+
+<p>2.没太理解你的意思。你想问交易所能不能赖账么？</p>
+
+<p>现在的交易所一般都是中心化的，而且好像大多没有第三方存管，这不就坑爹了——相当于你把比特币和人民币、美元等法币转给他，他给你一个欠条，他们赖账跑路你就GG了。然后，平台上的各种交易都和比特币区块链无关，直到你提币或充币。哪怕是ViaBTC这样的也不例外。</p>
+
+<p>3.P2P？你说的是OTC场外交易么？场外是把原来的集中竞价撮合去掉，大家手动发布交易信息、进行交易，平台只做信息交流和中间人担保。币一般是其他用户充的，不是平台挖的。而且这种场外交易确实不能完全保证货银对付，可能发生一方伪造法币支付凭据、忽悠对方放币等欺诈。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018 12:53 AM">2018年1月13日 00:53</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384483">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384483','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384484" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384484">
+            <blockquote>
+<pre>引用张鹏的发言：</pre>
+
+<p>1，打包是谁做的？ 旷工如何判断打包没有造假？<br />
+2，一个打包要2000条交易记录，如果当前一直不足2000条，打包会一直等待？<br />
+3，全网同步区矿链，这个效率会不会很低？ 这很容易发生不一致问题。新的区块如何保证链到了最新的区块后面？</p>
+
+</blockquote>
+
+<p>1.只有矿工有记账权：因为只有矿工有算力、能挖出满足全网的难度需求的新区块，所以只有他们能挖出合法的区块。</p>
+
+<p>2.不会，矿工可以打空块（只有一条给自己发奖励的coinbase交易）。区块满了反而会有问题——拥堵、手续费高涨。</p>
+
+<p>现在的区块大小上限是1MB，或者说是浮动的（因为SegWit已经激活，交易信息被分为两部分，其中“见证”这个部分字节数按照乘0.25计算）</p>
+
+<p>3.效率确实很低。不一致问题，挖矿就是解决这个问题的，挖矿是一种分布式共识机制，叫工作证明。大家只认最长链有效（准确地说是积累工作量最大的链）。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018 12:57 AM">2018年1月13日 00:57</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384484">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384484','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384488" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384488">
+            <blockquote>
+<pre>引用张鹏的发言：</pre>
+
+<p>1，打包是谁做的？ 旷工如何判断打包没有造假？<br />
+2，一个打包要2000条交易记录，如果当前一直不足2000条，打包会一直等待？<br />
+3，全网同步区矿链，这个效率会不会很低？ 这很容易发生不一致问题。新的区块如何保证链到了最新的区块后面？</p>
+
+</blockquote>
+
+<p>比特币的交易记录是一环扣一环的。如果一个新节点要严格验证的话，需要从2009年的创世区块开始验证（不断地更新UTXO集合，也就是删掉“已经被原主人花掉的币”，加入“有了新主人的币”）。但是，这样跑一遍验证，只能防止抢劫比特币、无端凭空生成比特币，不能阻止双重支付。<br />
+每条交易都会被广播到整个网络。交易包含数字签名，节点也会维持一个UTXO集合，可以验证交易是否有效，强制花别人的币、花无中生有的币都是无效交易，会被丢弃。矿工会把验证过的交易加到要挖的区块里，如果hash值碰出来了，挖到了有效的区块，他们就会立刻把这个新区块广播出去，让大家检查、承认。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:10 AM">2018年1月13日 01:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384488">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384488','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384490" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384490">
+            <blockquote>
+<pre>引用forget的发言：</pre>
+
+<p></p>
+
+<p>可以这样理解：比特币是在全世界网络中交易的，而公钥和私钥是用比特币底层了一组加密算法产生的。我们想要参与其中就需要得到这组秘钥。这个交易平台（比如：比特币中国）就是帮我们来用这个加密算法产生这组秘钥的。谁都可以去要，然后平台就给你生成这对秘钥。中间应该不会记录你的任何信息。就好比：我是大街上的一个小贩，你是路人，你想买了东西了，我卖给你就是了，不需要你的任何信息。</p>
+
+<p><br />
+</p></blockquote>
+
+<p>你的描述是错的。<br />
+密钥是任何人都可以生成的。比特币用了ECDSA这个非对称加密算法，它被用来确定一个币的控制权/所有权——只有掌握私钥的人才能花对应地址上的币。<br />
+这个和交易平台完全没关系，交易平台只是为了方便比特币法币（如人民币/美元）或比特币山寨币的交易而存在的，只有集中竞价撮合的交易所才能产生足够的流动性和市场深度——有了交易所，一秒钟你就可以卖掉/买入1.5BTC，币很多的话还能挂冰山委托慢慢买/卖，如果没有交易所，你就需要自己去场外交易平台甚至是微信群等地方，手动挂单、喊单、吃单，一大意还会被骗。<br />
+可以说交易所在比特币系统里也只是个用户而已。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:18 AM">2018年1月13日 01:18</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384490">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384490','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384491" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384491">
+            <blockquote>
+<pre>引用张鹏的发言：</pre>
+
+<p>1，打包是谁做的？ 旷工如何判断打包没有造假？<br />
+2，一个打包要2000条交易记录，如果当前一直不足2000条，打包会一直等待？<br />
+3，全网同步区矿链，这个效率会不会很低？ 这很容易发生不一致问题。新的区块如何保证链到了最新的区块后面？</p>
+
+</blockquote>
+
+<p>补充一下，花“已经花掉的币”也是无效交易。<br />
+至于双重支付，需要有很大的算力（51%攻击）才能做到，原理是用大算力挖一条更长的链，在这条链里，原先转给A的币被转给了B。有了超过50%的算力，只要坚持时间够长就一定能成功；如果没有那么多算力，也有一定概率能成功，但确认数越多，成功概率越低。<br />
+51%攻击能产生的实质威胁主要就是双重支付，除此之外还有审查交易（换句话说就是冻结指定的地址）等手段。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:22 AM">2018年1月13日 01:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384491">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384491','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384492" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384492">
+            <p>@YANG：</p>
+
+<p>这个就是信仰问题了，是信政府这个中央权威，还是信比特币这套分布式共识机制呢？没法说得通啦。</p>
+
+<p>有人就认为比特币最后会像“世界语”一样半死不活。</p>
+
+<p>要说骗局的话，拉高出货就可以看作是欺诈，无论是股市还是币市，这种现象都存在。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:28 AM">2018年1月13日 01:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384492">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384492','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384493" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384493">
+            <blockquote>
+<pre>引用小米的发言：</pre>
+
+<p>有一个地方不明白，需要请教博主。</p>
+
+<p>如果我是矿工，挖矿时在当前交易记录中擅自增加一条“我获得1000比特币”的记录，然后很幸运这块矿被我挖到，交易记录被记录和通报全网了。</p>
+
+<p>那是不是就能作弊了？</p>
+
+</blockquote>
+
+<p>你这么做，挖出的区块就是非法的。</p>
+
+<p>只要别的节点（无论是矿工的全节点，还是不挖矿的全节点）接收到区块进行检查就会发现新生成的币量超过共识规则规定的区块奖励，然后就会拒绝承认这个区块。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:30 AM">2018年1月13日 01:30</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384493">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384493','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384494" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384494">
+            <blockquote>
+<pre>引用Mark的发言：</pre>
+
+<p></p>
+
+<p>想问 BitcoinFan一个问题，挖矿的成功与否是不是取决于计算机计算力的大小，假设有人的或者某个组织的计算机计算力非常强，那不代表每次的挖矿都是他们成功了？这不就有可能超过50%以上的算力了吗</p>
+
+</blockquote>
+
+<p>没有人掌握超过50%的算力是比特币安全的前提。</p>
+
+<p>如果有人掌握的算力超过50%，他就可以不用鸟别的节点挖出的区块，然后就可以进行51%攻击——比如回滚交易记录，或者审查交易（冻结任意比特币地址）。但即使是这样，他也可能会顾忌攻击行为是否会让比特币失去价值（然后他的矿机和币就都作废了），所以即使有人手里有超过50%的算力也未必会实行51%攻击。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:35 AM">2018年1月13日 01:35</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384494">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384494','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384496" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384496">
+            <blockquote>
+<pre>引用温国兵的发言：</pre>
+
+<p>纠正一个错误</p>
+
+<p>“你可能看出来了，每 4 年奖励减半，那么到了 2140 年，矿工将得不到任何奖励，比特币的数量也将停止增加。这时，矿工的收益就完全依靠交易手续费了。”</p>
+
+<p>这里应该是 2040 年。</p>
+
+</blockquote>
+
+<p>博主没错，就是2140年。</p>
+
+<p>但是，四年一减半还是很快的，再减半几次，区块补贴就已经接近归零了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:40 AM">2018年1月13日 01:40</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384496">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384496','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384497" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384497">
+            <blockquote>
+<pre>引用davino的发言：</pre>
+
+<p>有几个疑问：</p>
+
+<p>1. 交易平台是不是本身自己就是矿工？</p>
+
+<p>2. 如果交易平台是矿工，在上面平台上用户的交易是实时的，但交易平台如果成功把记录放到链上，是不是等于你和用户没有进行任何操作？</p>
+
+<p>3. 火币现在能进行P2P的交易。如果火币没有挖到矿，不是等于买方白给钱了？</p>
+
+</blockquote>
+
+<p>前面的回帖好像没显示出来，不知道是不是博主要审核……</p>
+
+<p>交易平台只相当于一个比特币用户，往难听了说，就是你把币转给他们，他们给你一个欠条。<br />
+也有ViaBTC这样矿业兼职开交易所的，即使是这样，性质仍然不变。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:43 AM">2018年1月13日 01:43</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384497">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384497','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384499" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384499">
+            <blockquote>
+<pre>引用sms的发言：</pre>
+
+<p>所以说，下个钱包app就分了一对key和一个地址？没有交易的话这个地址有效么？不怎么懂</p>
+
+</blockquote>
+
+<p>密钥是任何人都可以生成的，必须随机生成，否则别人就可以猜出来，这样就不安全了。<br />
+比特币用了ECDSA这个非对称加密算法，打个比方，就是认章不认人，章（密钥）其实有机器就能刻（任何人都可以用电脑生成，甚至可以用骰子来生成），只有你手里有章（私钥），能给账单盖章（数字签名），其他人手里都有完整账本，如果你想花无中生有的钱、花之前已经被花掉的钱、花别人的钱，都是无效的。<br />
+私钥可以推算出公钥，公钥经过两次哈希运算，再加上校验值、经过Base58编码就得到地址。反推在目前是不可能的，除非ECDSA、RIMEPD160、SHA256算法被破解（哈希算法本来就是不可逆的，即使“破解”，也不能由哈希值“恢复原状”，只是能找到碰撞值而已，不过目前找到碰撞也足够花别人地址上的钱了）。<br />
+现在的钱包一般都是HD的，也就是分层确定性钱包，由一个随机种子就可以推算出几乎无穷无尽的私钥，种子还可以表示为一串单词（密语），这样备份/恢复钱包就方便了，而且可以每次使用比特币都换一个地址。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  1:58 AM">2018年1月13日 01:58</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384499">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384499','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384500" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384500">
+            <blockquote>
+<pre>引用sms的发言：</pre>
+
+<p>所以说，下个钱包app就分了一对key和一个地址？没有交易的话这个地址有效么？不怎么懂</p>
+
+</blockquote>
+
+<p>没用过的地址也是有效的。</p>
+
+<p>博主对比特币地址的描述有误：比特币地址不是用十六进制表示公钥的哈希，而是用Base58编码表示公钥的哈希+一段校验值。用那段校验值就可以知道地址有没有错。</p>
+
+<p>甚至还有找不到对应私钥的“烧币地址”（Proof of Burn），转进去的币就无法被转出来，等于被销毁了，这种地址同样是有效的。比如：合约币CounterParty提出的1CounterpartyXXXXXXXXXXXXXXXUWLpVr。生成这种地址也不难，先写出Base58地址，内容可以任意，然后算出对应的二进制数据（Base58解码），再计算对应的校验值，加到后面，然后重新Base58编码，就可以得到这种“烧币地址”。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  2:17 AM">2018年1月13日 02:17</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384500">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384500','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384501" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384501">
+            <p>@YANG：</p>
+
+<p>比特币的优点在于无国界、（伪）匿名、快速（相对电汇等传统服务）、安全等。价格波动大也确实是个问题，不过也不是完全没办法，比如用期货交易对冲（不过目前期货交易平台也是中心化的，甚至有平台亲自下海操纵市场等黑历史，而且，平台肯定要收交易手续费）。</p>
+
+<p>挖矿是达成分布式共识的手段，这样才能防止双重支付。也有人觉得挖矿不好，达成共识慢、吞吐量有限、浪费能源、可能“监守自盗”，就开始想办法改进，所以现在也有其他共识机制，比如以太坊的Casper、Cardano的Ouroboros，都是PoS共识机制；还有比特股的DPoS等。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 13, 2018  2:47 AM">2018年1月13日 02:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384501">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384501','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384564" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">walker</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384564">
+            <p>问两个问题啊:<br />
+1, 目前每个节点大小约为100G, 也就是说选择加入这个网络的话, 初始是要"同步"100G 的内容到硬盘上对吧?<br />
+2, 没有确认的交易, 是以什么形式传遍全网的? 从文中的描述, 好像是"纯请求, 不持久化", 那么文中又描述了有的交易因为手续费低, 可能几周都没有确认, 那么可以推断出任何交易其实都是持久化了的(并且严格遵循区域链的原因, 保证了不可篡改), 并不是单纯靠<br />
+"即时"的网络请求, 所以一个比特币节点严格意义上是有确认的和多如牛毛未确认的"数据库"构成? 这样的话, 目前总量100G 的大小, 其实饱含了即时全网所有未确认的交易数据, 这个理解对么?</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018  1:51 AM">2018年1月15日 01:51</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384564">#</a>
+ | <a href="#comment-text" title="引用walker的这条留言" onclick="return CommentQuote('comment-quote-384564','walker');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384572" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Leo</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384572">
+            <blockquote>
+<pre>引用小白的发言：</pre>
+
+<p>有点疑惑，交易平台肯定需要维护 哪个比特币钱包是哪个用户的吧，而比特币钱包里包含公钥私钥，这样交易平台不就可以知道比特币是哪个用户的么</p>
+
+</blockquote>
+
+<p>有道理啊</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018 11:09 AM">2018年1月15日 11:09</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384572">#</a>
+ | <a href="#comment-text" title="引用Leo的这条留言" onclick="return CommentQuote('comment-quote-384572','Leo');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384584" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">rstevens</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384584">
+            <p>首先赞一下阮老师的文章！</p>
+
+<p>不过还是有很多细节的地方有疑惑，例如<br />
+"首先，所有的交易数据都会传送到矿工那里。矿工负责把这些交易写入区块链。<br />
+根据比特币协议，一个区块的大小最大是 1MB，而一笔交易大概是500字节左右，因此一个区块最多可以包含2000多笔交易。矿工负责把这2000多笔交易打包在一起，组成一个区块，然后计算这个区块的 Hash。"</p>
+
+<p>1、 交易数据是怎么传到矿工那的？ 是发给所有矿工么？<br />
+2、 矿工自己来决定把多少个交易合并到一个区块中么？</p>
+
+<p><br />
+这些细节，如果有实现代码可以看到就好了。阮老师知道有哪些开源的代码可以学习么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018  4:41 PM">2018年1月15日 16:41</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384584">#</a>
+ | <a href="#comment-text" title="引用rstevens的这条留言" onclick="return CommentQuote('comment-quote-384584','rstevens');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384589" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://www.ltyue.com" href="http://www.ltyue.com" target="_blank" rel="nofollow">ty</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384589">
+            <p>所有的交易数据都会传送到矿工那里。矿工负责把这些交易写入区块链。<br />
+根据比特币协议，一个区块的大小最大是 1MB，而一笔交易大概是500字节左右，因此一个区块最多可以包含2000多笔交易。<br />
+相请教第一个块区是怎么来的？没有交易矿工就没办法写入块区，不写入块区就得不到比特币。<br />
+实在想不通，求指教。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 15, 2018  9:34 PM">2018年1月15日 21:34</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384589">#</a>
+ | <a href="#comment-text" title="引用ty的这条留言" onclick="return CommentQuote('comment-quote-384589','ty');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384628" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">Alex</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384628">
+            <p>其实，任何东西想成为货币，就是一个信心，当然还有方便性。</p>
+
+<p>要是人们都认为这东西能当钱使，那它就值钱了。</p>
+
+<p>就像一般等价物的诞生一样，只不过现在的技术让这个过程简化快捷了很多。</p>
+
+<p>这发行起来岂不就是通货膨胀啊！！！首先就让这显卡贵到姥姥家去了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 16, 2018  5:14 PM">2018年1月16日 17:14</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384628">#</a>
+ | <a href="#comment-text" title="引用Alex的这条留言" onclick="return CommentQuote('comment-quote-384628','Alex');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384668" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">yaro</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384668">
+            <p>每个区块的容量随着时间的增长会越来越大么，不会爆掉么？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 17, 2018  5:03 PM">2018年1月17日 17:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384668">#</a>
+ | <a href="#comment-text" title="引用yaro的这条留言" onclick="return CommentQuote('comment-quote-384668','yaro');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384737" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384737">
+            <p>@walker：</p>
+
+<p>1.现在已经冲着200GB去了。如果要完整从头验证一遍，需要把这么多区块链数据全部下载一遍。全节点也支持修剪模式（prune），但就我自己的经验，修剪模式会带来一些不便，比如不能rescan（导入私钥的时候就需要rescan来显示出正确的转账记录和余额）。以后可能有backward syncing，也就是从最近的区块倒着往回同步，而且还要同步UTXO集合（相当于余额数据）。</p>
+
+<p>2.不对。</p>
+
+<p>一百多GB是2009年比特币诞生至今的所有已确认交易。中间有不少孤块/分叉都被丢弃了，还有很多零确认因为被双花/手续费太低等原因也被丢弃了。</p>
+
+<p>每个比特币节点都会连接到附近的节点（不过连接数默认是受限的），一个人广播一笔交易后，会一传十十传百，直到传遍整个网络。</p>
+
+<p>零确认交易是保存在内存池里的，这些交易只是等待着矿工把它打包进链，是不算数的（比如，已有一笔零确认交易，但是矿池在新挖出的区块中，把另一笔与之冲突的“双重支付”交易打包进去了，那么大家都承认区块链里的那个交易有效，零确认交易无效）。</p>
+
+<p>不过，现在大矿池基本垄断了算力，而且都遵守Opt-in RBF的规则，所以一般的零确认交易在几天之内还是不能双花的（也就是“卡着确认不了”），因为RBF现在还不是默认启用，但未来会改成默认启用。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:03 PM">2018年1月19日 16:03</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384737">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384737','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384739" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384739">
+            <blockquote>
+<pre>引用ty的发言：</pre>
+
+<p>所有的交易数据都会传送到矿工那里。矿工负责把这些交易写入区块链。<br />
+根据比特币协议，一个区块的大小最大是 1MB，而一笔交易大概是500字节左右，因此一个区块最多可以包含2000多笔交易。<br />
+相请教第一个块区是怎么来的？没有交易矿工就没办法写入块区，不写入块区就得不到比特币。<br />
+实在想不通，求指教。</p>
+
+</blockquote>
+
+<p>第一个区块就是创世区块（genesis block），只有一笔“凭空”生成50BTC的coinbase交易（也就是区块补贴），内容算是中本聪随便写的。<br />
+就是这个：</p>
+
+<p><a href="https://btc.com/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f" rel="nofollow">https://btc.com/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f</a></p>
+
+<p>点开coinbase交易，就可以看到著名的The Times 03/Jan/2009 Chancellor on brink of second bailout for banks了：</p>
+
+<p><a href="https://btc.com/4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" rel="nofollow">https://btc.com/4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b</a></p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:07 PM">2018年1月19日 16:07</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384739">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384739','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384740" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384740">
+            <blockquote>
+<pre>引用yaro的发言：</pre>
+
+<p>每个区块的容量随着时间的增长会越来越大么，不会爆掉么？</p>
+
+</blockquote>
+
+<p>原来是一个区块最大1MB（矿工还可以自己设置更低的上限），但是直到最近这个上限才被填满，然后，矿工优先打包手续费高的交易，手续费不够高的，就在内存池里排队等着。</p>
+
+<p>即使是鼓吹超大区块的Bitcoin Cash，矿工们现在也没敢把这个限制完全拿掉，目前的上限是8MB，前一阵子BCH发生了粉尘攻击（有人发帖说是“压力测试”），可以看到有些矿池甚至还保留着1MB的限制。</p>
+
+<p>去年软分叉SegWit已经激活了，引入了一种新的交易格式（和老格式并存），这种格式把交易数据分成两块，一块是资金往来和数额，另一块是用数字签名证明交易有效的“见证”；对见证部分，计算字节数时要少算四分之三（给了折扣），这样就等于允许区块大小超过1MB。</p>
+
+<p>SegWit格式的交易使用率越高，区块就可以扩到越大。目前SW使用率只有10%。</p>
+
+<p>根据估计，这样扩容最大可以达到2MB左右。（4MB是不可能达到的，因为非见证部分字节数不会是零）<br />
+未来BTC应该还会有硬分叉，可能要扩大区块，不过近期是不会有了。</p>
+
+<p>目前还有一些方法能减少交易字节数，比如压缩公钥、batching等。以后还会有Schnorr签名等技术。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:22 PM">2018年1月19日 16:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384740">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384740','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384745" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384745">
+            <p>@Alex：</p>
+
+<p>现在比特币的概念还被很多人抵触，多数人还是宁愿相信国家政权，而不是分布式共识。</p>
+
+<p>政府也是，不少都对比特币不友好，像我国不就是这样，只是把比特币定位为合法的虚拟商品，不承认它是货币，而且把交易所都关了，连矿场都要赶出去……</p>
+
+<p>而且比特币-法币“汇率”波动很大，市场投机性很强，这也是个本质上的问题。</p>
+
+<p>比特币还面临着扩容问题，区块大了就趋向于中心化，闪电网络现在还没准备好。</p>
+
+<p>还有，就是比特币不存在账户密码、密码忘记找回、资金冻结这种概念，算是“认密钥不认人”的，丢失被盗都是责任自负的。</p>
+
+<p>比特币早就不能用显卡挖了，连莱特币都不行了，只能用ASIC矿机挖，否则是纯浪费电、耗费显卡寿命。</p>
+
+<p>现在用显卡挖的是其他加密货币，比如以太币（ETH，以太坊Ethereum平台上用的代币，其实人人都可以轻易在以太坊上发行自己的ERC20代币）、门罗币（XMR，Monero）、零币（ZEC，Zcash）等等。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:32 PM">2018年1月19日 16:32</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384745">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384745','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384748" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">BitcoinFan</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384748">
+            <blockquote>
+<pre>引用没事扯扯蛋的发言：</pre>
+
+<p>谁能说明比特币怎样和实际金钱或实物挂钩的？？？<br />
+如果不能挂钩，比特币就是个数字游戏，没有价值。<br />
+如果挂钩了，那说明比特币背后还是有势力（中心）支持的，否则怎么可能风生水起？</p>
+
+</blockquote>
+
+<p>这个都是老生常谈的问题了。<br />
+有价值的东西未必是“实物”，比如大数据，或者……玩游戏氪金；黄金就是没有人担保背书的，但它仍然有价值。<br />
+所以，现在有人想让比特币成为“数字黄金”……</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018  4:46 PM">2018年1月19日 16:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384748">#</a>
+ | <a href="#comment-text" title="引用BitcoinFan的这条留言" onclick="return CommentQuote('comment-quote-384748','BitcoinFan');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384765" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://null" href="http://null" target="_blank" rel="nofollow">nonehat</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384765">
+            <p>纠正小错误：<b>每笔交易的大小约为250B左右</b>，也就是说1个区块可以包含 1 * 1024 * 1024 / 250 笔交易，而挖出一个区块约10分钟。所以每秒的交易量： 1*1024*1024 / 600 = 6.9。 也就是人们常说的不超过7笔。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 19, 2018 10:25 PM">2018年1月19日 22:25</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384765">#</a>
+ | <a href="#comment-text" title="引用nonehat的这条留言" onclick="return CommentQuote('comment-quote-384765','nonehat');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-384801" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author"><a title="http://i.onesan.org" href="http://i.onesan.org" target="_blank" rel="nofollow">lies</a></span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-384801">
+            <p>假如算力能垄断比特币的交易权，那这个就是集权中心化了，因为假如算力越分散，那么想要垄断的成本就越低，51%对政府来说，想要达到并不难，什么时候政府管不住了，自己这么一折腾，是不是比特币就该没了</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 21, 2018 10:04 AM">2018年1月21日 10:04</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-384801">#</a>
+ | <a href="#comment-text" title="引用lies的这条留言" onclick="return CommentQuote('comment-quote-384801','lies');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385006" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">anor</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385006">
+            <blockquote>
+<pre>引用Dong的发言：</pre>
+
+<p>一块区块链只能存2000笔交易，2040年就挖不到新的区块链，但交易是继续增加的，那么区块链用完了怎么办呢？</p>
+
+</blockquote>
+
+<p>区块链不会用完吧？只是用来奖励的比特币可能就没有了，到那时矿工只能靠手续费获得奖励了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 25, 2018  4:37 PM">2018年1月25日 16:37</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385006">#</a>
+ | <a href="#comment-text" title="引用anor的这条留言" onclick="return CommentQuote('comment-quote-385006','anor');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385064" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">风君子-神游</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385064">
+            <p>关于交易，按照文章里面所说，没交易一次是不是相当于生成了一个新的区块，因为会生成一个新的hash，那这个交易所产生的区块，和矿工新挖出来的区块有什么区别，其次，交易是通过矿工去填写数据的，那矿工会不会恶意的去写数据，例如，把新交易的比特币写自己钱包里面</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 26, 2018  2:24 PM">2018年1月26日 14:24</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385064">#</a>
+ | <a href="#comment-text" title="引用风君子-神游的这条留言" onclick="return CommentQuote('comment-quote-385064','风君子-神游');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385073" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ade</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385073">
+            <blockquote>
+<pre>引用Mike的发言：</pre>
+
+<p>比特币技术复杂、普通人不能很好的理解。比特币没有金融监管、容易产生金融犯罪。前段时间的黑客勒索无不采用比特币技术。所以个人并不看好这一块的技术。</p>
+
+</blockquote>
+
+<p>比特币只是一种货币形式，RMB也是一种货币形式，如果敲诈勒索犯罪用RMB,那我们不是？？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 26, 2018  4:46 PM">2018年1月26日 16:46</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385073">#</a>
+ | <a href="#comment-text" title="引用ade的这条留言" onclick="return CommentQuote('comment-quote-385073','ade');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385209" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">ALLEN</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385209">
+            <p>区块链 和 比特币交易大概理解了。 但是作为交易者怎么获利。这一点是不是类似股票说，在比特币网上用现金（真实货币）交易购买虚拟比特币，然后等着升值再出售。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 29, 2018  4:05 PM">2018年1月29日 16:05</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385209">#</a>
+ | <a href="#comment-text" title="引用ALLEN的这条留言" onclick="return CommentQuote('comment-quote-385209','ALLEN');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385233" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">wjzsuperman</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385233">
+            <p>是不是新增一个区块，就代表新增一个比特币？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="January 30, 2018 10:08 AM">2018年1月30日 10:08</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385233">#</a>
+ | <a href="#comment-text" title="引用wjzsuperman的这条留言" onclick="return CommentQuote('comment-quote-385233','wjzsuperman');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385417" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">胡吃喝</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385417">
+            <blockquote>
+<pre>引用wjzsuperman的发言：</pre>
+
+<p>是不是新增一个区块，就代表新增一个比特币？</p>
+
+</blockquote>
+
+<p>最开始，新增一个区块，增加50个比特币，后来新增一个区块，增加25个，再后来就是12.5个</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018  8:32 PM">2018年2月 2日 20:32</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385417">#</a>
+ | <a href="#comment-text" title="引用胡吃喝的这条留言" onclick="return CommentQuote('comment-quote-385417','胡吃喝');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385418" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">胡吃喝</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385418">
+            <blockquote>
+<pre>引用anor的发言：</pre>
+
+<p>区块链不会用完吧？只是用来奖励的比特币可能就没有了，到那时矿工只能靠手续费获得奖励了。</p>
+
+</blockquote>
+
+<p>区块链用不完，比特币倒是会用完，也就是再也挖不出来了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  2, 2018  8:33 PM">2018年2月 2日 20:33</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385418">#</a>
+ | <a href="#comment-text" title="引用胡吃喝的这条留言" onclick="return CommentQuote('comment-quote-385418','胡吃喝');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385464" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">郭海峰</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385464">
+            <p>原文：目前由于交易数量猛增，手续费已经水涨船高，一个区块2000多笔交易的手续费总额可以达到3～10个比特币。如果你的手续费给低了，很可能过了一个星期，交易还没确认。<br />
+请教：如果一个区块的2000比交易中有没有确认的，那这个区块怎么确认呢？不是一个小时就可以确认了吗？另外，如果一笔交易在确认过程中但还没没有支付成功，这些比特币是否可能再次支付给其它方，而因为第二次交易所在的区块被确认导致第二次交易成功，第一次交易失败呢？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  3, 2018  9:11 PM">2018年2月 3日 21:11</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385464">#</a>
+ | <a href="#comment-text" title="引用郭海峰的这条留言" onclick="return CommentQuote('comment-quote-385464','郭海峰');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385540" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">夜上</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385540">
+            <blockquote>
+<pre>引用Dong的发言：</pre>
+
+<p>有个疑问求解答：</p>
+
+<p>一块区块链只能存2000笔交易，2040年就挖不到新的区块链，但交易是继续增加的，那么区块链用完了怎么办呢？</p>
+
+<p><br />
+</p></blockquote>
+
+<p>新开区块没有奖励了而已，并不是不开新的</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  5, 2018 11:47 AM">2018年2月 5日 11:47</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385540">#</a>
+ | <a href="#comment-text" title="引用夜上的这条留言" onclick="return CommentQuote('comment-quote-385540','夜上');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385616" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">cqcmdwym</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385616">
+            <p>你也可以用私钥加密信息，别人用你的公钥解开，从而证明这个信息确实是你发出的</p>
+
+<p>你好，阮老师，这样是不是不安全，人家有公钥就能解开？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February  7, 2018  7:45 AM">2018年2月 7日 07:45</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385616">#</a>
+ | <a href="#comment-text" title="引用cqcmdwym的这条留言" onclick="return CommentQuote('comment-quote-385616','cqcmdwym');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385738" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">airomyas</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385738">
+            <blockquote>
+<pre>引用王挺的发言：</pre>
+
+<p></p>
+
+<p>我也有此疑问，但感觉这个回答没答到点上。<br />
+交易记录是必须要附在新的区块里，再写入主区块链才能生效的。而2040年之后，已经没机会“算出”新的区块了，还怎么附加交易记录呢?</p>
+
+<p><br />
+</p></blockquote>
+
+<p>区块永远可以增加，区块链的长度并没有限制。只是矿工取得记账权的时候，系统没有给矿工比特币来奖励了。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 12, 2018  9:53 AM">2018年2月12日 09:53</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385738">#</a>
+ | <a href="#comment-text" title="引用airomyas的这条留言" onclick="return CommentQuote('comment-quote-385738','airomyas');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385739" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">airomyas</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385739">
+            <blockquote>
+<pre>引用cqcmdwym的发言：</pre>
+
+<p>你也可以用私钥加密信息，别人用你的公钥解开，从而证明这个信息确实是你发出的</p>
+
+<p>你好，阮老师，这样是不是不安全，人家有公钥就能解开？</p>
+
+</blockquote>
+
+<p>这个叫数字签名，目的是为了证明这条用私钥签名的消息的确是你发出的（因为别人没有你的私钥），那么怎么证明呢？就是这条消息能够用你发布的公钥解开，这就说明消息是你发的，因为用别人的公钥不可能揭开你的私钥签名的消息。<br />
+这种情况下，不是为了保密，而是为了验证身份。</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 12, 2018 10:28 AM">2018年2月12日 10:28</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385739">#</a>
+ | <a href="#comment-text" title="引用airomyas的这条留言" onclick="return CommentQuote('comment-quote-385739','airomyas');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385753" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">天空</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385753">
+            <p>一开始错了，是欧美各大银行以及金融机构的一个需求，最后是一个中本聪的人或者组织造出一个比特比的产品来，本身不是中本聪的想法，它是需求的实现者</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 13, 2018  2:52 PM">2018年2月13日 14:52</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385753">#</a>
+ | <a href="#comment-text" title="引用天空的这条留言" onclick="return CommentQuote('comment-quote-385753','天空');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385763" class="comment">
+    <div  class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">路人甲</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385763">
+            <p>怎么全是小白？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 14, 2018  1:10 AM">2018年2月14日 01:10</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385763">#</a>
+ | <a href="#comment-text" title="引用路人甲的这条留言" onclick="return CommentQuote('comment-quote-385763','路人甲');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-385773" class="comment">
+    <div id="comment-last" class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+<p>
+                <span class="byline">
+                    
+
+                    <span class="vcard author">老宽</span>
+
+ 说：
+                </span>
+</p>
+            </div>
+        </div>
+        <div class="comment-content" id="comment-quote-385773">
+            <p>区块链记录着完整的账本，而比特币本质是希望解决去中心化的问题。1M的块大小引起交易堵塞的问题我能理解，通过扩容等技术手段肯定能解决的，只是扩多少的问题了。但是这个只是解决交易速度的问题啊？<br />
+但是，将来积累的账本数据肯定越来越多啊，那岂不是意味着每个安装了比特币钱包的客户端软件都得同步这些账本信息呢，比如现在账本数据如果几百G能理解不是问题，但是将来账本数据累积了总会很大啊，这个问题怎么能搞定啊？</p>
+        </div>
+<div class="comment-footer">
+<div class="comment-footer-inner">
+<p>
+                   <abbr class="published" title="February 17, 2018 12:22 AM">2018年2月17日 00:22</abbr>
+ | <a href="http://www.ruanyifeng.com/blog/2018/01/bitcoin-tutorial.html#comment-385773">#</a>
+ | <a href="#comment-text" title="引用老宽的这条留言" onclick="return CommentQuote('comment-quote-385773','老宽');">引用</a>
+</p>
+</div>
+</div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">我要发表看法</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://www.ruanyifeng.com/cgi-bin/mtos/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="1971" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><label for="comment-text">您的留言
+                    （HTML标签部分可用）</label></p>
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <p><label for="comment-author">您的大名：</label></p>
+                        <p><input id="comment-author" name="author" size="30" value="" />  <span class="hint"> &laquo;-必填</span></p>
+                    </div>
+                    <div id="comment-form-email">
+                        <p><label for="comment-email">电子邮件：</label></p>
+                        <p><input id="comment-email" name="email" size="30" value="" />  <span class="hint"> &laquo;-必填，不公开</span></p>
+                    </div>
+                    <div id="comment-form-url">
+                        <p><label for="comment-url">个人网址：</label></p>
+                        <p><input id="comment-url" name="url" size="30" value="" />  <span class="hint"> &laquo;-我信任你，不会填写广告链接</span></p>
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <p>
+                        <label for="comment-bake-cookie">记住个人信息？</label><input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="!this.checked?forgetMe(document.comments_form):rememberMe(document.comments_form)" value="1" accesskey="r" /></p>
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+<div id="wait" style="display:none;">
+<p><strong>正在发表您的评论，请稍候</strong></p>
+<p>
+<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+</p>
+</div>
+
+                    <p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表" />  <span class="hint"> &laquo;- 点击按钮</span></p>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <script type="text/javascript" src="http://www.ruanyifeng.com/blog/js/prism.js"></script>
+            <div id="footer">
+<div id="footer-inner">
+   <div id="footer-content">
+   <p><a title="微博" href="http://weibo.com/ruanyf" target="_blank">微博</a> | <a title="Twitter" target="_blank" href="https://twitter.com/ruanyf">推特</a> | <a title="GitHub" target="_blank" href="https://github.com/ruanyf">GitHub</a></p>
+   <p>2018 © <a title="电子邮件" href="/contact.html">我的邮件</a> |</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46829782-1', 'ruanyifeng.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script type="text/javascript" src="/blog/stats.js"></script>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="share_button_proto" style="display:none;">
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a>
+
+
+
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=15e016b4-0028-44f1-a40d-a3c9d9c13c28&style=10&bgcolor=#fff&bp=weixin,qqim,qzone,qqmb,sinaminiblog,fanfou,xueqiu,douban,facebook,twitter,gplus,instapaper&ssc=false"></script>
+<script type="text/javascript" charset="utf-8">
+bShare.addEntry({
+    title: document.getElementById("page-title").innerHTML,
+url:window.location.href
+});
+</script>
+</div>
+
+<script>
+document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+</script>
+
+
+
+
+
+        </div>
+    </div>
+</body>
+</html>
